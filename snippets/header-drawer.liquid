@@ -685,7 +685,9 @@
       >
         {%- comment -%} CUSTOM START [AJ-001] — Mobile account and configurable WhatsApp utility links. {%- endcomment -%}
         {% if is_akn_mobile_drawer %}
-          {% if shop.customer_accounts_enabled or block_settings.drawer_whatsapp_url != blank %}
+          {%- comment -%} CUSTOM START [AJ-002] — Show the utility area when an Instagram link is configured. {%- endcomment -%}
+          {% if shop.customer_accounts_enabled or block_settings.drawer_whatsapp_url != blank or block_settings.drawer_instagram_url != blank %}
+          {%- comment -%} CUSTOM END [AJ-002] {%- endcomment -%}
             <div class="akn-drawer__utility">
               {% if shop.customer_accounts_enabled %}
                 <a class="akn-drawer__utility-link focus-inset" href="{{ routes.account_url }}">
@@ -713,6 +715,26 @@
                   <span>WhatsApp</span>
                 </a>
               {% endif %}
+              {%- comment -%} CUSTOM START [AJ-002] — Configurable Instagram utility link using Atelier's native icon. {%- endcomment -%}
+              {% if block_settings.drawer_instagram_url != blank %}
+                <a
+                  class="akn-drawer__utility-link focus-inset"
+                  href="{{ block_settings.drawer_instagram_url }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <svg
+                    class="akn-drawer__utility-icon icon-default"
+                    aria-hidden="true"
+                    focusable="false"
+                    viewBox="0 0 20 20"
+                  >
+                    {%- render 'icon', icon: 'instagram' -%}
+                  </svg>
+                  <span>Instagram</span>
+                </a>
+              {% endif %}
+              {%- comment -%} CUSTOM END [AJ-002] {%- endcomment -%}
             </div>
           {% endif %}
         {% else %}
