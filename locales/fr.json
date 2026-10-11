@@ -212,6 +212,7 @@
     "read_more": "Lire plus...",
     "wrong_password": "Mot de passe incorrect",
     "account_title": "Compte",
+    "drawer_account": "Mon compte",
     "account_title_personalized": "Bonjour {{ first_name }}",
     "account_orders": "Commandes",
     "account_profile": "Profil",

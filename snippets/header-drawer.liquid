@@ -43,16 +43,51 @@
   endif
 %}
 
+{%- comment -%} CUSTOM START [AJ-001] — Mobile-only menu, branding, and appearance settings. {%- endcomment -%}
+{% liquid
+  assign is_akn_mobile_drawer = false
+  assign drawer_accordion = block_settings.drawer_accordion
+  assign drawer_menu_style = block_settings.menu_style
+
+  if data_header_drawer_type == 'mobile-drawer'
+    assign is_akn_mobile_drawer = true
+    assign drawer_accordion = true
+    assign drawer_menu_style = 'text'
+
+    if block_settings.mobile_menu != blank
+      assign linklist = block_settings.mobile_menu
+    endif
+
+    assign drawer_brand_type = block_settings.drawer_brand_type | default: 'text'
+    assign drawer_brand_text = block_settings.drawer_brand_text | default: shop.name
+    assign drawer_logo = block_settings.drawer_logo | default: settings.logo
+    assign drawer_logo_height = block_settings.drawer_logo_height | default: 34
+    assign drawer_home_alt = 'accessibility.home_logo_alt' | t: store_name: shop.name
+  endif
+%}
+{%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
+
 <script
   src="{{ 'header-drawer.js' | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
 
+{%- comment -%} CUSTOM START [AJ-001] — Scope AKAN drawer variables to the mobile drawer instance. {%- endcomment -%}
 <header-drawer
-  class="header-drawer {{ class }}"
-  style="--menu-image-border-radius: {{ image_border_radius }}px; --resource-card-corner-radius: {{ image_border_radius }}px;"
+  class="header-drawer {{ class }}{% if is_akn_mobile_drawer %} header-drawer--akn-mobile{% endif %}"
+  style="
+    --menu-image-border-radius: {{ image_border_radius }}px;
+    --resource-card-corner-radius: {{ image_border_radius }}px;
+    {% if is_akn_mobile_drawer %}
+      --akn-drawer-background: {{ block_settings.drawer_bg_color | default: '#111111' }};
+      --akn-drawer-text: {{ block_settings.drawer_text_color | default: '#FFFFFF' }};
+      --akn-drawer-accent: {{ block_settings.drawer_accent_color | default: '#5B1F2A' }};
+      --akn-drawer-logo-height: {{ drawer_logo_height }}px;
+    {% endif %}
+  "
 >
+{%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
   <details
     id="Details-menu-drawer-container"
     data-skip-node-update="true"
@@ -81,16 +116,50 @@
         {% endif %}
       "
     >
-      <button
-        class="button close-button menu-drawer__close-button focus-inset"
-        type="button"
-        aria-label="{{ 'actions.close' | t }}"
-        on:click="/close"
-      >
-        <span class="svg-wrapper header-drawer-icon header-drawer-icon--close">
-          {{- 'icon-close-menu.svg' | inline_asset_content -}}
-        </span>
-      </button>
+      {%- comment -%} CUSTOM START [AJ-001] — Mobile drawer brand row with safe logo and text fallbacks. {%- endcomment -%}
+      {% if is_akn_mobile_drawer %}
+        <div class="akn-drawer__brand-row">
+          <a
+            href="{{ routes.root_url }}"
+            class="akn-drawer__brand focus-inset"
+            aria-label="{{ drawer_home_alt | escape }}"
+          >
+            {% if drawer_brand_type == 'logo' and drawer_logo != blank %}
+              {% render 'image',
+                image: drawer_logo,
+                height: drawer_logo_height,
+                class: 'akn-drawer__brand-logo',
+                alt_text_fallback: drawer_home_alt,
+                text_fallback: drawer_brand_text
+              %}
+            {% else %}
+              <span class="akn-drawer__brand-text">{{ drawer_brand_text | escape }}</span>
+            {% endif %}
+          </a>
+          <button
+            class="button close-button menu-drawer__close-button focus-inset"
+            type="button"
+            aria-label="{{ 'actions.close' | t }}"
+            on:click="/close"
+          >
+            <span class="svg-wrapper header-drawer-icon header-drawer-icon--close">
+              {{- 'icon-close-menu.svg' | inline_asset_content -}}
+            </span>
+          </button>
+        </div>
+      {% else %}
+        <button
+          class="button close-button menu-drawer__close-button focus-inset"
+          type="button"
+          aria-label="{{ 'actions.close' | t }}"
+          on:click="/close"
+        >
+          <span class="svg-wrapper header-drawer-icon header-drawer-icon--close">
+            {{- 'icon-close-menu.svg' | inline_asset_content -}}
+          </span>
+        </button>
+      {% endif %}
+      {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
       <nav
         class="menu-drawer__navigation"
         style="
@@ -111,11 +180,13 @@
             {% assign animation_index = 0 %}
             {%- for link in linklist.links -%}
               {% assign animation_index = animation_index | plus: 1 %}
+              {%- comment -%} CUSTOM START [AJ-001] — Force Atelier's native accordion for mobile parent links. {%- endcomment -%}
               <li
                 style="--menu-drawer-animation-index: {{ animation_index }};"
-                class="{%- if block_settings.drawer_accordion -%}menu-drawer__list-item--deep{%- else -%}menu-drawer__list-item--flat{%- endif -%}{% if block_settings.drawer_dividers %} menu-drawer__list-item--divider{% endif %}"
+                class="{%- if drawer_accordion -%}menu-drawer__list-item--deep{%- else -%}menu-drawer__list-item--flat{%- endif -%}{% if block_settings.drawer_dividers %} menu-drawer__list-item--divider{% endif %}"
               >
-                {% if block_settings.drawer_accordion and link.links != blank %}
+                {% if drawer_accordion and link.links != blank %}
+              {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
                   {%- comment -%}
                     Accordion for links with children, in menus with fewer than 3 levels of links
                   {%- endcomment -%}
@@ -126,6 +197,11 @@
                       assign should_open_first = true
                     endif
                   %}
+                  {%- comment -%} CUSTOM START [AJ-001] — Mobile parent groups start collapsed. {%- endcomment -%}
+                  {% if is_akn_mobile_drawer %}
+                    {% assign should_open_first = false %}
+                  {% endif %}
+                  {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
                   {% capture accordion_children %}
                     <details
                       id="Details-menu-drawer-{{ link.handle }}"
@@ -139,9 +215,10 @@
                           {{- 'icon-plus.svg' | inline_asset_content -}}
                         </span>
                       </summary>
+                      {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. {%- endcomment -%}
                       {% liquid
                         assign render_link_image = false
-                        if block_settings.menu_style == 'collection_images'
+                        if drawer_menu_style == 'collection_images'
                           assign catalog_links = link.links | where: 'type', 'catalog_link'
                           assign collection_list_links = link.links | where: 'type', 'collections_link'
                           assign collection_links = link.links | where: 'type', 'collection_link'
@@ -150,6 +227,7 @@
                           endif
                         endif
                       %}
+                      {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
                       <ul
                         class="menu-drawer__menu menu-drawer__menu--childlist menu-drawer__animated-element details-content{% if render_link_image %} menu-drawer__menu--grid{% endif %}"
                         role="list"
@@ -186,7 +264,9 @@
                     children: accordion_children,
                     open_by_default_on_mobile: should_open_first
                   %}
-                {% elsif block_settings.drawer_accordion == false and link.links != blank %}
+                {%- comment -%} CUSTOM START [AJ-001] — Keep the native flat branch available outside the AKAN mobile drawer. {%- endcomment -%}
+                {% elsif drawer_accordion == false and link.links != blank %}
+                {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
                   {%- comment -%}
                     Flat menus for links with children, in menus with fewer than 3 levels of links
                   {%- endcomment -%}
@@ -200,9 +280,10 @@
                   >
                     <span class="menu-drawer__menu-item-text wrap-text">{{ link.title | escape }}</span>
                   </a>
+                  {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. {%- endcomment -%}
                   {% liquid
                     assign render_link_image = false
-                    if block_settings.menu_style == 'collection_images'
+                    if drawer_menu_style == 'collection_images'
                       assign catalog_links = link.links | where: 'type', 'catalog_link'
                       assign collection_list_links = link.links | where: 'type', 'collections_link'
                       assign collection_links = link.links | where: 'type', 'collection_link'
@@ -211,6 +292,7 @@
                       endif
                     endif
                   %}
+                  {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
                   <ul
                     class="menu-drawer__menu menu-drawer__menu--childlist{% if render_link_image %} menu-drawer__menu--grid{% endif %}"
                     role="list"
@@ -323,9 +405,10 @@
                             </span>
                           </button>
                         </div>
+                        {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. {%- endcomment -%}
                         {% liquid
                           assign render_link_image = false
-                          if block_settings.menu_style == 'collection_images'
+                          if drawer_menu_style == 'collection_images'
                             assign catalog_links = link.links | where: 'type', 'catalog_link'
                             assign collection_list_links = link.links | where: 'type', 'collections_link'
                             assign collection_links = link.links | where: 'type', 'collection_link'
@@ -334,6 +417,7 @@
                             endif
                           endif
                         %}
+                        {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
                         <ul
                           class="menu-drawer__menu menu-drawer__menu--childlist{% if render_link_image and link.levels == 1 %} menu-drawer__menu--grid{% endif %}"
                           role="list"
@@ -401,9 +485,10 @@
                                           {{- 'icon-plus.svg' | inline_asset_content -}}
                                         </span>
                                       </summary>
+                                      {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. {%- endcomment -%}
                                       {% liquid
                                         assign render_link_image = false
-                                        if block_settings.menu_style == 'collection_images'
+                                        if drawer_menu_style == 'collection_images'
                                           assign catalog_links = childlink.links | where: 'type', 'catalog_link'
                                           assign collection_list_links = childlink.links | where: 'type', 'collections_link'
                                           assign collection_links = childlink.links | where: 'type', 'collection_link'
@@ -412,6 +497,7 @@
                                           endif
                                         endif
                                       %}
+                                      {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
                                       <ul
                                         class="menu-drawer__menu menu-drawer__menu--grandchildlist details-content{% if render_link_image %} menu-drawer__menu--grid{% endif %}"
                                         role="list"
@@ -466,9 +552,10 @@
                                       {{- childlink.title | escape -}}
                                     </span>
                                   </a>
+                                  {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. {%- endcomment -%}
                                   {% liquid
                                     assign render_link_image = false
-                                    if block_settings.menu_style == 'collection_images'
+                                    if drawer_menu_style == 'collection_images'
                                       assign catalog_links = childlink.links | where: 'type', 'catalog_link'
                                       assign collection_list_links = childlink.links | where: 'type', 'collections_link'
                                       assign collection_links = childlink.links | where: 'type', 'collection_link'
@@ -477,6 +564,7 @@
                                       endif
                                     endif
                                   %}
+                                  {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
                                   <ul
                                     class="menu-drawer__menu menu-drawer__menu--grandchildlist details-content{% if render_link_image %} menu-drawer__menu--grid{% endif %}"
                                     role="list"
@@ -514,13 +602,14 @@
                             </li>
                           {%- endfor -%}
                         </ul>
+                        {%- comment -%} CUSTOM START [AJ-001] — Omit featured collection/product cards from the mobile drawer. {%- endcomment -%}
                         {% liquid
                           if eager_loading
-                            if block_settings.menu_style == 'featured_collections'
+                            if drawer_menu_style == 'featured_collections'
                               assign featured_collections = link.links | where: 'type', 'collection_link'
                             endif
 
-                            if block_settings.menu_style == 'featured_products'
+                            if drawer_menu_style == 'featured_products'
                               assign collection_linklist = link.links | where: 'type', 'collection_link' | first
                               assign featured_products_collection = collection_linklist.object
                             endif
@@ -529,6 +618,7 @@
                             assign featured_products_collection = null | sort
                           endif
                         -%}
+                        {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
 
                         {% if featured_collections.size > 0 or featured_products_collection.products_count > 0 %}
                           <div
@@ -593,6 +683,39 @@
         class="menu-drawer__utility-links menu-drawer__animated-element"
         style="--menu-drawer-animation-index: {{ linklist.links.size }};"
       >
+        {%- comment -%} CUSTOM START [AJ-001] — Mobile account and configurable WhatsApp utility links. {%- endcomment -%}
+        {% if is_akn_mobile_drawer %}
+          {% if shop.customer_accounts_enabled or block_settings.drawer_whatsapp_url != blank %}
+            <div class="akn-drawer__utility">
+              {% if shop.customer_accounts_enabled %}
+                <a class="akn-drawer__utility-link focus-inset" href="{{ routes.account_url }}">
+                  <span class="akn-drawer__utility-icon" aria-hidden="true">
+                    {{- 'icon-account.svg' | inline_asset_content -}}
+                  </span>
+                  <span>{{ 'content.drawer_account' | t }}</span>
+                </a>
+              {% endif %}
+              {% if block_settings.drawer_whatsapp_url != blank %}
+                <a
+                  class="akn-drawer__utility-link focus-inset"
+                  href="{{ block_settings.drawer_whatsapp_url }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <svg
+                    class="akn-drawer__utility-icon icon-default"
+                    aria-hidden="true"
+                    focusable="false"
+                    viewBox="0 0 20 20"
+                  >
+                    {%- render 'icon', icon: 'whatsapp' -%}
+                  </svg>
+                  <span>WhatsApp</span>
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% else %}
         {% liquid
           assign show_language = section.settings.show_language
           if localization.available_languages.size <= 1
@@ -720,14 +843,17 @@
             </drawer-localization-component>
           {% endif %}
         {%- endif -%}
+        {% endif %}
+        {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
       </div>
 
+      {%- comment -%} CUSTOM START [AJ-001] — Omit featured collection/product cards from the mobile drawer. {%- endcomment -%}
       {% liquid
-        if block_settings.menu_style == 'featured_collections'
+        if drawer_menu_style == 'featured_collections'
           assign top_level_featured_collections = linklist.links | where: 'type', 'collection_link'
         endif
 
-        if eager_loading and block_settings.menu_style == 'featured_products'
+        if eager_loading and drawer_menu_style == 'featured_products'
           for link in linklist.links
             if link.type == 'collection_link'
               assign collection_linklist = link
@@ -740,6 +866,7 @@
           endfor
         endif
       -%}
+      {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
       {% if top_level_featured_collections.size > 0 or top_level_featured_products_collection.products_count > 0 %}
         <div
           class="menu-drawer__featured-content"
@@ -1539,4 +1666,169 @@
   .drawer-localization .language-selector .svg-wrapper.icon-caret svg {
     transform: none;
   }
+
+  /* CUSTOM START [AJ-001] — AKAN mobile drawer presentation; desktop drawer and mega-menu remain unchanged. */
+  @media screen and (max-width: 749px) {
+    .header-drawer--akn-mobile .menu-drawer {
+      width: min(88vw, 26rem);
+      max-width: none;
+      color: var(--akn-drawer-text);
+      background: var(--akn-drawer-background);
+      border-inline-end: 0;
+    }
+
+    .header-drawer--akn-mobile .menu-drawer__submenu {
+      color: var(--akn-drawer-text);
+      background: var(--akn-drawer-background);
+    }
+
+    .header-drawer--akn-mobile .akn-drawer__brand-row {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+      padding-inline: var(--drawer-padding) max(var(--padding-xs), var(--safe-area-inset-right));
+      border-block-end: 1px solid rgb(255 255 255 / 22%);
+    }
+
+    [dir='rtl'] .header-drawer--akn-mobile .akn-drawer__brand-row {
+      padding-inline: max(var(--padding-xs), var(--safe-area-inset-left)) var(--drawer-padding);
+    }
+
+    .header-drawer--akn-mobile .akn-drawer__brand {
+      display: inline-flex;
+      min-width: 44px;
+      min-height: 44px;
+      align-items: center;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .header-drawer--akn-mobile .akn-drawer__brand-text {
+      font-family: var(--font-heading--family);
+      font-style: var(--font-heading--style);
+      font-weight: var(--font-heading--weight);
+      font-size: 1.4rem;
+      line-height: 1;
+      letter-spacing: 0.12em;
+    }
+
+    .header-drawer--akn-mobile .akn-drawer__brand-logo {
+      width: auto;
+      max-width: min(12rem, 58vw);
+      height: var(--akn-drawer-logo-height);
+      object-fit: contain;
+    }
+
+    .header-drawer--akn-mobile .menu-drawer__close-button {
+      display: inline-flex;
+      width: 44px;
+      min-width: 44px;
+      height: 44px;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      padding: var(--padding-sm);
+      color: inherit;
+    }
+
+    .header-drawer--akn-mobile .menu-drawer__navigation {
+      flex: 0 0 auto;
+    }
+
+    .header-drawer--akn-mobile .menu-drawer__menu.has-submenu {
+      margin-block-end: 0;
+      padding-block: var(--padding-md) var(--padding-xl);
+    }
+
+    .header-drawer--akn-mobile
+      .menu-drawer__menu.has-submenu
+      > .menu-drawer__list-item:not(:last-child) {
+      border-block-end: 1px solid rgb(255 255 255 / 22%);
+    }
+
+    .header-drawer--akn-mobile .menu-drawer__menu-item--mainlist {
+      min-height: 56px;
+      padding-block: var(--padding-xs);
+      font-size: clamp(1rem, 4.6vw, 1.25rem);
+      color: inherit;
+    }
+
+    .header-drawer--akn-mobile .menu-drawer__list-item--deep > accordion-custom > details {
+      transition: background-color var(--animation-speed) var(--animation-easing);
+    }
+
+    .header-drawer--akn-mobile .menu-drawer__list-item--deep > accordion-custom > details[open] {
+      background-color: var(--akn-drawer-accent);
+    }
+
+    .header-drawer--akn-mobile
+      .menu-drawer__list-item--deep
+      > accordion-custom
+      > details[open]
+      > summary {
+      border-block-end: 1px solid rgb(255 255 255 / 22%);
+    }
+
+    .header-drawer--akn-mobile .menu-drawer__menu-item > .svg-wrapper.icon-plus {
+      width: 44px;
+      height: 44px;
+      margin-inline-end: -14px;
+      padding: 14px;
+    }
+
+    .header-drawer--akn-mobile .menu-drawer__menu-item > .svg-wrapper.icon-plus svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .header-drawer--akn-mobile .menu-drawer__menu--childlist:not(.menu-drawer__menu--grid) {
+      padding: var(--padding-sm) 0 var(--padding-md);
+    }
+
+    .header-drawer--akn-mobile .menu-drawer__menu--childlist .menu-drawer__menu-item--child {
+      min-height: 44px;
+      padding: var(--padding-2xs) var(--padding-md);
+      font-size: 0.95rem;
+      color: inherit;
+    }
+
+    .header-drawer--akn-mobile .menu-drawer__utility-links {
+      margin: auto var(--drawer-padding) 0;
+      padding: var(--padding-md) 0 max(var(--padding-lg), var(--safe-area-inset-bottom));
+      border-block-start: 1px solid rgb(255 255 255 / 22%);
+    }
+
+    .header-drawer--akn-mobile .akn-drawer__utility {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-2xs);
+    }
+
+    .header-drawer--akn-mobile .akn-drawer__utility-link {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      gap: var(--gap-sm);
+      padding-block: var(--padding-xs);
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .header-drawer--akn-mobile .akn-drawer__utility-icon,
+    .header-drawer--akn-mobile .akn-drawer__utility-icon svg {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 20px;
+    }
+
+    .header-drawer--akn-mobile
+      :is(.akn-drawer__brand, .menu-drawer__menu-item, .akn-drawer__utility-link, .menu-drawer__close-button):focus-visible {
+      border-radius: 0;
+      outline: 2px solid currentcolor;
+      outline-offset: -4px;
+    }
+  }
+  /* CUSTOM END [AJ-001] */
 {% endstylesheet %}

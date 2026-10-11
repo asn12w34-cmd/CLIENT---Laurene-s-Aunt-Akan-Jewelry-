@@ -166,6 +166,7 @@
     "cancel": "Cancel",
     "discount": "Discount",
     "account_title": "Account",
+    "drawer_account": "My account",
     "terms_and_policies": "Terms and Policies",
     "account_title_personalized": "Hi {{ first_name }}",
     "account_orders": "Orders",

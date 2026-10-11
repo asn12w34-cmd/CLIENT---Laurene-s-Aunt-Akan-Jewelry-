@@ -1025,6 +1025,82 @@
       "content": "t:content.mobile_layout"
     },
     {
+      "type": "link_list",
+      "id": "mobile_menu",
+      "label": "t:settings.mobile_menu"
+    },
+    {
+      "type": "header",
+      "content": "t:content.mobile_drawer_branding"
+    },
+    {
+      "type": "select",
+      "id": "drawer_brand_type",
+      "label": "t:settings.drawer_branding_type",
+      "options": [
+        {
+          "value": "text",
+          "label": "t:options.text"
+        },
+        {
+          "value": "logo",
+          "label": "t:options.logo"
+        }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "text",
+      "id": "drawer_brand_text",
+      "label": "t:settings.drawer_brand_text",
+      "default": "AKAN",
+      "visible_if": "{{ block.settings.drawer_brand_type == 'text' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "drawer_logo",
+      "label": "t:settings.drawer_logo",
+      "visible_if": "{{ block.settings.drawer_brand_type == 'logo' }}"
+    },
+    {
+      "type": "range",
+      "id": "drawer_logo_height",
+      "label": "t:settings.drawer_logo_height",
+      "min": 20,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 34,
+      "visible_if": "{{ block.settings.drawer_brand_type == 'logo' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.mobile_drawer_appearance"
+    },
+    {
+      "type": "color",
+      "id": "drawer_bg_color",
+      "label": "t:settings.drawer_background_color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "drawer_text_color",
+      "label": "t:settings.drawer_text_color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "drawer_accent_color",
+      "label": "t:settings.drawer_accent_color",
+      "default": "#5B1F2A"
+    },
+    {
+      "type": "url",
+      "id": "drawer_whatsapp_url",
+      "label": "t:settings.drawer_whatsapp_url"
+    },
+    {
       "type": "checkbox",
       "id": "navigation_bar",
       "label": "t:settings.navigation_bar"

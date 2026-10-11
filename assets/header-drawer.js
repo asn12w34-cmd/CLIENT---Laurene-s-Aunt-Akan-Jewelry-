@@ -43,6 +43,14 @@ class HeaderDrawer extends Component {
     return this.refs.details.hasAttribute('open');
   }
 
+  // CUSTOM START [AJ-001] — Keep focus changes scoped to the customized mobile presentation.
+  get usesAkanMobileFocus() {
+    return (
+      this.classList.contains('header-drawer--akn-mobile') && window.matchMedia('(max-width: 749px)').matches
+    );
+  }
+  // CUSTOM END [AJ-001]
+
   /**
    * Get the closest details element to the event target
    * @param {Event | undefined} event
@@ -82,9 +90,22 @@ class HeaderDrawer extends Component {
         this.refs.menuDrawer.classList.add('menu-drawer--has-submenu-opened');
       }
 
-      // Wait for the drawer animation to complete before trapping focus
+      // CUSTOM START [AJ-001] — Trap focus inside the visible panel and move it to the close control.
+      // Wait for the drawer animation to complete before trapping focus.
       const drawer = details.querySelector('.menu-drawer, .menu-drawer__submenu');
-      onAnimationEnd(drawer || details, () => trapFocus(details), { subtree: false });
+      const focusContainer =
+        this.usesAkanMobileFocus && details === this.refs.details ? this.refs.menuDrawer : details;
+      onAnimationEnd(
+        drawer || details,
+        () => {
+          trapFocus(focusContainer);
+          if (this.usesAkanMobileFocus) {
+            focusContainer.querySelector('.menu-drawer__close-button')?.focus({ preventScroll: true });
+          }
+        },
+        { subtree: false }
+      );
+      // CUSTOM END [AJ-001]
     });
   }
 
@@ -126,11 +147,16 @@ class HeaderDrawer extends Component {
       () => {
         reset(details);
         if (details === this.refs.details) {
+          // CUSTOM START [AJ-001] — Restore focus to the hamburger after the drawer closes.
           removeTrapFocus();
+          if (this.usesAkanMobileFocus) summary.focus({ preventScroll: true });
+          // CUSTOM END [AJ-001]
           const openDetails = this.querySelectorAll('details[open]:not(accordion-custom > details)');
           openDetails.forEach(reset);
         } else {
-          trapFocus(this.refs.details);
+          // CUSTOM START [AJ-001] — Return the trap to the visible main drawer after closing a submenu.
+          trapFocus(this.usesAkanMobileFocus ? this.refs.menuDrawer : this.refs.details);
+          // CUSTOM END [AJ-001]
         }
       },
       { subtree: false }
