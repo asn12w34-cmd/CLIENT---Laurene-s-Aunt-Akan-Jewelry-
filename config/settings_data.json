@@ -9,7 +9,9 @@
  */
 {
   "current": {
-    "favicon": "shopify://shop_images/Gold_Akan_Emblem_on_Black.png",
+    "logo": "shopify://shop_images/Golden_emblem_over_Akan_jewelry_logo.png",
+    "logo_height": 95,
+    "logo_height_mobile": 60,
     "page_text_color": "{{ settings.color_palette.foreground }}",
     "type_body_font": "red_hat_text_n4",
     "type_subheading_font": "newsreader_n2",
