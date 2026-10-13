@@ -1,0 +1,571 @@
+{% comment %}
+CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mobile styling
+{% endcomment %}
+
+{% doc %}
+  Renders responsive rich text while preserving the semantic elements selected in
+  Shopify's rich-text editor. Optional mobile content never falls back to desktop
+  content after the separate-mobile-content switch is enabled.
+{% enddoc %}
+
+{% liquid
+  assign desktop_plain = block.settings.desktop_text | strip_newlines | strip
+  assign desktop_visible = desktop_plain | strip_html | strip
+  assign mobile_plain = block.settings.mobile_text | strip_newlines | strip
+  assign mobile_visible = mobile_plain | strip_html | strip
+  assign use_mobile_text = block.settings.use_mobile_text
+
+  assign should_render = false
+  if desktop_visible != blank
+    assign should_render = true
+  elsif use_mobile_text and mobile_visible != blank
+    assign should_render = true
+  endif
+
+  assign desktop_scale = block.settings.desktop_size_scale | divided_by: 100.0
+  assign mobile_scale = block.settings.mobile_size_scale | divided_by: 100.0
+%}
+
+{% if should_render %}
+  <div
+    class="akn-text{% if use_mobile_text %} akn-text--separate-mobile{% endif %}{% if desktop_visible == blank %} akn-text--desktop-empty{% endif %}{% if use_mobile_text and mobile_visible == blank %} akn-text--mobile-empty{% endif %}"
+    data-desktop-font="{{ block.settings.desktop_font_role }}"
+    data-mobile-font="{{ block.settings.mobile_font_role }}"
+    data-desktop-line-height="{{ block.settings.desktop_line_height }}"
+    data-mobile-line-height="{{ block.settings.mobile_line_height }}"
+    data-desktop-letter-spacing="{{ block.settings.desktop_letter_spacing }}"
+    data-mobile-letter-spacing="{{ block.settings.mobile_letter_spacing }}"
+    data-desktop-case="{{ block.settings.desktop_case }}"
+    data-mobile-case="{{ block.settings.mobile_case }}"
+    style="
+      --akn-text-desktop-max-width: {{ block.settings.desktop_max_width }}px;
+      --akn-text-mobile-max-width: {{ block.settings.mobile_max_width }}px;
+      --akn-text-desktop-size-scale: {{ desktop_scale }};
+      --akn-text-mobile-size-scale: {{ mobile_scale }};
+      --akn-text-desktop-align: {{ block.settings.desktop_alignment }};
+      --akn-text-mobile-align: {{ block.settings.mobile_alignment }};
+      --akn-text-desktop-color: {{ block.settings.desktop_color }};
+      --akn-text-mobile-color: {{ block.settings.mobile_color }};
+      --akn-text-desktop-font-family: var(--font-{{ block.settings.desktop_font_role }}--family);
+      --akn-text-desktop-font-style: var(--font-{{ block.settings.desktop_font_role }}--style);
+      --akn-text-desktop-font-weight: var(--font-{{ block.settings.desktop_font_role }}--weight);
+      --akn-text-mobile-font-family: var(--font-{{ block.settings.mobile_font_role }}--family);
+      --akn-text-mobile-font-style: var(--font-{{ block.settings.mobile_font_role }}--style);
+      --akn-text-mobile-font-weight: var(--font-{{ block.settings.mobile_font_role }}--weight);
+      --akn-text-desktop-heading-line-height: var(--line-height--heading-{{ block.settings.desktop_line_height }});
+      --akn-text-desktop-body-line-height: var(--line-height--body-{{ block.settings.desktop_line_height }});
+      --akn-text-mobile-heading-line-height: var(--line-height--heading-{{ block.settings.mobile_line_height }});
+      --akn-text-mobile-body-line-height: var(--line-height--body-{{ block.settings.mobile_line_height }});
+      --akn-text-desktop-heading-letter-spacing: var(--letter-spacing--heading-{{ block.settings.desktop_letter_spacing }});
+      --akn-text-desktop-body-letter-spacing: var(--letter-spacing--body-{{ block.settings.desktop_letter_spacing }});
+      --akn-text-mobile-heading-letter-spacing: var(--letter-spacing--heading-{{ block.settings.mobile_letter_spacing }});
+      --akn-text-mobile-body-letter-spacing: var(--letter-spacing--body-{{ block.settings.mobile_letter_spacing }});
+      --akn-text-desktop-padding-block: {{ block.settings.desktop_padding_vertical }}px;
+      --akn-text-desktop-padding-inline: {{ block.settings.desktop_padding_horizontal }}px;
+      --akn-text-mobile-padding-block: {{ block.settings.mobile_padding_vertical }}px;
+      --akn-text-mobile-padding-inline: {{ block.settings.mobile_padding_horizontal }}px;
+      --akn-text-background: {{ block.settings.background_color }};
+      --akn-text-border-color: {{ block.settings.border_color }};
+      --akn-text-border-width: {{ block.settings.border_width }}px;
+      --akn-text-radius: {{ block.settings.corner_radius }}px;
+    "
+    {{ block.shopify_attributes }}
+  >
+    {% if desktop_visible != blank %}
+      <rte-formatter class="akn-text__content akn-text__content--desktop rte">
+        {{ block.settings.desktop_text }}
+      </rte-formatter>
+    {% endif %}
+
+    {% if use_mobile_text and mobile_visible != blank %}
+      <rte-formatter class="akn-text__content akn-text__content--mobile rte">
+        {{ block.settings.mobile_text }}
+      </rte-formatter>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  /* CUSTOM [AJ-003] — Responsive rich-text presentation */
+  .akn-text {
+    box-sizing: border-box;
+    inline-size: min(100%, var(--akn-text-desktop-max-width));
+    max-inline-size: 100%;
+    min-inline-size: 0;
+    block-size: auto;
+    padding-block: var(--akn-text-desktop-padding-block);
+    padding-inline: var(--akn-text-desktop-padding-inline);
+    color: var(--akn-text-desktop-color, currentcolor);
+    background: var(--akn-text-background, transparent);
+    border: var(--akn-text-border-width) solid var(--akn-text-border-color, transparent);
+    border-radius: var(--akn-text-radius);
+  }
+
+  .akn-text__content {
+    --color: currentcolor;
+
+    display: block;
+    inline-size: 100%;
+    min-inline-size: 0;
+    block-size: auto;
+    color: inherit;
+    overflow-wrap: anywhere;
+  }
+
+  .akn-text__content--desktop {
+    text-align: var(--akn-text-desktop-align);
+  }
+
+  .akn-text__content--mobile {
+    display: none;
+  }
+
+  .akn-text__content :where(h1) {
+    font-size: calc(var(--font-h1--size) * var(--akn-text-desktop-size-scale));
+  }
+
+  .akn-text__content :where(h2) {
+    font-size: calc(var(--font-h2--size) * var(--akn-text-desktop-size-scale));
+  }
+
+  .akn-text__content :where(h3) {
+    font-size: calc(var(--font-h3--size) * var(--akn-text-desktop-size-scale));
+  }
+
+  .akn-text__content :where(h4) {
+    font-size: calc(var(--font-h4--size) * var(--akn-text-desktop-size-scale));
+  }
+
+  .akn-text__content :where(h5) {
+    font-size: calc(var(--font-h5--size) * var(--akn-text-desktop-size-scale));
+  }
+
+  .akn-text__content :where(h6) {
+    font-size: calc(var(--font-h6--size) * var(--akn-text-desktop-size-scale));
+  }
+
+  .akn-text__content :where(p, ul, ol, blockquote) {
+    font-size: calc(var(--font-paragraph--size) * var(--akn-text-desktop-size-scale));
+  }
+
+  .akn-text:not([data-desktop-font='native']) .akn-text__content--desktop,
+  .akn-text:not([data-desktop-font='native']) .akn-text__content--desktop :where(*) {
+    font-family: var(--akn-text-desktop-font-family);
+    font-style: var(--akn-text-desktop-font-style);
+    font-weight: var(--akn-text-desktop-font-weight);
+  }
+
+  .akn-text:not([data-desktop-line-height='native']) .akn-text__content--desktop :where(h1, h2, h3, h4, h5, h6) {
+    line-height: var(--akn-text-desktop-heading-line-height);
+  }
+
+  .akn-text:not([data-desktop-line-height='native']) .akn-text__content--desktop :where(p, ul, ol, blockquote) {
+    line-height: var(--akn-text-desktop-body-line-height);
+  }
+
+  .akn-text:not([data-desktop-letter-spacing='native']) .akn-text__content--desktop :where(h1, h2, h3, h4, h5, h6) {
+    letter-spacing: var(--akn-text-desktop-heading-letter-spacing);
+  }
+
+  .akn-text:not([data-desktop-letter-spacing='native']) .akn-text__content--desktop :where(p, ul, ol, blockquote) {
+    letter-spacing: var(--akn-text-desktop-body-letter-spacing);
+  }
+
+  .akn-text:not([data-desktop-case='native']) .akn-text__content--desktop,
+  .akn-text:not([data-desktop-case='native']) .akn-text__content--desktop :where(*) {
+    text-transform: var(--akn-text-desktop-case);
+  }
+
+  .akn-text[data-desktop-case='none'] {
+    --akn-text-desktop-case: none;
+  }
+
+  .akn-text[data-desktop-case='uppercase'] {
+    --akn-text-desktop-case: uppercase;
+  }
+
+  .akn-text[data-desktop-case='lowercase'] {
+    --akn-text-desktop-case: lowercase;
+  }
+
+  @media screen and (max-width: 749px) {
+    .akn-text {
+      inline-size: min(100%, var(--akn-text-mobile-max-width));
+      padding-block: var(--akn-text-mobile-padding-block);
+      padding-inline: var(--akn-text-mobile-padding-inline);
+      color: var(--akn-text-mobile-color, currentcolor);
+    }
+
+    .akn-text--mobile-empty {
+      display: none;
+    }
+
+    .akn-text--separate-mobile .akn-text__content--desktop {
+      display: none;
+    }
+
+    .akn-text--separate-mobile .akn-text__content--mobile {
+      display: block;
+    }
+
+    .akn-text__content {
+      text-align: var(--akn-text-mobile-align);
+    }
+
+    .akn-text__content :where(h1) {
+      font-size: calc(var(--font-h1--size) * var(--akn-text-mobile-size-scale));
+    }
+
+    .akn-text__content :where(h2) {
+      font-size: calc(var(--font-h2--size) * var(--akn-text-mobile-size-scale));
+    }
+
+    .akn-text__content :where(h3) {
+      font-size: calc(var(--font-h3--size) * var(--akn-text-mobile-size-scale));
+    }
+
+    .akn-text__content :where(h4) {
+      font-size: calc(var(--font-h4--size) * var(--akn-text-mobile-size-scale));
+    }
+
+    .akn-text__content :where(h5) {
+      font-size: calc(var(--font-h5--size) * var(--akn-text-mobile-size-scale));
+    }
+
+    .akn-text__content :where(h6) {
+      font-size: calc(var(--font-h6--size) * var(--akn-text-mobile-size-scale));
+    }
+
+    .akn-text__content :where(p, ul, ol, blockquote) {
+      font-size: calc(var(--font-paragraph--size) * var(--akn-text-mobile-size-scale));
+    }
+
+    .akn-text:not([data-mobile-font='native']) .akn-text__content,
+    .akn-text:not([data-mobile-font='native']) .akn-text__content :where(*) {
+      font-family: var(--akn-text-mobile-font-family);
+      font-style: var(--akn-text-mobile-font-style);
+      font-weight: var(--akn-text-mobile-font-weight);
+    }
+
+    .akn-text:not([data-mobile-line-height='native']) .akn-text__content :where(h1, h2, h3, h4, h5, h6) {
+      line-height: var(--akn-text-mobile-heading-line-height);
+    }
+
+    .akn-text:not([data-mobile-line-height='native']) .akn-text__content :where(p, ul, ol, blockquote) {
+      line-height: var(--akn-text-mobile-body-line-height);
+    }
+
+    .akn-text:not([data-mobile-letter-spacing='native']) .akn-text__content :where(h1, h2, h3, h4, h5, h6) {
+      letter-spacing: var(--akn-text-mobile-heading-letter-spacing);
+    }
+
+    .akn-text:not([data-mobile-letter-spacing='native']) .akn-text__content :where(p, ul, ol, blockquote) {
+      letter-spacing: var(--akn-text-mobile-body-letter-spacing);
+    }
+
+    .akn-text:not([data-mobile-case='native']) .akn-text__content,
+    .akn-text:not([data-mobile-case='native']) .akn-text__content :where(*) {
+      text-transform: var(--akn-text-mobile-case);
+    }
+
+    .akn-text[data-mobile-case='none'] {
+      --akn-text-mobile-case: none;
+    }
+
+    .akn-text[data-mobile-case='uppercase'] {
+      --akn-text-mobile-case: uppercase;
+    }
+
+    .akn-text[data-mobile-case='lowercase'] {
+      --akn-text-mobile-case: lowercase;
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .akn-text--desktop-empty {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "AKAN responsive text",
+  "tag": null,
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "desktop_text",
+      "label": "Desktop content"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_mobile_text",
+      "label": "Use separate mobile content",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "mobile_text",
+      "label": "Mobile content",
+      "visible_if": "{{ block.settings.use_mobile_text }}"
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "select",
+      "id": "desktop_font_role",
+      "label": "Font role",
+      "options": [
+        { "value": "native", "label": "Preserve rich-text styles" },
+        { "value": "body", "label": "Body" },
+        { "value": "subheading", "label": "Subheading" },
+        { "value": "heading", "label": "Heading" },
+        { "value": "accent", "label": "Accent" }
+      ],
+      "default": "native"
+    },
+    {
+      "type": "range",
+      "id": "desktop_size_scale",
+      "label": "Type size scale",
+      "min": 75,
+      "max": 130,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "desktop_line_height",
+      "label": "Line height",
+      "options": [
+        { "value": "native", "label": "Theme default" },
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "native"
+    },
+    {
+      "type": "select",
+      "id": "desktop_letter_spacing",
+      "label": "Letter spacing",
+      "options": [
+        { "value": "native", "label": "Theme default" },
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "native"
+    },
+    {
+      "type": "text_alignment",
+      "id": "desktop_alignment",
+      "label": "Text alignment",
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "desktop_case",
+      "label": "Text case",
+      "options": [
+        { "value": "native", "label": "Theme default" },
+        { "value": "none", "label": "As entered" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" }
+      ],
+      "default": "native"
+    },
+    {
+      "type": "color",
+      "id": "desktop_color",
+      "label": "Text colour",
+      "alpha": true,
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "desktop_max_width",
+      "label": "Maximum width",
+      "min": 240,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 650
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_vertical",
+      "label": "Vertical padding",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_horizontal",
+      "label": "Horizontal padding",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "select",
+      "id": "mobile_font_role",
+      "label": "Font role",
+      "options": [
+        { "value": "native", "label": "Preserve rich-text styles" },
+        { "value": "body", "label": "Body" },
+        { "value": "subheading", "label": "Subheading" },
+        { "value": "heading", "label": "Heading" },
+        { "value": "accent", "label": "Accent" }
+      ],
+      "default": "native"
+    },
+    {
+      "type": "range",
+      "id": "mobile_size_scale",
+      "label": "Type size scale",
+      "min": 60,
+      "max": 120,
+      "step": 5,
+      "unit": "%",
+      "default": 85
+    },
+    {
+      "type": "select",
+      "id": "mobile_line_height",
+      "label": "Line height",
+      "options": [
+        { "value": "native", "label": "Theme default" },
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "native"
+    },
+    {
+      "type": "select",
+      "id": "mobile_letter_spacing",
+      "label": "Letter spacing",
+      "options": [
+        { "value": "native", "label": "Theme default" },
+        { "value": "tight", "label": "Tight" },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose", "label": "Loose" }
+      ],
+      "default": "native"
+    },
+    {
+      "type": "text_alignment",
+      "id": "mobile_alignment",
+      "label": "Text alignment",
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "mobile_case",
+      "label": "Text case",
+      "options": [
+        { "value": "native", "label": "Theme default" },
+        { "value": "none", "label": "As entered" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" }
+      ],
+      "default": "native"
+    },
+    {
+      "type": "color",
+      "id": "mobile_color",
+      "label": "Text colour",
+      "alpha": true,
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "mobile_max_width",
+      "label": "Maximum width",
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_vertical",
+      "label": "Vertical padding",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_horizontal",
+      "label": "Horizontal padding",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Container appearance"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background colour",
+      "alpha": true,
+      "default": "#00000000"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border colour",
+      "alpha": true,
+      "default": "#ffffff00"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "AKAN responsive text",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}

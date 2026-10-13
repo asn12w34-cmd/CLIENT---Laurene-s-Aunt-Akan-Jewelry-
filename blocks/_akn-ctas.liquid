@@ -1,0 +1,748 @@
+{% comment %}
+CUSTOM FILE [AJ-003] — Hero-specific responsive primary and secondary CTA group
+{% endcomment %}
+
+{% doc %}
+  Renders independent desktop and mobile CTA groups. A CTA is omitted unless its
+  device visibility, label, and destination are all valid.
+{% enddoc %}
+
+{% liquid
+  assign primary_desktop_label_check = block.settings.primary_desktop_label | strip
+  assign secondary_desktop_label_check = block.settings.secondary_desktop_label | strip
+  assign primary_mobile_label_check = block.settings.primary_mobile_label | strip
+  assign secondary_mobile_label_check = block.settings.secondary_mobile_label | strip
+
+  assign show_primary_desktop = false
+  if block.settings.primary_desktop_visible and primary_desktop_label_check != blank and block.settings.primary_desktop_link != blank
+    assign show_primary_desktop = true
+  endif
+
+  assign show_secondary_desktop = false
+  if block.settings.secondary_desktop_visible and secondary_desktop_label_check != blank and block.settings.secondary_desktop_link != blank
+    assign show_secondary_desktop = true
+  endif
+
+  assign show_primary_mobile = false
+  if block.settings.primary_mobile_visible and primary_mobile_label_check != blank and block.settings.primary_mobile_link != blank
+    assign show_primary_mobile = true
+  endif
+
+  assign show_secondary_mobile = false
+  if block.settings.secondary_mobile_visible and secondary_mobile_label_check != blank and block.settings.secondary_mobile_link != blank
+    assign show_secondary_mobile = true
+  endif
+%}
+
+{% if show_primary_desktop or show_secondary_desktop or show_primary_mobile or show_secondary_mobile %}
+  {% # CUSTOM [AJ-003] — Responsive CTA sizing, layout, initial colours, and animated interactions %}
+  <div class="akn-ctas" {{ block.shopify_attributes }}>
+    {% if show_primary_desktop or show_secondary_desktop %}
+      <div
+        class="akn-ctas__group akn-ctas__group--desktop akn-ctas__group--align-{{ block.settings.desktop_group_alignment }} akn-ctas__group--distribution-{{ block.settings.desktop_distribution }} akn-ctas__group--width-{{ block.settings.desktop_group_width }}{% if block.settings.desktop_match_sizes and show_primary_desktop and show_secondary_desktop %} akn-ctas__group--match{% endif %}"
+        style="--akn-ctas-gap: {{ block.settings.desktop_button_gap }}px; --akn-ctas-custom-width: {{ block.settings.desktop_custom_width }}%;"
+      >
+        {% if show_primary_desktop %}
+          <a
+            class="button akn-ctas__button akn-ctas__button--primary{% if block.settings.pd_custom_interaction %} akn-ctas__button--custom-interaction akn-ctas__button--animation-{{ block.settings.pd_animation }}{% endif %}"
+            href="{{ block.settings.primary_desktop_link | escape }}"
+            style="--akn-cta-initial-background: rgba({{ block.settings.primary_initial_bg.rgba }}); --akn-cta-initial-text: rgba({{ block.settings.primary_initial_text.rgba }}); --akn-cta-initial-border: rgba({{ block.settings.primary_initial_border.rgba }}); --akn-cta-interaction-background: rgba({{ block.settings.pd_interaction_bg.rgba }}); --akn-cta-interaction-text: rgba({{ block.settings.pd_interaction_text.rgba }}); --akn-cta-interaction-border: rgba({{ block.settings.pd_interaction_border.rgba }});"
+          >
+            <span class="akn-ctas__label akn-ctas__label--sizer" aria-hidden="true">{{ block.settings.primary_desktop_label | escape | newline_to_br }}</span>
+            <span class="akn-ctas__label akn-ctas__label--visual">{{ block.settings.primary_desktop_label | escape | newline_to_br }}</span>
+          </a>
+        {% endif %}
+        {% if show_secondary_desktop %}
+          <a
+            class="button-secondary akn-ctas__button akn-ctas__button--secondary{% if block.settings.sd_custom_interaction %} akn-ctas__button--custom-interaction akn-ctas__button--animation-{{ block.settings.sd_animation }}{% endif %}"
+            href="{{ block.settings.secondary_desktop_link | escape }}"
+            style="--akn-cta-initial-background: rgba({{ block.settings.secondary_initial_bg.rgba }}); --akn-cta-initial-text: rgba({{ block.settings.secondary_initial_text.rgba }}); --akn-cta-initial-border: rgba({{ block.settings.secondary_initial_border.rgba }}); --akn-cta-interaction-background: rgba({{ block.settings.sd_interaction_bg.rgba }}); --akn-cta-interaction-text: rgba({{ block.settings.sd_interaction_text.rgba }}); --akn-cta-interaction-border: rgba({{ block.settings.sd_interaction_border.rgba }});"
+          >
+            <span class="akn-ctas__label akn-ctas__label--sizer" aria-hidden="true">{{ block.settings.secondary_desktop_label | escape | newline_to_br }}</span>
+            <span class="akn-ctas__label akn-ctas__label--visual">{{ block.settings.secondary_desktop_label | escape | newline_to_br }}</span>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if show_primary_mobile or show_secondary_mobile %}
+      <div
+        class="akn-ctas__group akn-ctas__group--mobile akn-ctas__group--align-{{ block.settings.mobile_group_alignment }} akn-ctas__group--distribution-{{ block.settings.mobile_distribution }} akn-ctas__group--width-{{ block.settings.mobile_group_width }}{% if block.settings.mobile_match_sizes and show_primary_mobile and show_secondary_mobile %} akn-ctas__group--match{% endif %}"
+        style="--akn-ctas-gap: {{ block.settings.mobile_button_gap }}px; --akn-ctas-custom-width: {{ block.settings.mobile_custom_width }}%;"
+      >
+        {% if show_primary_mobile %}
+          <a
+            class="button akn-ctas__button akn-ctas__button--primary{% if block.settings.pm_custom_interaction %} akn-ctas__button--custom-interaction akn-ctas__button--animation-{{ block.settings.pm_animation }}{% endif %}"
+            href="{{ block.settings.primary_mobile_link | escape }}"
+            style="--akn-cta-initial-background: rgba({{ block.settings.primary_initial_bg.rgba }}); --akn-cta-initial-text: rgba({{ block.settings.primary_initial_text.rgba }}); --akn-cta-initial-border: rgba({{ block.settings.primary_initial_border.rgba }}); --akn-cta-interaction-background: rgba({{ block.settings.pm_interaction_bg.rgba }}); --akn-cta-interaction-text: rgba({{ block.settings.pm_interaction_text.rgba }}); --akn-cta-interaction-border: rgba({{ block.settings.pm_interaction_border.rgba }});"
+          >
+            <span class="akn-ctas__label akn-ctas__label--sizer" aria-hidden="true">{{ block.settings.primary_mobile_label | escape | newline_to_br }}</span>
+            <span class="akn-ctas__label akn-ctas__label--visual">{{ block.settings.primary_mobile_label | escape | newline_to_br }}</span>
+          </a>
+        {% endif %}
+        {% if show_secondary_mobile %}
+          <a
+            class="button-secondary akn-ctas__button akn-ctas__button--secondary{% if block.settings.sm_custom_interaction %} akn-ctas__button--custom-interaction akn-ctas__button--animation-{{ block.settings.sm_animation }}{% endif %}"
+            href="{{ block.settings.secondary_mobile_link | escape }}"
+            style="--akn-cta-initial-background: rgba({{ block.settings.secondary_initial_bg.rgba }}); --akn-cta-initial-text: rgba({{ block.settings.secondary_initial_text.rgba }}); --akn-cta-initial-border: rgba({{ block.settings.secondary_initial_border.rgba }}); --akn-cta-interaction-background: rgba({{ block.settings.sm_interaction_bg.rgba }}); --akn-cta-interaction-text: rgba({{ block.settings.sm_interaction_text.rgba }}); --akn-cta-interaction-border: rgba({{ block.settings.sm_interaction_border.rgba }});"
+          >
+            <span class="akn-ctas__label akn-ctas__label--sizer" aria-hidden="true">{{ block.settings.secondary_mobile_label | escape | newline_to_br }}</span>
+            <span class="akn-ctas__label akn-ctas__label--visual">{{ block.settings.secondary_mobile_label | escape | newline_to_br }}</span>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  /* CUSTOM [AJ-003] — Responsive CTA layout, natural wrapping, initial colours, and animated interactions */
+  .hero__content-wrapper .akn-ctas {
+    inline-size: 100%;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+  }
+
+  .hero__content-wrapper .akn-ctas__group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--akn-ctas-gap);
+    align-items: stretch;
+    box-sizing: border-box;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+  }
+
+  .hero__content-wrapper .akn-ctas__group--mobile {
+    display: none;
+  }
+
+  .hero__content-wrapper .akn-ctas__group--width-fit {
+    inline-size: fit-content;
+  }
+
+  .hero__content-wrapper .akn-ctas__group--width-full {
+    inline-size: 100%;
+  }
+
+  .hero__content-wrapper .akn-ctas__group--width-custom {
+    inline-size: min(100%, var(--akn-ctas-custom-width));
+  }
+
+  .hero__content-wrapper .akn-ctas__group--align-left {
+    margin-inline: 0 auto;
+  }
+
+  .hero__content-wrapper .akn-ctas__group--align-center {
+    margin-inline: auto;
+  }
+
+  .hero__content-wrapper .akn-ctas__group--align-right {
+    margin-inline: auto 0;
+  }
+
+  .hero__content-wrapper .akn-ctas__group--distribution-packed.akn-ctas__group--align-left {
+    justify-content: flex-start;
+  }
+
+  .hero__content-wrapper .akn-ctas__group--distribution-packed.akn-ctas__group--align-center {
+    justify-content: center;
+  }
+
+  .hero__content-wrapper .akn-ctas__group--distribution-packed.akn-ctas__group--align-right {
+    justify-content: flex-end;
+  }
+
+  .hero__content-wrapper .akn-ctas__group--distribution-spread {
+    justify-content: space-between;
+  }
+
+  .hero__content-wrapper .akn-ctas__button {
+    --button-color: var(--akn-cta-initial-text);
+    --button-background-color: var(--akn-cta-initial-background);
+    --button-border-color: var(--akn-cta-initial-border);
+
+    flex: 0 1 auto;
+    position: relative;
+    box-sizing: border-box;
+    block-size: auto;
+    min-inline-size: var(--minimum-touch-target, 44px);
+    min-block-size: var(--minimum-touch-target, 44px);
+    max-inline-size: 100%;
+    overflow: hidden;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .hero__content-wrapper .akn-ctas__label {
+    min-inline-size: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .hero__content-wrapper .akn-ctas__label--sizer {
+    visibility: hidden;
+  }
+
+  .hero__content-wrapper .akn-ctas__label--visual {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    padding-block: var(--button-padding-block);
+    padding-inline: var(--button-padding-inline);
+  }
+
+  .hero__content-wrapper .akn-ctas__group--match.akn-ctas__group--distribution-packed .akn-ctas__button {
+    flex: 0 1 12rem;
+    inline-size: 12rem;
+  }
+
+  .hero__content-wrapper .akn-ctas__group--match.akn-ctas__group--distribution-spread .akn-ctas__button {
+    flex: 1 1 12rem;
+    inline-size: auto;
+  }
+
+  .hero__content-wrapper .akn-ctas__button--animation-wipe-left,
+  .hero__content-wrapper .akn-ctas__button--animation-wipe-right {
+    --button-background-color: transparent;
+
+    background-repeat: no-repeat;
+    background-size: 200% 100%;
+    transition: background-position 450ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow var(--animation-speed) var(--animation-easing);
+  }
+
+  .hero__content-wrapper .akn-ctas__button--animation-wipe-left {
+    background-image: linear-gradient(
+      to right,
+      var(--akn-cta-interaction-background) 0 50%,
+      var(--akn-cta-initial-background) 50% 100%
+    );
+    background-position: right center;
+  }
+
+  .hero__content-wrapper .akn-ctas__button--animation-wipe-right {
+    background-image: linear-gradient(
+      to right,
+      var(--akn-cta-initial-background) 0 50%,
+      var(--akn-cta-interaction-background) 50% 100%
+    );
+    background-position: left center;
+  }
+
+  .hero__content-wrapper :is(.akn-ctas__button--animation-wipe-left, .akn-ctas__button--animation-wipe-right) .akn-ctas__label--visual {
+    color: transparent;
+    background-repeat: no-repeat;
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: background-position 450ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero__content-wrapper .akn-ctas__button--animation-wipe-left .akn-ctas__label--visual {
+    background-image: linear-gradient(
+      to right,
+      var(--akn-cta-interaction-text) 0 50%,
+      var(--akn-cta-initial-text) 50% 100%
+    );
+    background-position: right center;
+  }
+
+  .hero__content-wrapper .akn-ctas__button--animation-wipe-right .akn-ctas__label--visual {
+    background-image: linear-gradient(
+      to right,
+      var(--akn-cta-initial-text) 0 50%,
+      var(--akn-cta-interaction-text) 50% 100%
+    );
+    background-position: left center;
+  }
+
+  .hero__content-wrapper .akn-ctas__button--animation-fade:is(:active, :focus-visible) {
+    --button-color: var(--akn-cta-interaction-text);
+    --button-background-color: var(--akn-cta-interaction-background);
+    --button-border-color: var(--akn-cta-interaction-border);
+  }
+
+  .hero__content-wrapper :is(.akn-ctas__button--animation-wipe-left, .akn-ctas__button--animation-wipe-right):is(:active, :focus-visible) {
+    --button-background-color: transparent;
+    --button-border-color: var(--akn-cta-interaction-border);
+  }
+
+  .hero__content-wrapper .akn-ctas__button--animation-wipe-left:is(:active, :focus-visible),
+  .hero__content-wrapper .akn-ctas__button--animation-wipe-left:is(:active, :focus-visible) .akn-ctas__label--visual {
+    background-position: left center;
+  }
+
+  .hero__content-wrapper .akn-ctas__button--animation-wipe-right:is(:active, :focus-visible),
+  .hero__content-wrapper .akn-ctas__button--animation-wipe-right:is(:active, :focus-visible) .akn-ctas__label--visual {
+    background-position: right center;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hero__content-wrapper .akn-ctas__button--animation-fade:hover {
+      --button-color: var(--akn-cta-interaction-text);
+      --button-background-color: var(--akn-cta-interaction-background);
+      --button-border-color: var(--akn-cta-interaction-border);
+    }
+
+    .hero__content-wrapper :is(.akn-ctas__button--animation-wipe-left, .akn-ctas__button--animation-wipe-right):hover {
+      --button-background-color: transparent;
+      --button-border-color: var(--akn-cta-interaction-border);
+    }
+
+    .hero__content-wrapper .akn-ctas__button--animation-wipe-left:hover,
+    .hero__content-wrapper .akn-ctas__button--animation-wipe-left:hover .akn-ctas__label--visual {
+      background-position: left center;
+    }
+
+    .hero__content-wrapper .akn-ctas__button--animation-wipe-right:hover,
+    .hero__content-wrapper .akn-ctas__button--animation-wipe-right:hover .akn-ctas__label--visual {
+      background-position: right center;
+    }
+  }
+
+  @supports not selector(:focus-visible) {
+    .hero__content-wrapper .akn-ctas__button--animation-fade:focus {
+      --button-color: var(--akn-cta-interaction-text);
+      --button-background-color: var(--akn-cta-interaction-background);
+      --button-border-color: var(--akn-cta-interaction-border);
+    }
+
+    .hero__content-wrapper :is(.akn-ctas__button--animation-wipe-left, .akn-ctas__button--animation-wipe-right):focus {
+      --button-background-color: transparent;
+      --button-border-color: var(--akn-cta-interaction-border);
+    }
+
+    .hero__content-wrapper .akn-ctas__button--animation-wipe-left:focus,
+    .hero__content-wrapper .akn-ctas__button--animation-wipe-left:focus .akn-ctas__label--visual {
+      background-position: left center;
+    }
+
+    .hero__content-wrapper .akn-ctas__button--animation-wipe-right:focus,
+    .hero__content-wrapper .akn-ctas__button--animation-wipe-right:focus .akn-ctas__label--visual {
+      background-position: right center;
+    }
+  }
+
+  @media (hover: none) {
+    .hero__content-wrapper .akn-ctas__button--animation-fade:hover:not(:active):not(:focus-visible) {
+      --button-color: var(--akn-cta-initial-text);
+      --button-background-color: var(--akn-cta-initial-background);
+      --button-border-color: var(--akn-cta-initial-border);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__content-wrapper :is(.akn-ctas__button--animation-wipe-left, .akn-ctas__button--animation-wipe-right),
+    .hero__content-wrapper :is(.akn-ctas__button--animation-wipe-left, .akn-ctas__button--animation-wipe-right) .akn-ctas__label--visual {
+      transition-duration: 0.01ms;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .hero__content-wrapper .akn-ctas__group--desktop {
+      display: none;
+    }
+
+    .hero__content-wrapper .akn-ctas__group--mobile {
+      display: flex;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "AKAN CTA group",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "desktop_group_alignment",
+      "label": "Group alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "desktop_button_gap",
+      "label": "Button gap",
+      "min": 4,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "desktop_distribution",
+      "label": "Distribution",
+      "options": [
+        { "value": "packed", "label": "Packed together" },
+        { "value": "spread", "label": "Spread apart" }
+      ],
+      "default": "packed"
+    },
+    {
+      "type": "select",
+      "id": "desktop_group_width",
+      "label": "Group width",
+      "options": [
+        { "value": "fit", "label": "Fit / compact" },
+        { "value": "full", "label": "Full panel width" },
+        { "value": "custom", "label": "Custom percentage" }
+      ],
+      "default": "fit"
+    },
+    {
+      "type": "range",
+      "id": "desktop_custom_width",
+      "label": "Custom group width",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 75,
+      "visible_if": "{{ block.settings.desktop_group_width == 'custom' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_match_sizes",
+      "label": "Match button sizes",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "mobile_group_alignment",
+      "label": "Group alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "mobile_button_gap",
+      "label": "Button gap",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "mobile_distribution",
+      "label": "Distribution",
+      "options": [
+        { "value": "packed", "label": "Packed together" },
+        { "value": "spread", "label": "Spread apart" }
+      ],
+      "default": "packed"
+    },
+    {
+      "type": "select",
+      "id": "mobile_group_width",
+      "label": "Group width",
+      "options": [
+        { "value": "fit", "label": "Fit / compact" },
+        { "value": "full", "label": "Full panel width" },
+        { "value": "custom", "label": "Custom percentage" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "mobile_custom_width",
+      "label": "Custom group width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.mobile_group_width == 'custom' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_match_sizes",
+      "label": "Match button sizes",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "primary_initial_bg",
+      "label": "Primary CTA initial background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "primary_initial_text",
+      "label": "Primary CTA initial text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "primary_initial_border",
+      "label": "Primary CTA initial border",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "secondary_initial_bg",
+      "label": "Secondary CTA initial background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "secondary_initial_text",
+      "label": "Secondary CTA initial text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "secondary_initial_border",
+      "label": "Secondary CTA initial border",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "primary_desktop_visible",
+      "label": "Primary CTA — show on desktop",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "primary_desktop_label",
+      "label": "Label",
+      "default": "Découvrir la collection"
+    },
+    {
+      "type": "url",
+      "id": "primary_desktop_link",
+      "label": "Link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "checkbox",
+      "id": "pd_custom_interaction",
+      "label": "Enable custom interaction colours",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "pd_animation",
+      "label": "Interaction animation",
+      "options": [
+        { "value": "fade", "label": "Smooth fade" },
+        { "value": "wipe-left", "label": "Wipe from left" },
+        { "value": "wipe-right", "label": "Wipe from right" }
+      ],
+      "default": "wipe-left",
+      "visible_if": "{{ block.settings.pd_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "pd_interaction_bg",
+      "label": "Interaction background",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.pd_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "pd_interaction_text",
+      "label": "Interaction text",
+      "default": "#ffffff",
+      "visible_if": "{{ block.settings.pd_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "pd_interaction_border",
+      "label": "Interaction border",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.pd_custom_interaction }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "primary_mobile_visible",
+      "label": "Primary CTA — show on mobile",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "primary_mobile_label",
+      "label": "Label",
+      "default": "Découvrir la collection"
+    },
+    {
+      "type": "url",
+      "id": "primary_mobile_link",
+      "label": "Link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "checkbox",
+      "id": "pm_custom_interaction",
+      "label": "Enable custom interaction colours",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "pm_animation",
+      "label": "Interaction animation",
+      "options": [
+        { "value": "fade", "label": "Smooth fade" },
+        { "value": "wipe-left", "label": "Wipe from left" },
+        { "value": "wipe-right", "label": "Wipe from right" }
+      ],
+      "default": "wipe-left",
+      "visible_if": "{{ block.settings.pm_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "pm_interaction_bg",
+      "label": "Interaction background",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.pm_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "pm_interaction_text",
+      "label": "Interaction text",
+      "default": "#ffffff",
+      "visible_if": "{{ block.settings.pm_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "pm_interaction_border",
+      "label": "Interaction border",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.pm_custom_interaction }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "secondary_desktop_visible",
+      "label": "Secondary CTA — show on desktop",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "secondary_desktop_label",
+      "label": "Label",
+      "default": "Notre histoire"
+    },
+    {
+      "type": "url",
+      "id": "secondary_desktop_link",
+      "label": "Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "sd_custom_interaction",
+      "label": "Enable custom interaction colours",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "sd_animation",
+      "label": "Interaction animation",
+      "options": [
+        { "value": "fade", "label": "Smooth fade" },
+        { "value": "wipe-left", "label": "Wipe from left" },
+        { "value": "wipe-right", "label": "Wipe from right" }
+      ],
+      "default": "wipe-right",
+      "visible_if": "{{ block.settings.sd_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "sd_interaction_bg",
+      "label": "Interaction background",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.sd_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "sd_interaction_text",
+      "label": "Interaction text",
+      "default": "#ffffff",
+      "visible_if": "{{ block.settings.sd_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "sd_interaction_border",
+      "label": "Interaction border",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.sd_custom_interaction }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "secondary_mobile_visible",
+      "label": "Secondary CTA — show on mobile",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "secondary_mobile_label",
+      "label": "Label",
+      "default": "Notre histoire"
+    },
+    {
+      "type": "url",
+      "id": "secondary_mobile_link",
+      "label": "Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "sm_custom_interaction",
+      "label": "Enable custom interaction colours",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "sm_animation",
+      "label": "Interaction animation",
+      "options": [
+        { "value": "fade", "label": "Smooth fade" },
+        { "value": "wipe-left", "label": "Wipe from left" },
+        { "value": "wipe-right", "label": "Wipe from right" }
+      ],
+      "default": "wipe-right",
+      "visible_if": "{{ block.settings.sm_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "sm_interaction_bg",
+      "label": "Interaction background",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.sm_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "sm_interaction_text",
+      "label": "Interaction text",
+      "default": "#ffffff",
+      "visible_if": "{{ block.settings.sm_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "sm_interaction_border",
+      "label": "Interaction border",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.sm_custom_interaction }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "AKAN CTA group"
+    }
+  ]
+}
+{% endschema %}

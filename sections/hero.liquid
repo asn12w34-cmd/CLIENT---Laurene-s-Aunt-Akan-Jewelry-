@@ -766,6 +766,12 @@
   }
 {% endstylesheet %}
 
+{% comment %}
+  CUSTOM START [AJ-003] — Register the AKAN responsive Hero panel in the schema below
+  CUSTOM END [AJ-003]
+  CUSTOM START [AJ-004] — Register the AKAN Hero scroll cue in the schema below
+  CUSTOM END [AJ-004]
+{% endcomment %}
 {% schema %}
 {
   "name": "t:names.hero",
@@ -795,6 +801,12 @@
     },
     {
       "type": "_marquee"
+    },
+    {
+      "type": "_akn-panel"
+    },
+    {
+      "type": "_akn-scroll"
     }
   ],
   "disabled_on": {

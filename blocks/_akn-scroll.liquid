@@ -1,0 +1,355 @@
+{% comment %}
+CUSTOM FILE [AJ-004] — Accessible Hero scroll cue for the next Shopify section
+{% endcomment %}
+
+{% doc %}
+  Renders independent desktop and mobile scroll buttons. The companion asset uses
+  event delegation so section reloads in the Theme Editor remain idempotent.
+{% enddoc %}
+
+{% liquid
+  assign show_desktop = false
+  if block.settings.desktop_visible and block.settings.desktop_label != blank
+    assign show_desktop = true
+  endif
+
+  assign show_mobile = false
+  if block.settings.mobile_visible and block.settings.mobile_label != blank
+    assign show_mobile = true
+  endif
+%}
+
+{% if show_desktop or show_mobile %}
+  {% # CUSTOM [AJ-004] — Independent responsive scroll-cue presentation controls %}
+  <div
+    class="akn-scroll"
+    style="
+      --akn-scroll-desktop-size: {{ block.settings.desktop_font_size }}px;
+      --akn-scroll-desktop-color: rgba({{ block.settings.desktop_color.rgba }});
+      --akn-scroll-desktop-gap: {{ block.settings.desktop_label_arrow_gap }}px;
+      --akn-scroll-desktop-edge: {{ block.settings.desktop_edge_spacing }}px;
+      --akn-scroll-mobile-size: {{ block.settings.mobile_font_size }}px;
+      --akn-scroll-mobile-color: rgba({{ block.settings.mobile_color.rgba }});
+      --akn-scroll-mobile-gap: {{ block.settings.mobile_label_arrow_gap }}px;
+      --akn-scroll-mobile-edge: {{ block.settings.mobile_edge_spacing }}px;
+    "
+    {{ block.shopify_attributes }}
+  >
+    {% if show_desktop %}
+      <button
+        class="akn-scroll__button akn-scroll__button--desktop akn-scroll__button--align-{{ block.settings.desktop_alignment }} akn-scroll__button--arrow-{{ block.settings.desktop_arrow_position }}{% if block.settings.desktop_bold %} akn-scroll__button--bold{% endif %}"
+        type="button"
+        data-akn-scroll-trigger
+      >
+        <span class="akn-scroll__label">{{ block.settings.desktop_label | escape }}</span>
+        <svg class="akn-scroll__arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 4v15m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+        </svg>
+      </button>
+    {% endif %}
+
+    {% if show_mobile %}
+      <button
+        class="akn-scroll__button akn-scroll__button--mobile akn-scroll__button--align-{{ block.settings.mobile_alignment }} akn-scroll__button--arrow-{{ block.settings.mobile_arrow_position }}{% if block.settings.mobile_bold %} akn-scroll__button--bold{% endif %}"
+        type="button"
+        data-akn-scroll-trigger
+      >
+        <span class="akn-scroll__label">{{ block.settings.mobile_label | escape }}</span>
+        <svg class="akn-scroll__arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 4v15m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+        </svg>
+      </button>
+    {% endif %}
+    <script src="{{ 'akn-scroll.js' | asset_url }}" defer></script>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  /* CUSTOM [AJ-004] — Responsive, safely anchored Hero scroll-cue presentation */
+  .hero__content-wrapper .akn-scroll {
+    position: absolute;
+    z-index: var(--layer-flat);
+    inset-block-end: max(8px, var(--safe-area-inset-bottom, 0px));
+    inset-inline: 0;
+    box-sizing: border-box;
+    inline-size: 100%;
+    max-inline-size: 100%;
+    padding-inline-start: max(var(--akn-scroll-desktop-edge), var(--safe-area-inset-left, 0px));
+    padding-inline-end: max(var(--akn-scroll-desktop-edge), var(--safe-area-inset-right, 0px));
+  }
+
+  .hero__content-wrapper .akn-scroll__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--minimum-touch-target, 44px);
+    min-block-size: var(--minimum-touch-target, 44px);
+    max-inline-size: 100%;
+    padding: 4px 12px;
+    color: var(--akn-scroll-desktop-color);
+    background: transparent;
+    border: 0;
+    border-radius: var(--style-border-radius-buttons-secondary, 0);
+    font-family: var(--font-body--family);
+    font-size: var(--akn-scroll-desktop-size);
+    font-weight: var(--font-body--weight);
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .hero__content-wrapper .akn-scroll__button--bold {
+    font-weight: 700;
+  }
+
+  .hero__content-wrapper .akn-scroll__button--align-left {
+    margin-inline: 0 auto;
+  }
+
+  .hero__content-wrapper .akn-scroll__button--align-center {
+    margin-inline: auto;
+  }
+
+  .hero__content-wrapper .akn-scroll__button--align-right {
+    margin-inline: auto 0;
+  }
+
+  .hero__content-wrapper .akn-scroll__button--arrow-left,
+  .hero__content-wrapper .akn-scroll__button--arrow-right {
+    flex-direction: row;
+    gap: var(--akn-scroll-desktop-gap);
+  }
+
+  .hero__content-wrapper .akn-scroll__button--arrow-left .akn-scroll__arrow {
+    order: -1;
+  }
+
+  .hero__content-wrapper .akn-scroll__button--arrow-below {
+    flex-direction: column;
+    gap: var(--akn-scroll-desktop-gap);
+  }
+
+  .hero__content-wrapper .akn-scroll__button:focus-visible {
+    outline: var(--focus-outline-width, 2px) solid currentcolor;
+    outline-offset: var(--focus-outline-offset, 2px);
+  }
+
+  .hero__content-wrapper .akn-scroll__button--mobile {
+    display: none;
+  }
+
+  .hero__content-wrapper .akn-scroll__arrow {
+    flex: 0 0 auto;
+    inline-size: 20px;
+    block-size: 20px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hero__content-wrapper .akn-scroll__button:hover {
+      opacity: 0.75;
+    }
+  }
+
+  .hero__content-wrapper .akn-scroll__button:active {
+    opacity: 0.75;
+  }
+
+  @media screen and (max-width: 749px) {
+    .hero__content-wrapper .akn-scroll {
+      padding-inline-start: max(var(--akn-scroll-mobile-edge), var(--safe-area-inset-left, 0px));
+      padding-inline-end: max(var(--akn-scroll-mobile-edge), var(--safe-area-inset-right, 0px));
+    }
+
+    .hero__content-wrapper .akn-scroll__button--desktop {
+      display: none;
+    }
+
+    .hero__content-wrapper .akn-scroll__button--mobile {
+      display: inline-flex;
+      color: var(--akn-scroll-mobile-color);
+      font-size: var(--akn-scroll-mobile-size);
+    }
+
+    .hero__content-wrapper .akn-scroll__button--mobile.akn-scroll__button--arrow-left,
+    .hero__content-wrapper .akn-scroll__button--mobile.akn-scroll__button--arrow-right,
+    .hero__content-wrapper .akn-scroll__button--mobile.akn-scroll__button--arrow-below {
+      gap: var(--akn-scroll-mobile-gap);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "AKAN scroll cue",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_visible",
+      "label": "Show on desktop",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "desktop_label",
+      "label": "Desktop label",
+      "default": "DÉCOUVRIR"
+    },
+    {
+      "type": "range",
+      "id": "desktop_font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_bold",
+      "label": "Bold",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "desktop_color",
+      "label": "Text and arrow colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "desktop_alignment",
+      "label": "Horizontal placement",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "desktop_arrow_position",
+      "label": "Arrow placement",
+      "options": [
+        { "value": "left", "label": "Left of label" },
+        { "value": "right", "label": "Right of label" },
+        { "value": "below", "label": "Centred below label" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_arrow_gap",
+      "label": "Label and arrow gap",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "desktop_edge_spacing",
+      "label": "Horizontal edge spacing",
+      "min": 8,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_visible",
+      "label": "Show on mobile",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "mobile_label",
+      "label": "Mobile label",
+      "default": "FAIRE DÉFILER"
+    },
+    {
+      "type": "range",
+      "id": "mobile_font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_bold",
+      "label": "Bold",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "mobile_color",
+      "label": "Text and arrow colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "mobile_alignment",
+      "label": "Horizontal placement",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "mobile_arrow_position",
+      "label": "Arrow placement",
+      "options": [
+        { "value": "left", "label": "Left of label" },
+        { "value": "right", "label": "Right of label" },
+        { "value": "below", "label": "Centred below label" }
+      ],
+      "default": "below"
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_arrow_gap",
+      "label": "Label and arrow gap",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "mobile_edge_spacing",
+      "label": "Horizontal edge spacing",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "AKAN scroll cue"
+    }
+  ]
+}
+{% endschema %}
