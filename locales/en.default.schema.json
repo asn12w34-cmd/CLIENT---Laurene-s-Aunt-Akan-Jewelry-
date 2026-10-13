@@ -251,7 +251,14 @@
     "video_autoplay": "Videos will be muted by default",
     "video_external": "Use a YouTube or Vimeo URL",
     "pills_usage": "Used for applied filters, discount codes, and search suggestions",
-    "media_type_info": "Features are populated from your menu links"
+    "media_type_info": "Features are populated from your menu links",
+    "akn_ctas": {
+      "starting_colours": "Starting colours apply to this button on desktop and mobile.",
+      "desktop_layout": "Desktop button-group layout.",
+      "desktop_interaction": "Interaction colours apply on hover, keyboard focus, and press.",
+      "mobile_layout": "Mobile button-group layout.",
+      "mobile_interaction": "Interaction colours apply while pressed and on keyboard focus."
+    }
   },
   "names": {
     "column": "Column",
@@ -420,7 +427,8 @@
     "view_all_button": "View all",
     "disclosures": "Disclosures",
     "pills": "Pills",
-    "comparison_slider": "Comparison slider"
+    "comparison_slider": "Comparison slider",
+    "akn_hero_buttons": "AKAN Hero buttons"
   },
   "options": {
     "above_carousel": "Above carousel",
@@ -746,7 +754,17 @@
     "wide": "Wide",
     "youtube": "YouTube",
     "with_hints": "With hints",
-    "below_media": "Below media"
+    "below_media": "Below media",
+    "akn_ctas": {
+      "fit_to_buttons": "Fit to buttons",
+      "full_panel_width": "Full content-panel width",
+      "custom_percentage": "Percentage of content-panel width",
+      "keep_together": "Keep together",
+      "spread_across_width": "Spread across group width",
+      "smooth_fade": "Smooth fade",
+      "wipe_from_left": "Wipe from left",
+      "wipe_from_right": "Wipe from right"
+    }
   },
   "settings": {
     "accordion": "Accordion",
@@ -1210,7 +1228,59 @@
     "top_row_background": "Top row background",
     "top_row_text": "Top row text",
     "bottom_row_background": "Bottom row background",
-    "bottom_row_text": "Bottom row text"
+    "bottom_row_text": "Bottom row text",
+    "akn_ctas": {
+      "primary_starting_background": "Primary button — starting background colour",
+      "primary_starting_text": "Primary button — starting text colour",
+      "primary_starting_border": "Primary button — starting border colour",
+      "secondary_starting_background": "Secondary button — starting background colour",
+      "secondary_starting_text": "Secondary button — starting text colour",
+      "secondary_starting_border": "Secondary button — starting border colour",
+      "desktop_group_alignment": "Desktop layout — button group alignment",
+      "desktop_group_width": "Desktop layout — button group width",
+      "desktop_custom_width": "Desktop layout — percentage of panel width",
+      "desktop_button_gap": "Desktop layout — space between buttons",
+      "desktop_distribution": "Desktop layout — button spacing",
+      "desktop_equal_widths": "Desktop layout — use equal button widths",
+      "desktop_primary_show": "Desktop primary — show button",
+      "desktop_primary_text": "Desktop primary — button text",
+      "desktop_primary_link": "Desktop primary — button link",
+      "desktop_primary_enable_colour_change": "Desktop primary — enable colour change",
+      "desktop_primary_animation": "Desktop primary — colour-change animation",
+      "desktop_primary_interaction_background": "Desktop primary — background colour on interaction",
+      "desktop_primary_interaction_text": "Desktop primary — text colour on interaction",
+      "desktop_primary_interaction_border": "Desktop primary — border colour on interaction",
+      "desktop_secondary_show": "Desktop secondary — show button",
+      "desktop_secondary_text": "Desktop secondary — button text",
+      "desktop_secondary_link": "Desktop secondary — button link",
+      "desktop_secondary_enable_colour_change": "Desktop secondary — enable colour change",
+      "desktop_secondary_animation": "Desktop secondary — colour-change animation",
+      "desktop_secondary_interaction_background": "Desktop secondary — background colour on interaction",
+      "desktop_secondary_interaction_text": "Desktop secondary — text colour on interaction",
+      "desktop_secondary_interaction_border": "Desktop secondary — border colour on interaction",
+      "mobile_group_alignment": "Mobile layout — button group alignment",
+      "mobile_group_width": "Mobile layout — button group width",
+      "mobile_custom_width": "Mobile layout — percentage of panel width",
+      "mobile_button_gap": "Mobile layout — space between buttons",
+      "mobile_distribution": "Mobile layout — button spacing",
+      "mobile_equal_widths": "Mobile layout — use equal button widths",
+      "mobile_primary_show": "Mobile primary — show button",
+      "mobile_primary_text": "Mobile primary — button text",
+      "mobile_primary_link": "Mobile primary — button link",
+      "mobile_primary_enable_colour_change": "Mobile primary — enable colour change",
+      "mobile_primary_animation": "Mobile primary — colour-change animation",
+      "mobile_primary_interaction_background": "Mobile primary — background colour on interaction",
+      "mobile_primary_interaction_text": "Mobile primary — text colour on interaction",
+      "mobile_primary_interaction_border": "Mobile primary — border colour on interaction",
+      "mobile_secondary_show": "Mobile secondary — show button",
+      "mobile_secondary_text": "Mobile secondary — button text",
+      "mobile_secondary_link": "Mobile secondary — button link",
+      "mobile_secondary_enable_colour_change": "Mobile secondary — enable colour change",
+      "mobile_secondary_animation": "Mobile secondary — colour-change animation",
+      "mobile_secondary_interaction_background": "Mobile secondary — background colour on interaction",
+      "mobile_secondary_interaction_text": "Mobile secondary — text colour on interaction",
+      "mobile_secondary_interaction_border": "Mobile secondary — border colour on interaction"
+    }
   },
   "text_defaults": {
     "accordion_heading": "Accordion heading",

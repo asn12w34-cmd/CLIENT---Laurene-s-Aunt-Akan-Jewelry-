@@ -67,16 +67,23 @@ CUSTOM FILE [AJ-004] — Accessible Hero scroll cue for the next Shopify section
 {% stylesheet %}
   /* CUSTOM [AJ-004] — Responsive, safely anchored Hero scroll-cue presentation */
   .hero__content-wrapper .akn-scroll {
-    position: absolute;
-    z-index: var(--layer-flat);
-    inset-block-end: max(8px, var(--safe-area-inset-bottom, 0px));
-    inset-inline: 0;
-    box-sizing: border-box;
-    inline-size: 100%;
-    max-inline-size: 100%;
-    padding-inline-start: max(var(--akn-scroll-desktop-edge), var(--safe-area-inset-left, 0px));
-    padding-inline-end: max(var(--akn-scroll-desktop-edge), var(--safe-area-inset-right, 0px));
-  }
+  display: flex;
+  position: absolute;
+  z-index: var(--layer-flat);
+  inset-block-end: max(8px, var(--safe-area-inset-bottom, 0px));
+  inset-inline: 0;
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  padding-inline-start: max(
+    var(--akn-scroll-desktop-edge),
+    var(--safe-area-inset-left, 0px)
+  );
+  padding-inline-end: max(
+    var(--akn-scroll-desktop-edge),
+    var(--safe-area-inset-right, 0px)
+  );
+}
 
   .hero__content-wrapper .akn-scroll__button {
     display: inline-flex;

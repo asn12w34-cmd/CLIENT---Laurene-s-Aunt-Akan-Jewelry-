@@ -355,24 +355,84 @@ CUSTOM FILE [AJ-003] — Hero-specific responsive primary and secondary CTA grou
 
 {% schema %}
 {
-  "name": "AKAN CTA group",
+  "name": "t:names.akn_hero_buttons",
   "tag": null,
   "settings": [
     {
+      "type": "color",
+      "id": "primary_initial_bg",
+      "label": "t:settings.akn_ctas.primary_starting_background",
+      "info": "t:info.akn_ctas.starting_colours",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "primary_initial_text",
+      "label": "t:settings.akn_ctas.primary_starting_text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "primary_initial_border",
+      "label": "t:settings.akn_ctas.primary_starting_border",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "secondary_initial_bg",
+      "label": "t:settings.akn_ctas.secondary_starting_background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "secondary_initial_text",
+      "label": "t:settings.akn_ctas.secondary_starting_text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "secondary_initial_border",
+      "label": "t:settings.akn_ctas.secondary_starting_border",
+      "default": "#ffffff"
+    },
+    {
       "type": "select",
       "id": "desktop_group_alignment",
-      "label": "Group alignment",
+      "label": "t:settings.akn_ctas.desktop_group_alignment",
+      "info": "t:info.akn_ctas.desktop_layout",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Centre" },
-        { "value": "right", "label": "Right" }
+        { "value": "left", "label": "t:options.left" },
+        { "value": "center", "label": "t:options.center" },
+        { "value": "right", "label": "t:options.right" }
       ],
       "default": "left"
     },
     {
+      "type": "select",
+      "id": "desktop_group_width",
+      "label": "t:settings.akn_ctas.desktop_group_width",
+      "options": [
+        { "value": "fit", "label": "t:options.akn_ctas.fit_to_buttons" },
+        { "value": "full", "label": "t:options.akn_ctas.full_panel_width" },
+        { "value": "custom", "label": "t:options.akn_ctas.custom_percentage" }
+      ],
+      "default": "fit"
+    },
+    {
+      "type": "range",
+      "id": "desktop_custom_width",
+      "label": "t:settings.akn_ctas.desktop_custom_width",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 75,
+      "visible_if": "{{ block.settings.desktop_group_width == 'custom' }}"
+    },
+    {
       "type": "range",
       "id": "desktop_button_gap",
-      "label": "Button gap",
+      "label": "t:settings.akn_ctas.desktop_button_gap",
       "min": 4,
       "max": 32,
       "step": 2,
@@ -382,56 +442,172 @@ CUSTOM FILE [AJ-003] — Hero-specific responsive primary and secondary CTA grou
     {
       "type": "select",
       "id": "desktop_distribution",
-      "label": "Distribution",
+      "label": "t:settings.akn_ctas.desktop_distribution",
       "options": [
-        { "value": "packed", "label": "Packed together" },
-        { "value": "spread", "label": "Spread apart" }
+        { "value": "packed", "label": "t:options.akn_ctas.keep_together" },
+        { "value": "spread", "label": "t:options.akn_ctas.spread_across_width" }
       ],
       "default": "packed"
     },
     {
-      "type": "select",
-      "id": "desktop_group_width",
-      "label": "Group width",
-      "options": [
-        { "value": "fit", "label": "Fit / compact" },
-        { "value": "full", "label": "Full panel width" },
-        { "value": "custom", "label": "Custom percentage" }
-      ],
-      "default": "fit"
-    },
-    {
-      "type": "range",
-      "id": "desktop_custom_width",
-      "label": "Custom group width",
-      "min": 40,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "default": 75,
-      "visible_if": "{{ block.settings.desktop_group_width == 'custom' }}"
+      "type": "checkbox",
+      "id": "desktop_match_sizes",
+      "label": "t:settings.akn_ctas.desktop_equal_widths",
+      "default": true
     },
     {
       "type": "checkbox",
-      "id": "desktop_match_sizes",
-      "label": "Match button sizes",
+      "id": "primary_desktop_visible",
+      "label": "t:settings.akn_ctas.desktop_primary_show",
+      "info": "t:info.akn_ctas.desktop_interaction",
       "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "primary_desktop_label",
+      "label": "t:settings.akn_ctas.desktop_primary_text",
+      "default": "Découvrir la collection"
+    },
+    {
+      "type": "url",
+      "id": "primary_desktop_link",
+      "label": "t:settings.akn_ctas.desktop_primary_link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "checkbox",
+      "id": "pd_custom_interaction",
+      "label": "t:settings.akn_ctas.desktop_primary_enable_colour_change",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "pd_animation",
+      "label": "t:settings.akn_ctas.desktop_primary_animation",
+      "options": [
+        { "value": "fade", "label": "t:options.akn_ctas.smooth_fade" },
+        { "value": "wipe-left", "label": "t:options.akn_ctas.wipe_from_left" },
+        { "value": "wipe-right", "label": "t:options.akn_ctas.wipe_from_right" }
+      ],
+      "default": "wipe-left",
+      "visible_if": "{{ block.settings.pd_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "pd_interaction_bg",
+      "label": "t:settings.akn_ctas.desktop_primary_interaction_background",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.pd_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "pd_interaction_text",
+      "label": "t:settings.akn_ctas.desktop_primary_interaction_text",
+      "default": "#ffffff",
+      "visible_if": "{{ block.settings.pd_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "pd_interaction_border",
+      "label": "t:settings.akn_ctas.desktop_primary_interaction_border",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.pd_custom_interaction }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "secondary_desktop_visible",
+      "label": "t:settings.akn_ctas.desktop_secondary_show",
+      "info": "t:info.akn_ctas.desktop_interaction",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "secondary_desktop_label",
+      "label": "t:settings.akn_ctas.desktop_secondary_text",
+      "default": "Notre histoire"
+    },
+    {
+      "type": "url",
+      "id": "secondary_desktop_link",
+      "label": "t:settings.akn_ctas.desktop_secondary_link"
+    },
+    {
+      "type": "checkbox",
+      "id": "sd_custom_interaction",
+      "label": "t:settings.akn_ctas.desktop_secondary_enable_colour_change",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "sd_animation",
+      "label": "t:settings.akn_ctas.desktop_secondary_animation",
+      "options": [
+        { "value": "fade", "label": "t:options.akn_ctas.smooth_fade" },
+        { "value": "wipe-left", "label": "t:options.akn_ctas.wipe_from_left" },
+        { "value": "wipe-right", "label": "t:options.akn_ctas.wipe_from_right" }
+      ],
+      "default": "wipe-right",
+      "visible_if": "{{ block.settings.sd_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "sd_interaction_bg",
+      "label": "t:settings.akn_ctas.desktop_secondary_interaction_background",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.sd_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "sd_interaction_text",
+      "label": "t:settings.akn_ctas.desktop_secondary_interaction_text",
+      "default": "#ffffff",
+      "visible_if": "{{ block.settings.sd_custom_interaction }}"
+    },
+    {
+      "type": "color",
+      "id": "sd_interaction_border",
+      "label": "t:settings.akn_ctas.desktop_secondary_interaction_border",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.sd_custom_interaction }}"
     },
     {
       "type": "select",
       "id": "mobile_group_alignment",
-      "label": "Group alignment",
+      "label": "t:settings.akn_ctas.mobile_group_alignment",
+      "info": "t:info.akn_ctas.mobile_layout",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Centre" },
-        { "value": "right", "label": "Right" }
+        { "value": "left", "label": "t:options.left" },
+        { "value": "center", "label": "t:options.center" },
+        { "value": "right", "label": "t:options.right" }
       ],
       "default": "center"
     },
     {
+      "type": "select",
+      "id": "mobile_group_width",
+      "label": "t:settings.akn_ctas.mobile_group_width",
+      "options": [
+        { "value": "fit", "label": "t:options.akn_ctas.fit_to_buttons" },
+        { "value": "full", "label": "t:options.akn_ctas.full_panel_width" },
+        { "value": "custom", "label": "t:options.akn_ctas.custom_percentage" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "mobile_custom_width",
+      "label": "t:settings.akn_ctas.mobile_custom_width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.mobile_group_width == 'custom' }}"
+    },
+    {
       "type": "range",
       "id": "mobile_button_gap",
-      "label": "Button gap",
+      "label": "t:settings.akn_ctas.mobile_button_gap",
       "min": 4,
       "max": 24,
       "step": 2,
@@ -441,166 +617,52 @@ CUSTOM FILE [AJ-003] — Hero-specific responsive primary and secondary CTA grou
     {
       "type": "select",
       "id": "mobile_distribution",
-      "label": "Distribution",
+      "label": "t:settings.akn_ctas.mobile_distribution",
       "options": [
-        { "value": "packed", "label": "Packed together" },
-        { "value": "spread", "label": "Spread apart" }
+        { "value": "packed", "label": "t:options.akn_ctas.keep_together" },
+        { "value": "spread", "label": "t:options.akn_ctas.spread_across_width" }
       ],
       "default": "packed"
     },
     {
-      "type": "select",
-      "id": "mobile_group_width",
-      "label": "Group width",
-      "options": [
-        { "value": "fit", "label": "Fit / compact" },
-        { "value": "full", "label": "Full panel width" },
-        { "value": "custom", "label": "Custom percentage" }
-      ],
-      "default": "full"
-    },
-    {
-      "type": "range",
-      "id": "mobile_custom_width",
-      "label": "Custom group width",
-      "min": 50,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "default": 100,
-      "visible_if": "{{ block.settings.mobile_group_width == 'custom' }}"
-    },
-    {
       "type": "checkbox",
       "id": "mobile_match_sizes",
-      "label": "Match button sizes",
+      "label": "t:settings.akn_ctas.mobile_equal_widths",
       "default": true
-    },
-    {
-      "type": "color",
-      "id": "primary_initial_bg",
-      "label": "Primary CTA initial background",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "primary_initial_text",
-      "label": "Primary CTA initial text",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "primary_initial_border",
-      "label": "Primary CTA initial border",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "secondary_initial_bg",
-      "label": "Secondary CTA initial background",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "secondary_initial_text",
-      "label": "Secondary CTA initial text",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "secondary_initial_border",
-      "label": "Secondary CTA initial border",
-      "default": "#ffffff"
-    },
-    {
-      "type": "checkbox",
-      "id": "primary_desktop_visible",
-      "label": "Primary CTA — show on desktop",
-      "default": true
-    },
-    {
-      "type": "textarea",
-      "id": "primary_desktop_label",
-      "label": "Label",
-      "default": "Découvrir la collection"
-    },
-    {
-      "type": "url",
-      "id": "primary_desktop_link",
-      "label": "Link",
-      "default": "/collections/all"
-    },
-    {
-      "type": "checkbox",
-      "id": "pd_custom_interaction",
-      "label": "Enable custom interaction colours",
-      "default": false
-    },
-    {
-      "type": "select",
-      "id": "pd_animation",
-      "label": "Interaction animation",
-      "options": [
-        { "value": "fade", "label": "Smooth fade" },
-        { "value": "wipe-left", "label": "Wipe from left" },
-        { "value": "wipe-right", "label": "Wipe from right" }
-      ],
-      "default": "wipe-left",
-      "visible_if": "{{ block.settings.pd_custom_interaction }}"
-    },
-    {
-      "type": "color",
-      "id": "pd_interaction_bg",
-      "label": "Interaction background",
-      "default": "#000000",
-      "visible_if": "{{ block.settings.pd_custom_interaction }}"
-    },
-    {
-      "type": "color",
-      "id": "pd_interaction_text",
-      "label": "Interaction text",
-      "default": "#ffffff",
-      "visible_if": "{{ block.settings.pd_custom_interaction }}"
-    },
-    {
-      "type": "color",
-      "id": "pd_interaction_border",
-      "label": "Interaction border",
-      "default": "#000000",
-      "visible_if": "{{ block.settings.pd_custom_interaction }}"
     },
     {
       "type": "checkbox",
       "id": "primary_mobile_visible",
-      "label": "Primary CTA — show on mobile",
+      "label": "t:settings.akn_ctas.mobile_primary_show",
+      "info": "t:info.akn_ctas.mobile_interaction",
       "default": true
     },
     {
       "type": "textarea",
       "id": "primary_mobile_label",
-      "label": "Label",
+      "label": "t:settings.akn_ctas.mobile_primary_text",
       "default": "Découvrir la collection"
     },
     {
       "type": "url",
       "id": "primary_mobile_link",
-      "label": "Link",
+      "label": "t:settings.akn_ctas.mobile_primary_link",
       "default": "/collections/all"
     },
     {
       "type": "checkbox",
       "id": "pm_custom_interaction",
-      "label": "Enable custom interaction colours",
+      "label": "t:settings.akn_ctas.mobile_primary_enable_colour_change",
       "default": false
     },
     {
       "type": "select",
       "id": "pm_animation",
-      "label": "Interaction animation",
+      "label": "t:settings.akn_ctas.mobile_primary_animation",
       "options": [
-        { "value": "fade", "label": "Smooth fade" },
-        { "value": "wipe-left", "label": "Wipe from left" },
-        { "value": "wipe-right", "label": "Wipe from right" }
+        { "value": "fade", "label": "t:options.akn_ctas.smooth_fade" },
+        { "value": "wipe-left", "label": "t:options.akn_ctas.wipe_from_left" },
+        { "value": "wipe-right", "label": "t:options.akn_ctas.wipe_from_right" }
       ],
       "default": "wipe-left",
       "visible_if": "{{ block.settings.pm_custom_interaction }}"
@@ -608,111 +670,56 @@ CUSTOM FILE [AJ-003] — Hero-specific responsive primary and secondary CTA grou
     {
       "type": "color",
       "id": "pm_interaction_bg",
-      "label": "Interaction background",
+      "label": "t:settings.akn_ctas.mobile_primary_interaction_background",
       "default": "#000000",
       "visible_if": "{{ block.settings.pm_custom_interaction }}"
     },
     {
       "type": "color",
       "id": "pm_interaction_text",
-      "label": "Interaction text",
+      "label": "t:settings.akn_ctas.mobile_primary_interaction_text",
       "default": "#ffffff",
       "visible_if": "{{ block.settings.pm_custom_interaction }}"
     },
     {
       "type": "color",
       "id": "pm_interaction_border",
-      "label": "Interaction border",
+      "label": "t:settings.akn_ctas.mobile_primary_interaction_border",
       "default": "#000000",
       "visible_if": "{{ block.settings.pm_custom_interaction }}"
     },
     {
       "type": "checkbox",
-      "id": "secondary_desktop_visible",
-      "label": "Secondary CTA — show on desktop",
-      "default": true
-    },
-    {
-      "type": "textarea",
-      "id": "secondary_desktop_label",
-      "label": "Label",
-      "default": "Notre histoire"
-    },
-    {
-      "type": "url",
-      "id": "secondary_desktop_link",
-      "label": "Link"
-    },
-    {
-      "type": "checkbox",
-      "id": "sd_custom_interaction",
-      "label": "Enable custom interaction colours",
-      "default": false
-    },
-    {
-      "type": "select",
-      "id": "sd_animation",
-      "label": "Interaction animation",
-      "options": [
-        { "value": "fade", "label": "Smooth fade" },
-        { "value": "wipe-left", "label": "Wipe from left" },
-        { "value": "wipe-right", "label": "Wipe from right" }
-      ],
-      "default": "wipe-right",
-      "visible_if": "{{ block.settings.sd_custom_interaction }}"
-    },
-    {
-      "type": "color",
-      "id": "sd_interaction_bg",
-      "label": "Interaction background",
-      "default": "#000000",
-      "visible_if": "{{ block.settings.sd_custom_interaction }}"
-    },
-    {
-      "type": "color",
-      "id": "sd_interaction_text",
-      "label": "Interaction text",
-      "default": "#ffffff",
-      "visible_if": "{{ block.settings.sd_custom_interaction }}"
-    },
-    {
-      "type": "color",
-      "id": "sd_interaction_border",
-      "label": "Interaction border",
-      "default": "#000000",
-      "visible_if": "{{ block.settings.sd_custom_interaction }}"
-    },
-    {
-      "type": "checkbox",
       "id": "secondary_mobile_visible",
-      "label": "Secondary CTA — show on mobile",
+      "label": "t:settings.akn_ctas.mobile_secondary_show",
+      "info": "t:info.akn_ctas.mobile_interaction",
       "default": false
     },
     {
       "type": "textarea",
       "id": "secondary_mobile_label",
-      "label": "Label",
+      "label": "t:settings.akn_ctas.mobile_secondary_text",
       "default": "Notre histoire"
     },
     {
       "type": "url",
       "id": "secondary_mobile_link",
-      "label": "Link"
+      "label": "t:settings.akn_ctas.mobile_secondary_link"
     },
     {
       "type": "checkbox",
       "id": "sm_custom_interaction",
-      "label": "Enable custom interaction colours",
+      "label": "t:settings.akn_ctas.mobile_secondary_enable_colour_change",
       "default": false
     },
     {
       "type": "select",
       "id": "sm_animation",
-      "label": "Interaction animation",
+      "label": "t:settings.akn_ctas.mobile_secondary_animation",
       "options": [
-        { "value": "fade", "label": "Smooth fade" },
-        { "value": "wipe-left", "label": "Wipe from left" },
-        { "value": "wipe-right", "label": "Wipe from right" }
+        { "value": "fade", "label": "t:options.akn_ctas.smooth_fade" },
+        { "value": "wipe-left", "label": "t:options.akn_ctas.wipe_from_left" },
+        { "value": "wipe-right", "label": "t:options.akn_ctas.wipe_from_right" }
       ],
       "default": "wipe-right",
       "visible_if": "{{ block.settings.sm_custom_interaction }}"
@@ -720,28 +727,28 @@ CUSTOM FILE [AJ-003] — Hero-specific responsive primary and secondary CTA grou
     {
       "type": "color",
       "id": "sm_interaction_bg",
-      "label": "Interaction background",
+      "label": "t:settings.akn_ctas.mobile_secondary_interaction_background",
       "default": "#000000",
       "visible_if": "{{ block.settings.sm_custom_interaction }}"
     },
     {
       "type": "color",
       "id": "sm_interaction_text",
-      "label": "Interaction text",
+      "label": "t:settings.akn_ctas.mobile_secondary_interaction_text",
       "default": "#ffffff",
       "visible_if": "{{ block.settings.sm_custom_interaction }}"
     },
     {
       "type": "color",
       "id": "sm_interaction_border",
-      "label": "Interaction border",
+      "label": "t:settings.akn_ctas.mobile_secondary_interaction_border",
       "default": "#000000",
       "visible_if": "{{ block.settings.sm_custom_interaction }}"
     }
   ],
   "presets": [
     {
-      "name": "AKAN CTA group"
+      "name": "t:names.akn_hero_buttons"
     }
   ]
 }
