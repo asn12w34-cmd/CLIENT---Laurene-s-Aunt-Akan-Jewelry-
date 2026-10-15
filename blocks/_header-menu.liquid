@@ -19,12 +19,14 @@
       data-hydration-key="header-drawer-mobile"
       {{ block.shopify_attributes }}
     >
+      {%- comment -%} CUSTOM START [AJ-001] — Pass the custom mobile drawer context and settings owner. {%- endcomment -%}
       {% render 'header-drawer',
         linklist: block_settings.menu,
         data_header_drawer_type: 'mobile-drawer',
         block: block,
         section: section
       %}
+      {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
     </div>
 
   {% when 'navigation_bar' %}
@@ -1020,6 +1022,7 @@
       "default": 0,
       "visible_if": "{{ block.settings.menu_style != 'text' }}"
     },
+    /* CUSTOM START [AJ-001] — Mobile-only menu, drawer branding, appearance, and WhatsApp settings. */
     {
       "type": "header",
       "content": "t:content.mobile_layout"
@@ -1100,6 +1103,7 @@
       "id": "drawer_whatsapp_url",
       "label": "t:settings.drawer_whatsapp_url"
     },
+    /* CUSTOM END [AJ-001] */
     /* CUSTOM START [AJ-002] — Configurable Instagram URL for the mobile drawer. */
     {
       "type": "url",
