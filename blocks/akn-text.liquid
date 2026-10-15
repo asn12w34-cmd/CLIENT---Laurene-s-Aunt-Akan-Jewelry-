@@ -24,6 +24,10 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
 
   assign desktop_scale = block.settings.desktop_size_scale | divided_by: 100.0
   assign mobile_scale = block.settings.mobile_size_scale | divided_by: 100.0
+  assign desktop_heading_line_height = block.settings.desktop_heading_line_height | divided_by: 100.0
+  assign desktop_body_line_height = block.settings.desktop_body_line_height | divided_by: 100.0
+  assign mobile_heading_line_height = block.settings.mobile_heading_line_height | divided_by: 100.0
+  assign mobile_body_line_height = block.settings.mobile_body_line_height | divided_by: 100.0
 %}
 
 {% if should_render %}
@@ -31,8 +35,6 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     class="akn-text{% if use_mobile_text %} akn-text--separate-mobile{% endif %}{% if desktop_visible == blank %} akn-text--desktop-empty{% endif %}{% if use_mobile_text and mobile_visible == blank %} akn-text--mobile-empty{% endif %}"
     data-desktop-font="{{ block.settings.desktop_font_role }}"
     data-mobile-font="{{ block.settings.mobile_font_role }}"
-    data-desktop-line-height="{{ block.settings.desktop_line_height }}"
-    data-mobile-line-height="{{ block.settings.mobile_line_height }}"
     data-desktop-letter-spacing="{{ block.settings.desktop_letter_spacing }}"
     data-mobile-letter-spacing="{{ block.settings.mobile_letter_spacing }}"
     data-desktop-case="{{ block.settings.desktop_case }}"
@@ -52,10 +54,12 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       --akn-text-mobile-font-family: var(--font-{{ block.settings.mobile_font_role }}--family);
       --akn-text-mobile-font-style: var(--font-{{ block.settings.mobile_font_role }}--style);
       --akn-text-mobile-font-weight: var(--font-{{ block.settings.mobile_font_role }}--weight);
-      --akn-text-desktop-heading-line-height: var(--line-height--heading-{{ block.settings.desktop_line_height }});
-      --akn-text-desktop-body-line-height: var(--line-height--body-{{ block.settings.desktop_line_height }});
-      --akn-text-mobile-heading-line-height: var(--line-height--heading-{{ block.settings.mobile_line_height }});
-      --akn-text-mobile-body-line-height: var(--line-height--body-{{ block.settings.mobile_line_height }});
+      --akn-text-desktop-heading-line-height: {{ desktop_heading_line_height }};
+      --akn-text-desktop-body-line-height: {{ desktop_body_line_height }};
+      --akn-text-mobile-heading-line-height: {{ mobile_heading_line_height }};
+      --akn-text-mobile-body-line-height: {{ mobile_body_line_height }};
+      --akn-text-desktop-element-gap: {{ block.settings.desktop_element_gap }}px;
+      --akn-text-mobile-element-gap: {{ block.settings.mobile_element_gap }}px;
       --akn-text-desktop-heading-letter-spacing: var(--letter-spacing--heading-{{ block.settings.desktop_letter_spacing }});
       --akn-text-desktop-body-letter-spacing: var(--letter-spacing--body-{{ block.settings.desktop_letter_spacing }});
       --akn-text-mobile-heading-letter-spacing: var(--letter-spacing--heading-{{ block.settings.mobile_letter_spacing }});
@@ -116,36 +120,51 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     text-align: var(--akn-text-desktop-align);
   }
 
+  .akn-text .akn-text__content--desktop > :where(*) {
+    margin-block: 0;
+  }
+
+  .akn-text .akn-text__content--desktop > :where(*) + :where(*) {
+    margin-block-start: var(--akn-text-desktop-element-gap);
+  }
+
   .akn-text__content--mobile {
     display: none;
   }
 
   .akn-text__content :where(h1) {
     font-size: calc(var(--font-h1--size) * var(--akn-text-desktop-size-scale));
+    line-height: var(--akn-text-desktop-heading-line-height);
   }
 
   .akn-text__content :where(h2) {
     font-size: calc(var(--font-h2--size) * var(--akn-text-desktop-size-scale));
+    line-height: var(--akn-text-desktop-heading-line-height);
   }
 
   .akn-text__content :where(h3) {
     font-size: calc(var(--font-h3--size) * var(--akn-text-desktop-size-scale));
+    line-height: var(--akn-text-desktop-heading-line-height);
   }
 
   .akn-text__content :where(h4) {
     font-size: calc(var(--font-h4--size) * var(--akn-text-desktop-size-scale));
+    line-height: var(--akn-text-desktop-heading-line-height);
   }
 
   .akn-text__content :where(h5) {
     font-size: calc(var(--font-h5--size) * var(--akn-text-desktop-size-scale));
+    line-height: var(--akn-text-desktop-heading-line-height);
   }
 
   .akn-text__content :where(h6) {
     font-size: calc(var(--font-h6--size) * var(--akn-text-desktop-size-scale));
+    line-height: var(--akn-text-desktop-heading-line-height);
   }
 
   .akn-text__content :where(p, ul, ol, blockquote) {
     font-size: calc(var(--font-paragraph--size) * var(--akn-text-desktop-size-scale));
+    line-height: var(--akn-text-desktop-body-line-height);
   }
 
   .akn-text:not([data-desktop-font='native']) .akn-text__content--desktop,
@@ -153,14 +172,6 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     font-family: var(--akn-text-desktop-font-family);
     font-style: var(--akn-text-desktop-font-style);
     font-weight: var(--akn-text-desktop-font-weight);
-  }
-
-  .akn-text:not([data-desktop-line-height='native']) .akn-text__content--desktop :where(h1, h2, h3, h4, h5, h6) {
-    line-height: var(--akn-text-desktop-heading-line-height);
-  }
-
-  .akn-text:not([data-desktop-line-height='native']) .akn-text__content--desktop :where(p, ul, ol, blockquote) {
-    line-height: var(--akn-text-desktop-body-line-height);
   }
 
   .akn-text:not([data-desktop-letter-spacing='native']) .akn-text__content--desktop :where(h1, h2, h3, h4, h5, h6) {
@@ -212,32 +223,47 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       text-align: var(--akn-text-mobile-align);
     }
 
+    .akn-text .akn-text__content > :where(*) {
+      margin-block: 0;
+    }
+
+    .akn-text .akn-text__content > :where(*) + :where(*) {
+      margin-block-start: var(--akn-text-mobile-element-gap);
+    }
+
     .akn-text__content :where(h1) {
       font-size: calc(var(--font-h1--size) * var(--akn-text-mobile-size-scale));
+      line-height: var(--akn-text-mobile-heading-line-height);
     }
 
     .akn-text__content :where(h2) {
       font-size: calc(var(--font-h2--size) * var(--akn-text-mobile-size-scale));
+      line-height: var(--akn-text-mobile-heading-line-height);
     }
 
     .akn-text__content :where(h3) {
       font-size: calc(var(--font-h3--size) * var(--akn-text-mobile-size-scale));
+      line-height: var(--akn-text-mobile-heading-line-height);
     }
 
     .akn-text__content :where(h4) {
       font-size: calc(var(--font-h4--size) * var(--akn-text-mobile-size-scale));
+      line-height: var(--akn-text-mobile-heading-line-height);
     }
 
     .akn-text__content :where(h5) {
       font-size: calc(var(--font-h5--size) * var(--akn-text-mobile-size-scale));
+      line-height: var(--akn-text-mobile-heading-line-height);
     }
 
     .akn-text__content :where(h6) {
       font-size: calc(var(--font-h6--size) * var(--akn-text-mobile-size-scale));
+      line-height: var(--akn-text-mobile-heading-line-height);
     }
 
     .akn-text__content :where(p, ul, ol, blockquote) {
       font-size: calc(var(--font-paragraph--size) * var(--akn-text-mobile-size-scale));
+      line-height: var(--akn-text-mobile-body-line-height);
     }
 
     .akn-text:not([data-mobile-font='native']) .akn-text__content,
@@ -245,14 +271,6 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       font-family: var(--akn-text-mobile-font-family);
       font-style: var(--akn-text-mobile-font-style);
       font-weight: var(--akn-text-mobile-font-weight);
-    }
-
-    .akn-text:not([data-mobile-line-height='native']) .akn-text__content :where(h1, h2, h3, h4, h5, h6) {
-      line-height: var(--akn-text-mobile-heading-line-height);
-    }
-
-    .akn-text:not([data-mobile-line-height='native']) .akn-text__content :where(p, ul, ol, blockquote) {
-      line-height: var(--akn-text-mobile-body-line-height);
     }
 
     .akn-text:not([data-mobile-letter-spacing='native']) .akn-text__content :where(h1, h2, h3, h4, h5, h6) {
@@ -290,39 +308,39 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
 
 {% schema %}
 {
-  "name": "AKAN responsive text",
+  "name": "AKAN — Texte responsive",
   "tag": null,
   "settings": [
     {
       "type": "richtext",
       "id": "desktop_text",
-      "label": "Desktop content"
+      "label": "Contenu — ordinateur"
     },
     {
       "type": "checkbox",
       "id": "use_mobile_text",
-      "label": "Use separate mobile content",
+      "label": "Utiliser un contenu différent sur mobile",
       "default": false
     },
     {
       "type": "richtext",
       "id": "mobile_text",
-      "label": "Mobile content",
+      "label": "Contenu — mobile",
       "visible_if": "{{ block.settings.use_mobile_text }}"
     },
     {
       "type": "header",
-      "content": "Desktop typography"
+      "content": "Typographie — ordinateur"
     },
     {
       "type": "select",
       "id": "desktop_font_role",
-      "label": "Font role",
+      "label": "Style de police",
       "options": [
-        { "value": "native", "label": "Preserve rich-text styles" },
-        { "value": "body", "label": "Body" },
-        { "value": "subheading", "label": "Subheading" },
-        { "value": "heading", "label": "Heading" },
+        { "value": "native", "label": "Conserver les styles du contenu" },
+        { "value": "body", "label": "Texte courant" },
+        { "value": "subheading", "label": "Sous-titre" },
+        { "value": "heading", "label": "Titre" },
         { "value": "accent", "label": "Accent" }
       ],
       "default": "native"
@@ -330,7 +348,7 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     {
       "type": "range",
       "id": "desktop_size_scale",
-      "label": "Type size scale",
+      "label": "Échelle de taille",
       "min": 75,
       "max": 130,
       "step": 5,
@@ -338,58 +356,79 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       "default": 100
     },
     {
-      "type": "select",
-      "id": "desktop_line_height",
-      "label": "Line height",
-      "options": [
-        { "value": "native", "label": "Theme default" },
-        { "value": "tight", "label": "Tight" },
-        { "value": "normal", "label": "Normal" },
-        { "value": "loose", "label": "Loose" }
-      ],
-      "default": "native"
+      "type": "range",
+      "id": "desktop_heading_line_height",
+      "label": "Interligne des titres",
+      "info": "Règle l'espace entre les lignes d'un titre sur ordinateur.",
+      "min": 85,
+      "max": 160,
+      "step": 1,
+      "unit": "%",
+      "default": 110
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_line_height",
+      "label": "Interligne du texte",
+      "info": "Règle l'espace entre les lignes des paragraphes et des listes sur ordinateur.",
+      "min": 95,
+      "max": 180,
+      "step": 1,
+      "unit": "%",
+      "default": 140
+    },
+    {
+      "type": "range",
+      "id": "desktop_element_gap",
+      "label": "Espacement entre les éléments",
+      "info": "Espace entre le surtitre, le titre, le texte et les autres éléments du contenu.",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 24
     },
     {
       "type": "select",
       "id": "desktop_letter_spacing",
-      "label": "Letter spacing",
+      "label": "Espacement des lettres",
       "options": [
-        { "value": "native", "label": "Theme default" },
-        { "value": "tight", "label": "Tight" },
+        { "value": "native", "label": "Valeur du thème" },
+        { "value": "tight", "label": "Resserré" },
         { "value": "normal", "label": "Normal" },
-        { "value": "loose", "label": "Loose" }
+        { "value": "loose", "label": "Espacé" }
       ],
       "default": "native"
     },
     {
       "type": "text_alignment",
       "id": "desktop_alignment",
-      "label": "Text alignment",
+      "label": "Alignement du texte",
       "default": "left"
     },
     {
       "type": "select",
       "id": "desktop_case",
-      "label": "Text case",
+      "label": "Casse du texte",
       "options": [
-        { "value": "native", "label": "Theme default" },
-        { "value": "none", "label": "As entered" },
-        { "value": "uppercase", "label": "Uppercase" },
-        { "value": "lowercase", "label": "Lowercase" }
+        { "value": "native", "label": "Valeur du thème" },
+        { "value": "none", "label": "Comme saisi" },
+        { "value": "uppercase", "label": "Majuscules" },
+        { "value": "lowercase", "label": "Minuscules" }
       ],
       "default": "native"
     },
     {
       "type": "color",
       "id": "desktop_color",
-      "label": "Text colour",
+      "label": "Couleur du texte",
       "alpha": true,
       "default": "#ffffff"
     },
     {
       "type": "range",
       "id": "desktop_max_width",
-      "label": "Maximum width",
+      "label": "Largeur maximale",
       "min": 240,
       "max": 900,
       "step": 10,
@@ -399,7 +438,7 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     {
       "type": "range",
       "id": "desktop_padding_vertical",
-      "label": "Vertical padding",
+      "label": "Marge intérieure verticale",
       "min": 0,
       "max": 60,
       "step": 2,
@@ -409,7 +448,7 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     {
       "type": "range",
       "id": "desktop_padding_horizontal",
-      "label": "Horizontal padding",
+      "label": "Marge intérieure horizontale",
       "min": 0,
       "max": 60,
       "step": 2,
@@ -418,17 +457,17 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     },
     {
       "type": "header",
-      "content": "Mobile typography"
+      "content": "Typographie — mobile"
     },
     {
       "type": "select",
       "id": "mobile_font_role",
-      "label": "Font role",
+      "label": "Style de police",
       "options": [
-        { "value": "native", "label": "Preserve rich-text styles" },
-        { "value": "body", "label": "Body" },
-        { "value": "subheading", "label": "Subheading" },
-        { "value": "heading", "label": "Heading" },
+        { "value": "native", "label": "Conserver les styles du contenu" },
+        { "value": "body", "label": "Texte courant" },
+        { "value": "subheading", "label": "Sous-titre" },
+        { "value": "heading", "label": "Titre" },
         { "value": "accent", "label": "Accent" }
       ],
       "default": "native"
@@ -436,7 +475,7 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     {
       "type": "range",
       "id": "mobile_size_scale",
-      "label": "Type size scale",
+      "label": "Échelle de taille",
       "min": 60,
       "max": 120,
       "step": 5,
@@ -444,58 +483,79 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       "default": 85
     },
     {
-      "type": "select",
-      "id": "mobile_line_height",
-      "label": "Line height",
-      "options": [
-        { "value": "native", "label": "Theme default" },
-        { "value": "tight", "label": "Tight" },
-        { "value": "normal", "label": "Normal" },
-        { "value": "loose", "label": "Loose" }
-      ],
-      "default": "native"
+      "type": "range",
+      "id": "mobile_heading_line_height",
+      "label": "Interligne des titres",
+      "info": "Règle l'espace entre les lignes d'un titre sur mobile.",
+      "min": 85,
+      "max": 160,
+      "step": 1,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_line_height",
+      "label": "Interligne du texte",
+      "info": "Règle l'espace entre les lignes des paragraphes et des listes sur mobile.",
+      "min": 95,
+      "max": 180,
+      "step": 1,
+      "unit": "%",
+      "default": 140
+    },
+    {
+      "type": "range",
+      "id": "mobile_element_gap",
+      "label": "Espacement entre les éléments",
+      "info": "Espace entre le surtitre, le titre, le texte et les autres éléments du contenu.",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 18
     },
     {
       "type": "select",
       "id": "mobile_letter_spacing",
-      "label": "Letter spacing",
+      "label": "Espacement des lettres",
       "options": [
-        { "value": "native", "label": "Theme default" },
-        { "value": "tight", "label": "Tight" },
+        { "value": "native", "label": "Valeur du thème" },
+        { "value": "tight", "label": "Resserré" },
         { "value": "normal", "label": "Normal" },
-        { "value": "loose", "label": "Loose" }
+        { "value": "loose", "label": "Espacé" }
       ],
       "default": "native"
     },
     {
       "type": "text_alignment",
       "id": "mobile_alignment",
-      "label": "Text alignment",
+      "label": "Alignement du texte",
       "default": "left"
     },
     {
       "type": "select",
       "id": "mobile_case",
-      "label": "Text case",
+      "label": "Casse du texte",
       "options": [
-        { "value": "native", "label": "Theme default" },
-        { "value": "none", "label": "As entered" },
-        { "value": "uppercase", "label": "Uppercase" },
-        { "value": "lowercase", "label": "Lowercase" }
+        { "value": "native", "label": "Valeur du thème" },
+        { "value": "none", "label": "Comme saisi" },
+        { "value": "uppercase", "label": "Majuscules" },
+        { "value": "lowercase", "label": "Minuscules" }
       ],
       "default": "native"
     },
     {
       "type": "color",
       "id": "mobile_color",
-      "label": "Text colour",
+      "label": "Couleur du texte",
       "alpha": true,
       "default": "#ffffff"
     },
     {
       "type": "range",
       "id": "mobile_max_width",
-      "label": "Maximum width",
+      "label": "Largeur maximale",
       "min": 200,
       "max": 600,
       "step": 10,
@@ -505,7 +565,7 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     {
       "type": "range",
       "id": "mobile_padding_vertical",
-      "label": "Vertical padding",
+      "label": "Marge intérieure verticale",
       "min": 0,
       "max": 40,
       "step": 2,
@@ -515,7 +575,7 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     {
       "type": "range",
       "id": "mobile_padding_horizontal",
-      "label": "Horizontal padding",
+      "label": "Marge intérieure horizontale",
       "min": 0,
       "max": 40,
       "step": 2,
@@ -524,26 +584,26 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     },
     {
       "type": "header",
-      "content": "Container appearance"
+      "content": "Apparence du conteneur"
     },
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background colour",
+      "label": "Couleur d’arrière-plan",
       "alpha": true,
       "default": "#00000000"
     },
     {
       "type": "color",
       "id": "border_color",
-      "label": "Border colour",
+      "label": "Couleur de la bordure",
       "alpha": true,
       "default": "#ffffff00"
     },
     {
       "type": "range",
       "id": "border_width",
-      "label": "Border width",
+      "label": "Épaisseur de la bordure",
       "min": 0,
       "max": 3,
       "step": 1,
@@ -553,7 +613,7 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     {
       "type": "range",
       "id": "corner_radius",
-      "label": "Corner radius",
+      "label": "Arrondi des angles",
       "min": 0,
       "max": 40,
       "step": 2,
@@ -563,8 +623,8 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
   ],
   "presets": [
     {
-      "name": "AKAN responsive text",
-      "category": "Text"
+      "name": "AKAN — Texte responsive",
+      "category": "Texte"
     }
   ]
 }

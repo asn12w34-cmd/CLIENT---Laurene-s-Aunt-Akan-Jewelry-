@@ -168,7 +168,8 @@
     "product_sku": "SKU",
     "layered_slideshow": "Diaporama superposé",
     "cart_drawer": "Panier coulissant",
-    "disclosures": "Divulgations"
+    "disclosures": "Divulgations",
+    "akn_hero_buttons": "AKAN — Boutons du Hero"
   },
   "settings": {
     "autoplay": "Lecture automatique",
@@ -593,7 +594,53 @@
     "selected_button_style": "Style de bouton sélectionné",
     "open_by_default": "Ouvert par défaut",
     "title_preset": "Préréglage du titre",
-    "customer_account_menu": "Menu du compte client"
+    "customer_account_menu": "Menu du compte client",
+    "akn_ctas": {
+      "desktop_layout_header": "Ordinateur — Mise en page",
+      "desktop_primary_header": "Ordinateur — Bouton principal",
+      "desktop_secondary_header": "Ordinateur — Bouton secondaire",
+      "mobile_layout_header": "Mobile — Mise en page",
+      "mobile_primary_header": "Mobile — Bouton principal",
+      "mobile_secondary_header": "Mobile — Bouton secondaire",
+      "desktop_group_alignment": "Alignement",
+      "desktop_group_width": "Largeur du groupe",
+      "desktop_custom_width": "Largeur personnalisée",
+      "desktop_button_gap": "Espacement entre les boutons",
+      "desktop_distribution": "Répartition des boutons",
+      "desktop_equal_widths": "Boutons de même largeur",
+      "mobile_group_alignment": "Alignement",
+      "mobile_group_width": "Largeur du groupe",
+      "mobile_custom_width": "Largeur personnalisée",
+      "mobile_button_gap": "Espacement entre les boutons",
+      "mobile_distribution": "Répartition des boutons",
+      "mobile_equal_widths": "Boutons de même largeur",
+      "desktop_primary_show": "Afficher ce bouton",
+      "desktop_primary_text": "Texte",
+      "desktop_primary_link": "Lien",
+      "desktop_primary_enable_colour_change": "Activer le changement de couleur",
+      "desktop_primary_animation": "Animation",
+      "desktop_secondary_show": "Afficher ce bouton",
+      "desktop_secondary_text": "Texte",
+      "desktop_secondary_link": "Lien",
+      "desktop_secondary_enable_colour_change": "Activer le changement de couleur",
+      "desktop_secondary_animation": "Animation",
+      "mobile_primary_show": "Afficher ce bouton",
+      "mobile_primary_text": "Texte",
+      "mobile_primary_link": "Lien",
+      "mobile_primary_enable_colour_change": "Activer le changement de couleur",
+      "mobile_primary_animation": "Animation",
+      "mobile_secondary_show": "Afficher ce bouton",
+      "mobile_secondary_text": "Texte",
+      "mobile_secondary_link": "Lien",
+      "mobile_secondary_enable_colour_change": "Activer le changement de couleur",
+      "mobile_secondary_animation": "Animation",
+      "starting_background": "Au repos — Couleur de fond",
+      "starting_text": "Au repos — Couleur du texte",
+      "starting_border": "Au repos — Couleur de bordure",
+      "interaction_background": "À l’interaction — Couleur de fond",
+      "interaction_text": "À l’interaction — Couleur du texte",
+      "interaction_border": "À l’interaction — Couleur de bordure"
+    }
   },
   "options": {
     "apple": "Pomme",
@@ -876,7 +923,17 @@
     "below_media": "Sous le support multimédia",
     "full_frame": "Plein cadre",
     "icons": "Icônes",
-    "input_field": "Champ de saisie"
+    "input_field": "Champ de saisie",
+    "akn_ctas": {
+      "fit_to_buttons": "Ajustée aux boutons",
+      "full_panel_width": "Toute la largeur",
+      "custom_percentage": "Largeur personnalisée",
+      "keep_together": "Regroupés",
+      "spread_across_width": "Répartis sur la largeur",
+      "smooth_fade": "Fondu progressif",
+      "wipe_from_left": "Balayage depuis la gauche",
+      "wipe_from_right": "Balayage depuis la droite"
+    }
   },
   "content": {
     "background_video": "Vidéo de fond",
@@ -1130,7 +1187,12 @@
     "page_text_color_default_info": "Par défaut pour les sections du thème",
     "actions_display_style": "Les icônes sont toujours utilisées sur mobile",
     "edit_input_field_in_theme_settings": "Modifier le champ de saisie dans les [paramètres du thème](/editor?context=theme&category=input%20fields)",
-    "edit_variants_in_theme_settings": "Modifier le style des variantes dans les [paramètres du thème](/editor?context=theme&category=variant%20pickers)"
+    "edit_variants_in_theme_settings": "Modifier le style des variantes dans les [paramètres du thème](/editor?context=theme&category=variant%20pickers)",
+    "akn_ctas": {
+      "button_requirements": "Le bouton s’affiche uniquement s’il est activé et si son texte et son lien sont renseignés.",
+      "desktop_interaction": "Les couleurs d’interaction s’appliquent au survol, au focus clavier et au clic.",
+      "mobile_interaction": "Les couleurs d’interaction s’appliquent lors de l’appui et du focus clavier."
+    }
   },
   "categories": {
     "basic": "De base",
