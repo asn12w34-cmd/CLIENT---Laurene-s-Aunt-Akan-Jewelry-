@@ -1,0 +1,725 @@
+{% comment %}
+  CUSTOM FILE [AJ-005] — Navigation par univers | See CUSTOM_CHANGES.md — AJ-005
+
+  Section contract.
+  Cartes de catégories autonomes : grille sur ordinateur, défilement natif sur mobile.
+  Un seul lien par carte ; les images et leur changement au survol sont décoratifs.
+  @example
+  Ajouter « AKAN — Univers » sur l’accueil, puis sélectionner les images et les collections.
+{% endcomment %}
+
+{% liquid
+  assign color_scope = 'akn-univers-' | append: section.id
+  assign image_width_candidates = '360,540,720,960' | split: ','
+  assign mobile_fraction = section.settings.mobile_card_width | divided_by: 100.0
+  assign desktop_content_width = 1440
+  case settings.page_width
+    when 'normal'
+      assign desktop_content_width = 1920
+    when 'wide'
+      assign desktop_content_width = 2400
+  endcase
+%}
+
+{% capture image_sizes -%}
+  (min-width: 750px) calc(({% if section.settings.section_width == 'page-width' %}min({{ desktop_content_width }}px, 100vw - 80px){% else %}100vw - 80px{% endif %} - {{ section.settings.desktop_gap }}px) / 2), calc((100vw - 32px) * {{ mobile_fraction }})
+{%- endcapture %}
+
+{% render 'contrast-override',
+  background_color: section.settings.background_color,
+  text_color: section.settings.text_color,
+  section_id: color_scope,
+  preset: 'ui'
+%}
+
+<akn-univers-component
+  class="akn-univers color-custom-{{ color_scope }}{% if section.settings.enable_image_change %} akn-univers--image-change{% endif %}"
+  style="
+    --akn-univers-ratio: {{ section.settings.card_ratio }};
+    --akn-univers-desktop-gap: {{ section.settings.desktop_gap }}px;
+    --akn-univers-mobile-gap: {{ section.settings.mobile_gap }}px;
+    --akn-univers-mobile-width: {{ section.settings.mobile_card_width }}%;
+    --akn-univers-padding-top: {{ section.settings.padding_top }}px;
+    --akn-univers-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --akn-univers-mobile-top: {{ section.settings.mobile_padding_top }}px;
+    --akn-univers-mobile-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  "
+>
+  <div class="section section--{{ section.settings.section_width }}{% if section.settings.section_width == 'full-width' %} section--full-width-margin{% endif %} akn-univers__layout">
+    {% if section.settings.introduction != blank or section.settings.title != blank %}
+      <div class="akn-univers__header">
+        {% if section.settings.introduction != blank %}
+          <p class="akn-univers__introduction">{{ section.settings.introduction | escape }}</p>
+        {% endif %}
+        {% if section.settings.title != blank %}
+          <h2 class="akn-univers__heading">{{ section.settings.title | escape }}</h2>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <ul class="akn-univers__track" role="list">
+      {% for block in section.blocks %}
+        {% liquid
+          assign primary_image = block.settings.image
+          assign alternative_image = block.settings.alternative_image
+          assign category_title = block.settings.title | strip
+          assign accessible_label = block.settings.accessible_label | strip
+          assign has_link = false
+          if block.settings.link != blank
+            if category_title != blank or accessible_label != blank
+              assign has_link = true
+            endif
+          endif
+          assign has_alternative = false
+          if section.settings.enable_image_change and primary_image != blank and alternative_image != blank
+            if alternative_image.id != primary_image.id
+              assign has_alternative = true
+            endif
+          endif
+          assign surface_tag = 'div'
+          if has_link
+            assign surface_tag = 'a'
+          endif
+        %}
+        <li class="akn-univers__card" {{ block.shopify_attributes }}>
+          <{{ surface_tag }}
+            class="akn-univers__surface akn-univers__surface--{{ block.settings.content_position }}{% if has_alternative %} akn-univers__surface--alternative{% endif %}"
+            {% if has_link %}
+              href="{{ block.settings.link | escape }}"
+              {% if accessible_label != blank %}aria-label="{{ accessible_label | escape }}"{% endif %}
+            {% endif %}
+            style="
+              {% if block.settings.text_color != blank %}--akn-univers-card-color: {{ block.settings.text_color }};{% endif %}
+              --akn-univers-veil: {{ block.settings.overlay_color }};
+              --akn-univers-veil-opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+            "
+          >
+            <div class="akn-univers__media" aria-hidden="true">
+              {% if primary_image != blank %}
+                {% for image_index in (1..2) %}
+                  {% liquid
+                    assign card_image = primary_image
+                    assign image_class = 'akn-univers__image'
+                    if image_index == 2
+                      unless has_alternative
+                        continue
+                      endunless
+                      assign card_image = alternative_image
+                      assign image_class = 'akn-univers__image akn-univers__image--alternative'
+                    endif
+                    assign render_width = card_image.width | at_most: 1200
+                    assign responsive_widths = ''
+                    for candidate in image_width_candidates
+                      assign candidate_width = candidate | plus: 0
+                      if candidate_width < render_width
+                        assign responsive_widths = responsive_widths | append: candidate | append: ', '
+                      endif
+                    endfor
+                    assign responsive_widths = responsive_widths | append: render_width
+                  %}
+                  {{
+                    card_image
+                    | image_url: width: render_width
+                    | image_tag:
+                      class: image_class,
+                      widths: responsive_widths,
+                      sizes: image_sizes,
+                      loading: 'lazy',
+                      decoding: 'async',
+                      alt: ''
+                  }}
+                {% endfor %}
+              {% endif %}
+            </div>
+            <span class="akn-univers__veil" aria-hidden="true"></span>
+            <div class="akn-univers__content">
+              {% if category_title != blank %}
+                {% if section.settings.title != blank %}
+                  <h3 class="akn-univers__title">{{ category_title | escape }}</h3>
+                {% else %}
+                  <h2 class="akn-univers__title">{{ category_title | escape }}</h2>
+                {% endif %}
+              {% endif %}
+              {% if has_link and block.settings.cta != blank %}
+                <span class="akn-univers__cta">{{ block.settings.cta | escape }}</span>
+              {% endif %}
+            </div>
+          </{{ surface_tag }}>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</akn-univers-component>
+
+{% stylesheet %}
+  /* CUSTOM [AJ-005] — Présentation isolée ; balayage mobile entièrement natif. */
+  .akn-univers {
+    display: block;
+    min-inline-size: 0;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .akn-univers__layout {
+    row-gap: var(--gap-2xl);
+    padding-block: var(--akn-univers-padding-top) var(--akn-univers-padding-bottom);
+  }
+
+  .akn-univers__header,
+  .akn-univers__content {
+    display: grid;
+    gap: var(--gap-md);
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .akn-univers__introduction,
+  .akn-univers__heading,
+  .akn-univers__title,
+  .akn-univers__cta {
+    min-inline-size: 0;
+    margin: 0;
+    color: inherit;
+    overflow-wrap: anywhere;
+  }
+
+  .akn-univers__introduction {
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--sm);
+    letter-spacing: 0.2em;
+  }
+
+  .akn-univers__heading {
+    font-size: min(var(--font-h2--size), clamp(2rem, 4.5vw, 4.5rem));
+  }
+
+  .akn-univers__track {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--akn-univers-desktop-gap);
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .akn-univers__card {
+    display: flex;
+    min-inline-size: 0;
+  }
+
+  .akn-univers__surface {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    align-content: end;
+    inline-size: 100%;
+    min-inline-size: 0;
+    min-block-size: min-content;
+    aspect-ratio: var(--akn-univers-ratio);
+    padding: clamp(20px, 3vw, 48px);
+    overflow: hidden;
+    background: #2a221b;
+    color: var(--akn-univers-card-color, var(--color-foreground));
+    text-decoration: none;
+  }
+
+  .akn-univers__surface--bottom-center {
+    text-align: center;
+  }
+
+  .akn-univers__surface--top-left {
+    align-content: start;
+  }
+
+  .akn-univers__surface--top-left .akn-univers__veil {
+    background: linear-gradient(to bottom, var(--akn-univers-veil), transparent 95%);
+  }
+
+  .akn-univers__media,
+  .akn-univers__image,
+  .akn-univers__veil {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    pointer-events: none;
+  }
+
+  .akn-univers__image {
+    object-fit: cover;
+  }
+
+  .akn-univers__image--alternative {
+    display: none;
+    opacity: 0;
+  }
+
+  .akn-univers__veil {
+    background: linear-gradient(to top, var(--akn-univers-veil), transparent 95%);
+    opacity: var(--akn-univers-veil-opacity);
+  }
+
+  .akn-univers__content {
+    position: relative;
+    pointer-events: none;
+  }
+
+  .akn-univers__title {
+    font-family: var(--font-h3--family);
+    font-style: var(--font-h3--style);
+    font-weight: var(--font-h3--weight);
+    font-size: min(var(--font-h3--size), clamp(1.6rem, 3vw, 3.25rem));
+    line-height: var(--font-h3--line-height);
+    letter-spacing: var(--font-h3--letter-spacing);
+    text-transform: var(--font-h3--case);
+  }
+
+  .akn-univers__cta {
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--md);
+    line-height: 1.5;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .akn-univers__surface:focus-visible {
+    outline: 3px solid #e0bc73;
+    outline-offset: -6px;
+  }
+
+  .akn-univers__surface:focus-visible::after {
+    position: absolute;
+    inset: 3px;
+    z-index: 1;
+    border: 2px solid #171611;
+    outline: 1px solid #fff;
+    content: '';
+    pointer-events: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .akn-univers__layout {
+      row-gap: var(--gap-xl);
+      padding-block: var(--akn-univers-mobile-top) var(--akn-univers-mobile-bottom);
+    }
+
+    .akn-univers__layout > .akn-univers__header {
+      grid-column: 2;
+      padding-inline: 0;
+    }
+
+    .akn-univers__layout > .akn-univers__track {
+      grid-column: 1 / -1;
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: var(--akn-univers-mobile-width);
+      align-items: stretch;
+      gap: var(--akn-univers-mobile-gap);
+      padding-inline: var(--page-margin);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--page-margin);
+      scrollbar-width: none;
+    }
+
+    .akn-univers__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .akn-univers__card {
+      scroll-snap-align: start;
+    }
+  }
+
+  @media screen and (min-width: 750px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .akn-univers--image-change .akn-univers__image--alternative {
+      display: block;
+      transition: opacity 250ms ease;
+    }
+
+    .akn-univers--image-change .akn-univers__surface--show-alternative .akn-univers__image--alternative {
+      opacity: 1;
+    }
+
+    .akn-univers--image-change .akn-univers__surface--reset .akn-univers__image--alternative {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  /* CUSTOM [AJ-005] — Un délai annulable par carte, pour réinitialiser les survols interrompus. */
+  void import('@theme/component').then(({ Component }) => {
+    class AknUniversComponent extends Component {
+      #controller;
+      #mediaQuery;
+      #pending = new Map();
+
+      connectedCallback() {
+        super.connectedCallback();
+        this.#initialize();
+      }
+
+      updatedCallback() {
+        super.updatedCallback();
+        this.#initialize();
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this.#cleanup();
+      }
+
+      #initialize() {
+        this.#cleanup();
+        this.#controller = new AbortController();
+        const { signal } = this.#controller;
+        this.#mediaQuery = window.matchMedia(
+          '(min-width: 750px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)'
+        );
+        this.#mediaQuery.addEventListener('change', () => this.#resetAll(), { signal });
+
+        for (const card of this.querySelectorAll('.akn-univers__surface--alternative')) {
+          card.addEventListener('pointerenter', (event) => this.handlePointerEnter(event), { signal });
+          card.addEventListener('pointerleave', () => this.#hide(card), { signal });
+          card.addEventListener('pointercancel', () => this.#hide(card), { signal });
+        }
+      }
+
+      /** @param {PointerEvent} event */
+      handlePointerEnter(event) {
+        const card = event.currentTarget;
+        if (!(card instanceof HTMLElement) || event.pointerType === 'touch' || !this.#mediaQuery?.matches) return;
+
+        this.#hide(card, true);
+        const timer = window.setTimeout(() => {
+          this.#pending.delete(card);
+          if (this.isConnected && this.#mediaQuery?.matches && card.matches(':hover')) {
+            card.classList.add('akn-univers__surface--show-alternative');
+          }
+        }, 200);
+        this.#pending.set(card, timer);
+      }
+
+      /** @param {Element} card @param {boolean} [immediate] */
+      #hide(card, immediate = false) {
+        window.clearTimeout(this.#pending.get(card));
+        this.#pending.delete(card);
+        if (immediate) card.classList.add('akn-univers__surface--reset');
+        card.classList.remove('akn-univers__surface--show-alternative');
+        if (immediate) {
+          // Valide l’opacité zéro avant de rétablir le fondu d’un nouveau survol.
+          card.getBoundingClientRect();
+          card.classList.remove('akn-univers__surface--reset');
+        }
+      }
+
+      #resetAll() {
+        for (const card of this.querySelectorAll('.akn-univers__surface--alternative')) this.#hide(card, true);
+      }
+
+      #cleanup() {
+        this.#controller?.abort();
+        for (const timer of this.#pending.values()) window.clearTimeout(timer);
+        this.#pending.clear();
+        this.#resetAll();
+      }
+    }
+
+    if (!customElements.get('akn-univers-component')) {
+      customElements.define('akn-univers-component', AknUniversComponent);
+    }
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:akn_univers.name",
+  "tag": "section",
+  "class": "akn-univers-section",
+  "enabled_on": {
+    "templates": [
+      "index"
+    ]
+  },
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:akn_univers.groups.content"
+    },
+    {
+      "type": "text",
+      "id": "introduction",
+      "label": "t:akn_univers.labels.introduction",
+      "default": "t:akn_univers.defaults.introduction"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:akn_univers.labels.title",
+      "default": "t:akn_univers.defaults.title"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:akn_univers.labels.background_color",
+      "default": "#171611"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:akn_univers.labels.text_color",
+      "default": "#f7f3eb"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_univers.groups.layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:akn_univers.labels.section_width",
+      "default": "page-width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "t:akn_univers.options.page_width"
+        },
+        {
+          "value": "full-width",
+          "label": "t:akn_univers.options.full_width"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_ratio",
+      "label": "t:akn_univers.labels.card_ratio",
+      "default": "9/8",
+      "options": [
+        {
+          "value": "9/8",
+          "label": "t:akn_univers.options.ratio_9_8"
+        },
+        {
+          "value": "6/5",
+          "label": "t:akn_univers.options.ratio_6_5"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_image_change",
+      "label": "t:akn_univers.labels.enable_image_change",
+      "default": true,
+      "info": "t:akn_univers.help.enable_image_change"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_univers.groups.desktop"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:akn_univers.labels.padding_top",
+      "default": 64,
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:akn_univers.labels.padding_bottom",
+      "default": 64,
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "desktop_gap",
+      "label": "t:akn_univers.labels.desktop_gap",
+      "default": 24,
+      "min": 0,
+      "max": 64,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_univers.groups.mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "t:akn_univers.labels.mobile_padding_top",
+      "default": 40,
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "t:akn_univers.labels.mobile_padding_bottom",
+      "default": 40,
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "label": "t:akn_univers.labels.mobile_gap",
+      "default": 12,
+      "min": 0,
+      "max": 32,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_width",
+      "label": "t:akn_univers.labels.mobile_card_width",
+      "default": 88,
+      "info": "t:akn_univers.help.mobile_card_width",
+      "min": 80,
+      "max": 96,
+      "step": 2,
+      "unit": "%"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "t:akn_univers.block_name",
+      "settings": [
+        {
+          "type": "header",
+          "content": "t:akn_univers.groups.images"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:akn_univers.labels.image",
+          "info": "t:akn_univers.help.image"
+        },
+        {
+          "type": "image_picker",
+          "id": "alternative_image",
+          "label": "t:akn_univers.labels.alternative_image",
+          "info": "t:akn_univers.help.alternative_image",
+          "visible_if": "{{ section.settings.enable_image_change }}"
+        },
+        {
+          "type": "header",
+          "content": "t:akn_univers.groups.navigation"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:akn_univers.labels.category_title",
+          "default": "t:akn_univers.defaults.category",
+          "info": "t:akn_univers.help.category_title"
+        },
+        {
+          "type": "text",
+          "id": "cta",
+          "label": "t:akn_univers.labels.cta",
+          "default": "t:akn_univers.defaults.cta"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:akn_univers.labels.link",
+          "info": "t:akn_univers.help.link"
+        },
+        {
+          "type": "header",
+          "content": "t:akn_univers.groups.appearance"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "t:akn_univers.labels.text_color",
+          "info": "t:akn_univers.help.text_color"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "t:akn_univers.labels.overlay_color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "t:akn_univers.labels.overlay_opacity",
+          "default": 55,
+          "info": "t:akn_univers.help.overlay_opacity",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "%"
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "t:akn_univers.labels.content_position",
+          "default": "bottom-left",
+          "options": [
+            {
+              "value": "bottom-left",
+              "label": "t:akn_univers.options.bottom_left"
+            },
+            {
+              "value": "bottom-center",
+              "label": "t:akn_univers.options.bottom_center"
+            },
+            {
+              "value": "top-left",
+              "label": "t:akn_univers.options.top_left"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "t:akn_univers.groups.accessibility"
+        },
+        {
+          "type": "text",
+          "id": "accessible_label",
+          "label": "t:akn_univers.labels.accessible_label",
+          "info": "t:akn_univers.help.accessible_label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:akn_univers.name",
+      "category": "t:akn_univers.category",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "t:akn_univers.defaults.earrings"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "t:akn_univers.defaults.bracelets"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

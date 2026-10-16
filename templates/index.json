@@ -194,6 +194,62 @@
         "padding-block-end": 0
       }
     },
+    "akn_univers_LRbPUh": {
+      "type": "akn-univers",
+      "blocks": {
+        "category_MDJ6Pz": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Elegant_antique-gold_earring_loops-2.png",
+            "alternative_image": "shopify://shop_images/Elegantgoldcrystalearring.png",
+            "title": "Boucles d’oreilles",
+            "cta": "Découvrir →",
+            "link": "",
+            "text_color": "",
+            "overlay_color": "#000000",
+            "overlay_opacity": 55,
+            "content_position": "bottom-left",
+            "accessible_label": ""
+          }
+        },
+        "category_H8jLPX": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Burgundy_Canvas_with_Gold_Zigzags-3.png",
+            "alternative_image": "shopify://shop_images/LuxuryGoldandGreyCordBr.png",
+            "title": "Bracelets",
+            "cta": "Découvrir →",
+            "link": "",
+            "text_color": "",
+            "overlay_color": "#000000",
+            "overlay_opacity": 55,
+            "content_position": "bottom-left",
+            "accessible_label": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_MDJ6Pz",
+        "category_H8jLPX"
+      ],
+      "name": "t:akn_univers.name",
+      "settings": {
+        "introduction": "EXPLORER",
+        "title": "Choisissez votre univers",
+        "background_color": "#171611",
+        "text_color": "#f7f3eb",
+        "section_width": "page-width",
+        "card_ratio": "9/8",
+        "enable_image_change": true,
+        "padding_top": 64,
+        "padding_bottom": 64,
+        "desktop_gap": 24,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40,
+        "mobile_gap": 12,
+        "mobile_card_width": 88
+      }
+    },
     "collection_list_NXMKwx": {
       "type": "collection-list",
       "blocks": {
@@ -1081,6 +1137,7 @@
   },
   "order": [
     "hero_iyt6zg",
+    "akn_univers_LRbPUh",
     "collection_list_NXMKwx",
     "collection_links_Ut4aMz",
     "featured_product_mTUbKC",

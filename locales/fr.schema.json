@@ -1214,5 +1214,73 @@
     "storytelling": "Narration",
     "text": "Texte",
     "blog_post": "Article de blog"
+  },
+  "akn_univers": {
+    "name": "AKAN — Univers",
+    "category": "Collections",
+    "block_name": "Catégorie",
+    "groups": {
+      "content": "Textes et couleurs",
+      "layout": "Disposition des cartes",
+      "desktop": "Espacements — Ordinateur",
+      "mobile": "Espacements — Mobile",
+      "images": "Images",
+      "navigation": "Textes et navigation",
+      "appearance": "Apparence de la carte",
+      "accessibility": "Accessibilité"
+    },
+    "labels": {
+      "introduction": "Texte d’introduction",
+      "title": "Titre de la section",
+      "background_color": "Couleur de fond",
+      "text_color": "Couleur du texte",
+      "section_width": "Largeur du contenu",
+      "card_ratio": "Format des cartes",
+      "enable_image_change": "Changer l’image au survol sur ordinateur",
+      "desktop_gap": "Espace entre les cartes",
+      "mobile_gap": "Espace entre les cartes",
+      "padding_top": "Espacement supérieur",
+      "padding_bottom": "Espacement inférieur",
+      "mobile_padding_top": "Espacement supérieur",
+      "mobile_padding_bottom": "Espacement inférieur",
+      "mobile_card_width": "Largeur des cartes sur mobile",
+      "image": "Image principale",
+      "alternative_image": "Image alternative — Ordinateur",
+      "category_title": "Titre de la catégorie",
+      "cta": "Texte du lien",
+      "link": "Destination de la carte",
+      "overlay_color": "Couleur du voile",
+      "overlay_opacity": "Opacité du voile",
+      "content_position": "Position du texte",
+      "accessible_label": "Libellé accessible (facultatif)"
+    },
+    "options": {
+      "page_width": "Largeur définie dans le thème",
+      "full_width": "Pleine largeur avec marges",
+      "ratio_9_8": "9:8 — Légèrement horizontal",
+      "ratio_6_5": "6:5 — Plus horizontal",
+      "bottom_left": "En bas à gauche",
+      "bottom_center": "En bas au centre",
+      "top_left": "En haut à gauche"
+    },
+    "help": {
+      "enable_image_change": "Une seule image alternative après un bref survol. Aucun changement sur mobile, au clavier ou si la réduction des animations est activée.",
+      "mobile_card_width": "88 % laisse entrevoir la carte suivante. Les cartes se parcourent par balayage horizontal.",
+      "image": "À sélectionner pour chaque catégorie. Réglez le point focal avec l’outil natif de Shopify pour préserver le motif doré.",
+      "alternative_image": "Facultative. Préférez le même format et un point focal cohérent, avec environ 1 200 px de largeur ou plus si possible. Gardez de la place pour le texte.",
+      "category_title": "Sans titre ni libellé accessible, la carte reste statique, même si une destination est renseignée.",
+      "link": "Sélectionnez par exemple une collection. Sans destination, la carte reste statique et le texte du lien est masqué.",
+      "text_color": "Laissez vide pour reprendre la couleur générale de la section.",
+      "overlay_opacity": "Renforcez le voile si nécessaire pour garder le texte lisible sur les deux images.",
+      "accessible_label": "Laissez vide pour utiliser le titre et le texte du lien. Sinon, commencez par le titre visible, par exemple : « Bracelets — Découvrir la collection »."
+    },
+    "defaults": {
+      "introduction": "EXPLORER",
+      "title": "Choisissez votre univers",
+      "category": "Catégorie",
+      "earrings": "Boucles d’oreilles",
+      "bracelets": "Bracelets",
+      "cta": "Découvrir →"
+    }
   }
 }
