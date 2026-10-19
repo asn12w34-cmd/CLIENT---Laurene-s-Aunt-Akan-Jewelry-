@@ -1,0 +1,311 @@
+{% comment %}
+CUSTOM FILE [AJ-006] — Responsive editorial link for the AKAN Hero panel
+{% endcomment %}
+
+{% doc %}
+  Renders one merchant-configured editorial link with independent desktop and
+  mobile presentation. The arrow and permanent underline belong to the component.
+{% enddoc %}
+
+{% liquid
+  assign link_text = block.settings.link_text | strip
+  assign show_desktop = block.settings.show_desktop
+  assign show_mobile = block.settings.show_mobile
+
+  assign should_render = false
+  if link_text != blank and block.settings.link_url != blank
+    if show_desktop or show_mobile
+      assign should_render = true
+    endif
+  endif
+%}
+
+{% if should_render %}
+  {% # CUSTOM START [AJ-006] — Shared link content with independent responsive presentation. %}
+  <div
+    class="akn-link{% unless show_desktop %} akn-link--desktop-hidden{% endunless %}{% unless show_mobile %} akn-link--mobile-hidden{% endunless %}"
+    style="
+      --akn-link-desktop-color: rgba({{ block.settings.desktop_color.rgba }});
+      --akn-link-desktop-size: {{ block.settings.desktop_font_size }}px;
+      --akn-link-mobile-color: rgba({{ block.settings.mobile_color.rgba }});
+      --akn-link-mobile-size: {{ block.settings.mobile_font_size }}px;
+    "
+    {{ block.shopify_attributes }}
+  >
+    {% if show_desktop %}
+      <div class="akn-link__view akn-link__view--desktop akn-link__view--align-{{ block.settings.desktop_alignment }}">
+        <a class="akn-link__anchor" href="{{ block.settings.link_url | escape }}">
+          <span class="akn-link__label">{{ link_text | escape }}</span>
+          <svg class="akn-link__arrow" viewBox="0 0 22 12" aria-hidden="true" focusable="false">
+            <path d="M1 6h20m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+          </svg>
+        </a>
+      </div>
+    {% endif %}
+
+    {% if show_mobile %}
+      <div class="akn-link__view akn-link__view--mobile akn-link__view--align-{{ block.settings.mobile_alignment }}">
+        <a class="akn-link__anchor" href="{{ block.settings.link_url | escape }}">
+          <span class="akn-link__label">{{ link_text | escape }}</span>
+          <svg class="akn-link__arrow" viewBox="0 0 22 12" aria-hidden="true" focusable="false">
+            <path d="M1 6h20m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+          </svg>
+        </a>
+      </div>
+    {% endif %}
+  </div>
+  {% # CUSTOM END [AJ-006] %}
+{% endif %}
+
+{% stylesheet %}
+  /* CUSTOM START [AJ-006] — Content-width editorial link with responsive colour, size, and alignment. */
+  .hero__content-wrapper .akn-link {
+    box-sizing: border-box;
+    inline-size: 100%;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+  }
+
+  .hero__content-wrapper .akn-link__view {
+    display: flex;
+    inline-size: 100%;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+  }
+
+  .hero__content-wrapper .akn-link--desktop-hidden {
+    display: none;
+  }
+
+  .hero__content-wrapper .akn-link__view--mobile {
+    display: none;
+  }
+
+  .hero__content-wrapper .akn-link__view--align-left {
+    justify-content: flex-start;
+  }
+
+  .hero__content-wrapper .akn-link__view--align-center {
+    justify-content: center;
+  }
+
+  .hero__content-wrapper .akn-link__view--align-right {
+    justify-content: flex-end;
+  }
+
+  .hero__content-wrapper .akn-link__anchor {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75em;
+    box-sizing: border-box;
+    inline-size: fit-content;
+    min-inline-size: var(--minimum-touch-target, 44px);
+    max-inline-size: 100%;
+    min-block-size: var(--minimum-touch-target, 44px);
+    padding-block: 8px 6px;
+    color: var(--akn-link-desktop-color);
+    border-block-end: 1px solid currentcolor;
+    font-family: var(--font-body--family);
+    font-size: var(--akn-link-desktop-size);
+    font-style: var(--font-body--style);
+    font-weight: var(--font-body--weight);
+    line-height: 1.25;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+    transition: opacity 120ms ease;
+  }
+
+  .hero__content-wrapper .akn-link__label {
+    min-inline-size: 0;
+  }
+
+  .hero__content-wrapper .akn-link__arrow {
+    flex: 0 0 auto;
+    inline-size: 22px;
+    block-size: 12px;
+    transition: transform 200ms ease;
+  }
+
+  .hero__content-wrapper .akn-link__anchor:focus-visible {
+    outline: var(--focus-outline-width, 2px) solid currentcolor;
+    outline-offset: var(--focus-outline-offset, 3px);
+  }
+
+  .hero__content-wrapper .akn-link__anchor:active {
+    opacity: 0.72;
+  }
+
+  @supports not selector(:focus-visible) {
+    .hero__content-wrapper .akn-link__anchor:focus {
+      outline: var(--focus-outline-width, 2px) solid currentcolor;
+      outline-offset: var(--focus-outline-offset, 3px);
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .hero__content-wrapper .akn-link__anchor:focus-visible .akn-link__arrow {
+      transform: translateX(3px);
+    }
+
+    @supports not selector(:focus-visible) {
+      .hero__content-wrapper .akn-link__anchor:focus .akn-link__arrow {
+        transform: translateX(3px);
+      }
+    }
+  }
+
+  @media screen and (min-width: 750px) and (hover: hover) and (pointer: fine) {
+    .hero__content-wrapper .akn-link__anchor:hover .akn-link__arrow {
+      transform: translateX(3px);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .hero__content-wrapper .akn-link--desktop-hidden {
+      display: block;
+    }
+
+    .hero__content-wrapper .akn-link--mobile-hidden {
+      display: none;
+    }
+
+    .hero__content-wrapper .akn-link__view--desktop {
+      display: none;
+    }
+
+    .hero__content-wrapper .akn-link__view--mobile {
+      display: flex;
+    }
+
+    .hero__content-wrapper .akn-link__anchor {
+      color: var(--akn-link-mobile-color);
+      font-size: var(--akn-link-mobile-size);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__content-wrapper .akn-link__anchor,
+    .hero__content-wrapper .akn-link__arrow {
+      transition: none;
+    }
+
+    .hero__content-wrapper .akn-link__anchor:hover .akn-link__arrow,
+    .hero__content-wrapper .akn-link__anchor:focus .akn-link__arrow,
+    .hero__content-wrapper .akn-link__anchor:focus-visible .akn-link__arrow {
+      transform: none;
+    }
+  }
+  /* CUSTOM END [AJ-006] */
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.akn_editorial_link",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:settings.akn_link.content_header"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "t:settings.akn_link.link_text",
+      "default": "DÉCOUVRIR NOTRE HISTOIRE"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "t:settings.akn_link.link_url",
+      "info": "t:info.akn_link.link_requirements"
+    },
+    {
+      "type": "header",
+      "content": "t:settings.akn_link.desktop_header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_desktop",
+      "label": "t:settings.akn_link.show_desktop",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "desktop_alignment",
+      "label": "t:settings.akn_link.alignment",
+      "options": [
+        { "value": "left", "label": "t:options.left" },
+        { "value": "center", "label": "t:options.center" },
+        { "value": "right", "label": "t:options.right" }
+      ],
+      "default": "center",
+      "visible_if": "{{ block.settings.show_desktop }}"
+    },
+    {
+      "type": "color",
+      "id": "desktop_color",
+      "label": "t:settings.akn_link.color",
+      "default": "#F7F3EB",
+      "visible_if": "{{ block.settings.show_desktop }}"
+    },
+    {
+      "type": "range",
+      "id": "desktop_font_size",
+      "label": "t:settings.akn_link.font_size",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 15,
+      "visible_if": "{{ block.settings.show_desktop }}"
+    },
+    {
+      "type": "header",
+      "content": "t:settings.akn_link.mobile_header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mobile",
+      "label": "t:settings.akn_link.show_mobile",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "mobile_alignment",
+      "label": "t:settings.akn_link.alignment",
+      "options": [
+        { "value": "left", "label": "t:options.left" },
+        { "value": "center", "label": "t:options.center" },
+        { "value": "right", "label": "t:options.right" }
+      ],
+      "default": "center",
+      "visible_if": "{{ block.settings.show_mobile }}"
+    },
+    {
+      "type": "color",
+      "id": "mobile_color",
+      "label": "t:settings.akn_link.color",
+      "default": "#E6B74F",
+      "visible_if": "{{ block.settings.show_mobile }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_font_size",
+      "label": "t:settings.akn_link.font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14,
+      "visible_if": "{{ block.settings.show_mobile }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.akn_editorial_link"
+    }
+  ]
+}
+{% endschema %}

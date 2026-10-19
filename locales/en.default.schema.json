@@ -252,6 +252,9 @@
     "video_external": "Use a YouTube or Vimeo URL",
     "pills_usage": "Used for applied filters, discount codes, and search suggestions",
     "media_type_info": "Features are populated from your menu links",
+    "akn_link": {
+      "link_requirements": "The link is displayed only when both its text and destination are provided."
+    },
     "akn_ctas": {
       "button_requirements": "The button is displayed only when it is enabled and both its text and link are provided.",
       "desktop_interaction": "Interaction colours apply on hover, keyboard focus, and press.",
@@ -426,7 +429,8 @@
     "disclosures": "Disclosures",
     "pills": "Pills",
     "comparison_slider": "Comparison slider",
-    "akn_hero_buttons": "AKAN Hero buttons"
+    "akn_hero_buttons": "AKAN Hero buttons",
+    "akn_editorial_link": "AKAN — Editorial link"
   },
   "options": {
     "above_carousel": "Above carousel",
@@ -1227,6 +1231,18 @@
     "top_row_text": "Top row text",
     "bottom_row_background": "Bottom row background",
     "bottom_row_text": "Bottom row text",
+    "akn_link": {
+      "content_header": "Content",
+      "link_text": "Link text",
+      "link_url": "Destination link",
+      "desktop_header": "Desktop",
+      "show_desktop": "Show on desktop",
+      "mobile_header": "Mobile",
+      "show_mobile": "Show on mobile",
+      "alignment": "Alignment",
+      "color": "Text, arrow, and underline color",
+      "font_size": "Text size"
+    },
     "akn_ctas": {
       "desktop_layout_header": "Desktop — Layout",
       "desktop_primary_header": "Desktop — Primary button",
