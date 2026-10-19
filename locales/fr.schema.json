@@ -169,8 +169,7 @@
     "layered_slideshow": "Diaporama superposé",
     "cart_drawer": "Panier coulissant",
     "disclosures": "Divulgations",
-    "akn_hero_buttons": "AKAN — Boutons du Hero",
-    "akn_editorial_link": "AKAN — Lien éditorial"
+    "akn_hero_buttons": "AKAN — Boutons du Hero"
   },
   "settings": {
     "autoplay": "Lecture automatique",
@@ -596,18 +595,6 @@
     "open_by_default": "Ouvert par défaut",
     "title_preset": "Préréglage du titre",
     "customer_account_menu": "Menu du compte client",
-    "akn_link": {
-      "content_header": "Contenu",
-      "link_text": "Texte du lien",
-      "link_url": "Lien de destination",
-      "desktop_header": "Ordinateur",
-      "show_desktop": "Afficher sur ordinateur",
-      "mobile_header": "Mobile",
-      "show_mobile": "Afficher sur mobile",
-      "alignment": "Alignement",
-      "color": "Couleur du texte, de la flèche et du soulignement",
-      "font_size": "Taille du texte"
-    },
     "akn_ctas": {
       "desktop_layout_header": "Ordinateur — Mise en page",
       "desktop_primary_header": "Ordinateur — Bouton principal",
@@ -1201,9 +1188,6 @@
     "actions_display_style": "Les icônes sont toujours utilisées sur mobile",
     "edit_input_field_in_theme_settings": "Modifier le champ de saisie dans les [paramètres du thème](/editor?context=theme&category=input%20fields)",
     "edit_variants_in_theme_settings": "Modifier le style des variantes dans les [paramètres du thème](/editor?context=theme&category=variant%20pickers)",
-    "akn_link": {
-      "link_requirements": "Le lien s’affiche uniquement lorsque le texte et la destination sont renseignés."
-    },
     "akn_ctas": {
       "button_requirements": "Le bouton s’affiche uniquement s’il est activé et si son texte et son lien sont renseignés.",
       "desktop_interaction": "Les couleurs d’interaction s’appliquent au survol, au focus clavier et au clic.",
@@ -1297,6 +1281,39 @@
       "earrings": "Boucles d’oreilles",
       "bracelets": "Bracelets",
       "cta": "Découvrir →"
+    }
+  },
+  "akn_favourites": {
+    "name": "AKAN — Nos coups de cœur",
+    "category": "Produits",
+    "block_name": "Carte produit",
+    "groups": {
+      "content": "Textes et couleurs",
+      "display": "Affichage",
+      "final_link": "Lien final"
+    },
+    "labels": {
+      "eyebrow": "Surtitre",
+      "title": "Titre",
+      "background_color": "Couleur du fond",
+      "text_color": "Couleur du texte",
+      "enable_image_change": "Activer le changement d’image sur ordinateur",
+      "show_price": "Afficher le prix",
+      "link_label": "Libellé du lien final",
+      "link_url": "Destination du lien final",
+      "product": "Produit",
+      "editorial_image": "Image éditoriale",
+      "hover_image": "Image affichée au survol",
+      "mobile_image": "Image mobile"
+    },
+    "help": {
+      "hover_image": "Facultative. À défaut, l’image principale du produit est utilisée. Un cadrage proche de l’image éditoriale stabilise la transition.",
+      "mobile_image": "Facultative. À défaut, l’image éditoriale puis l’image principale du produit sont utilisées."
+    },
+    "defaults": {
+      "eyebrow": "SÉLECTION",
+      "title": "Nos coups de cœur",
+      "link_label": "Voir toute la boutique →"
     }
   }
 }

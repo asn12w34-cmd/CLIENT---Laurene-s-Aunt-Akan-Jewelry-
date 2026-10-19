@@ -1,0 +1,592 @@
+{% comment %}
+  CUSTOM FILE [AJ-006] — Nos coups de cœur
+
+  Section contract.
+  Sélection éditoriale autonome : grille de trois colonnes sur ordinateur et rail natif sur mobile.
+  Chaque carte contient un seul lien produit. Le changement d’image est décoratif, limité aux pointeurs
+  précis sur ordinateur et au focus clavier, sans dépendance aux composants produit globaux.
+  @example
+  Ajouter « AKAN — Nos coups de cœur », puis sélectionner un produit et ses images dans chaque bloc.
+{% endcomment %}
+
+{% liquid
+  assign color_scope = 'akn-favourites-' | append: section.id
+  assign image_width_candidates = '360,540,720,960,1200' | split: ','
+  assign card_count = 0
+
+  for block in section.blocks
+    assign card_product = block.settings.product
+    assign card_product_image = card_product.featured_media.preview_image | default: card_product.featured_image
+    assign card_primary_image = block.settings.editorial_image | default: card_product_image
+    if card_product != blank and card_primary_image != blank
+      assign card_count = card_count | plus: 1
+    elsif request.design_mode
+      assign card_count = card_count | plus: 1
+    endif
+  endfor
+
+  assign desktop_columns = card_count | at_most: 3 | at_least: 1
+  assign desktop_gap_total = desktop_columns | minus: 1 | times: 24
+  assign desktop_content_width = 1440
+  case settings.page_width
+    when 'normal'
+      assign desktop_content_width = 1920
+    when 'wide'
+      assign desktop_content_width = 2400
+  endcase
+%}
+
+{% capture image_sizes -%}
+  (min-width: 750px) calc((min({{ desktop_content_width }}px, 100vw - 80px) - {{ desktop_gap_total }}px) / {{ desktop_columns }}), calc((100vw - 32px) * 0.84)
+{%- endcapture %}
+
+{% if card_count > 0 %}
+  {% render 'contrast-override',
+    background_color: section.settings.background_color,
+    text_color: section.settings.text_color,
+    section_id: color_scope,
+    preset: 'ui'
+  %}
+
+  <div class="section-background color-custom-{{ color_scope }}"></div>
+  <section
+    class="akn-favourites section section--page-width color-custom-{{ color_scope }}{% if section.settings.enable_image_change %} akn-favourites--image-change{% endif %}"
+    style="--akn-favourites-columns: {{ desktop_columns }};"
+    {% if section.settings.title != blank %}aria-labelledby="akn-favourites-title-{{ section.id }}"{% endif %}
+  >
+    <div class="akn-favourites__inner">
+      {% if section.settings.eyebrow != blank or section.settings.title != blank %}
+        <header class="akn-favourites__header">
+          {% if section.settings.eyebrow != blank %}
+            <p class="akn-favourites__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {% endif %}
+          {% if section.settings.title != blank %}
+            <h2 class="akn-favourites__heading" id="akn-favourites-title-{{ section.id }}">
+              {{ section.settings.title | escape }}
+            </h2>
+          {% endif %}
+        </header>
+      {% endif %}
+
+      <ul class="akn-favourites__track" role="list">
+        {% for block in section.blocks %}
+          {% liquid
+            assign card_product = block.settings.product
+            assign product_image = card_product.featured_media.preview_image | default: card_product.featured_image
+            assign primary_image = block.settings.editorial_image | default: product_image
+            assign mobile_image = block.settings.mobile_image | default: block.settings.editorial_image | default: product_image
+            assign hover_image = block.settings.hover_image | default: product_image | default: primary_image
+
+            assign render_card = false
+            if card_product != blank and primary_image != blank
+              assign render_card = true
+            elsif request.design_mode
+              assign render_card = true
+            endif
+
+            assign has_hover_image = false
+            if section.settings.enable_image_change and primary_image != blank and hover_image != blank
+              if hover_image.id != primary_image.id
+                assign has_hover_image = true
+              endif
+            endif
+          %}
+
+          {% unless render_card %}
+            {% continue %}
+          {% endunless %}
+
+          <li class="akn-favourites__card" {{ block.shopify_attributes }}>
+            {% if card_product != blank %}
+              <a
+                class="akn-favourites__card-link{% if has_hover_image %} akn-favourites__card-link--has-hover{% endif %}"
+                href="{{ card_product.url }}"
+              >
+            {% else %}
+              <div class="akn-favourites__card-preview">
+            {% endif %}
+
+              <div class="akn-favourites__media" aria-hidden="true">
+                {% if primary_image != blank %}
+                  {% liquid
+                    assign primary_render_width = primary_image.width | at_most: 1200
+                    assign primary_widths = ''
+                    for candidate in image_width_candidates
+                      assign candidate_width = candidate | plus: 0
+                      if candidate_width < primary_render_width
+                        assign primary_widths = primary_widths | append: candidate | append: ', '
+                      endif
+                    endfor
+                    assign primary_widths = primary_widths | append: primary_render_width
+
+                    assign use_mobile_source = false
+                    if mobile_image != blank and mobile_image.id != primary_image.id
+                      assign use_mobile_source = true
+                      assign mobile_render_width = mobile_image.width | at_most: 960
+                    endif
+
+                    assign primary_focal_point = primary_image.presentation.focal_point | default: 'center center'
+                    assign mobile_focal_point = mobile_image.presentation.focal_point | default: primary_focal_point
+                    capture primary_image_style
+                      echo '--akn-favourites-image-position: ' | append: primary_focal_point | append: '; '
+                      echo '--akn-favourites-mobile-image-position: ' | append: mobile_focal_point | append: ';'
+                    endcapture
+                  %}
+                  <picture class="akn-favourites__picture">
+                    {% if use_mobile_source %}
+                      {% capture mobile_srcset -%}
+                        {%- liquid
+                          assign first_mobile_candidate = true
+                          for candidate in image_width_candidates
+                            assign candidate_width = candidate | plus: 0
+                            if candidate_width < mobile_render_width
+                              unless first_mobile_candidate
+                                echo ', '
+                              endunless
+                              echo mobile_image | image_url: width: candidate_width
+                              echo ' ' | append: candidate_width | append: 'w'
+                              assign first_mobile_candidate = false
+                            endif
+                          endfor
+                          unless first_mobile_candidate
+                            echo ', '
+                          endunless
+                          echo mobile_image | image_url: width: mobile_render_width
+                          echo ' ' | append: mobile_render_width | append: 'w'
+                        -%}
+                      {%- endcapture %}
+                      <source
+                        media="(max-width: 749px)"
+                        srcset="{{ mobile_srcset | strip }}"
+                        sizes="calc((100vw - 32px) * 0.84)"
+                      >
+                    {% endif %}
+                    {{
+                      primary_image
+                      | image_url: width: primary_render_width
+                      | image_tag:
+                        class: 'akn-favourites__image akn-favourites__image--primary',
+                        widths: primary_widths,
+                        sizes: image_sizes,
+                        loading: 'lazy',
+                        decoding: 'async',
+                        style: primary_image_style,
+                        alt: ''
+                    }}
+                  </picture>
+
+                  {% if has_hover_image %}
+                    {% liquid
+                      assign hover_render_width = hover_image.width | at_most: 1200
+                      assign hover_widths = ''
+                      for candidate in image_width_candidates
+                        assign candidate_width = candidate | plus: 0
+                        if candidate_width < hover_render_width
+                          assign hover_widths = hover_widths | append: candidate | append: ', '
+                        endif
+                      endfor
+                      assign hover_widths = hover_widths | append: hover_render_width
+                      assign hover_focal_point = hover_image.presentation.focal_point | default: 'center center'
+                      assign hover_image_style = 'object-position: ' | append: hover_focal_point | append: ';'
+                    %}
+                    {{
+                      hover_image
+                      | image_url: width: hover_render_width
+                      | image_tag:
+                        class: 'akn-favourites__image akn-favourites__image--hover',
+                        widths: hover_widths,
+                        sizes: image_sizes,
+                        loading: 'lazy',
+                        decoding: 'async',
+                        style: hover_image_style,
+                        alt: ''
+                    }}
+                  {% endif %}
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag: 'akn-favourites__placeholder' }}
+                {% endif %}
+              </div>
+
+              {% if card_product != blank %}
+                <div class="akn-favourites__meta">
+                  <h3 class="akn-favourites__product-title">{{ card_product.title | escape }}</h3>
+                  {% if section.settings.show_price %}
+                    <div class="akn-favourites__price">
+                      {% render 'price', product_resource: card_product, show_sale_price_first: true %}
+                    </div>
+                  {% endif %}
+                </div>
+              {% endif %}
+
+            {% if card_product != blank %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+
+      {% if section.settings.link_label != blank and section.settings.link_url != blank %}
+        <div class="akn-favourites__footer">
+          <a class="akn-favourites__footer-link" href="{{ section.settings.link_url }}">
+            {{ section.settings.link_label | escape }}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endif %}
+
+{% stylesheet %}
+  /* CUSTOM [AJ-006] — Styles locaux ; aucun composant produit global n’est sollicité. */
+  .akn-favourites {
+    --akn-favourites-accent: #8c5e24;
+    display: grid;
+    min-inline-size: 0;
+    color: var(--color-foreground);
+  }
+
+  .akn-favourites__inner {
+    display: grid;
+    min-inline-size: 0;
+    padding-block: 92px 96px;
+  }
+
+  .akn-favourites__header {
+    display: grid;
+    gap: 8px;
+    min-inline-size: 0;
+    margin-block-end: 32px;
+  }
+
+  .akn-favourites__eyebrow,
+  .akn-favourites__heading,
+  .akn-favourites__product-title,
+  .akn-favourites__price {
+    min-inline-size: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .akn-favourites__eyebrow {
+    color: var(--akn-favourites-accent);
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--sm);
+    font-style: var(--font-body--style);
+    font-weight: var(--font-body--weight);
+    line-height: 1.3;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .akn-favourites__heading {
+    font-family: var(--font-h2--family);
+    font-size: min(var(--font-h2--size), clamp(2.5rem, 4.4vw, 4.75rem));
+    font-style: var(--font-h2--style);
+    font-weight: var(--font-h2--weight);
+    line-height: var(--font-h2--line-height);
+    letter-spacing: var(--font-h2--letter-spacing);
+    text-transform: var(--font-h2--case);
+  }
+
+  .akn-favourites__track {
+    display: grid;
+    grid-template-columns: repeat(var(--akn-favourites-columns), minmax(0, 1fr));
+    gap: 36px clamp(20px, 1.7vw, 24px);
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .akn-favourites__card,
+  .akn-favourites__card-link,
+  .akn-favourites__card-preview {
+    min-inline-size: 0;
+  }
+
+  .akn-favourites__card-link,
+  .akn-favourites__card-preview {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .akn-favourites__card-link:focus-visible {
+    outline: 3px solid var(--akn-favourites-accent);
+    outline-offset: 4px;
+  }
+
+  .akn-favourites__media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    inline-size: 100%;
+    overflow: hidden;
+  }
+
+  .akn-favourites__picture,
+  .akn-favourites__image,
+  .akn-favourites__placeholder {
+    position: absolute;
+    inset: 0;
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .akn-favourites__image {
+    object-fit: cover;
+    object-position: var(--akn-favourites-image-position, center center);
+  }
+
+  .akn-favourites__image--hover {
+    display: none;
+    opacity: 0;
+  }
+
+  .akn-favourites__placeholder {
+    color: rgb(var(--color-foreground-rgb) / 0.18);
+  }
+
+  .akn-favourites__meta {
+    display: grid;
+    gap: 5px;
+    padding-block-start: 13px;
+  }
+
+  .akn-favourites__product-title {
+    font-family: var(--font-h4--family);
+    font-size: min(var(--font-h4--size), clamp(1.25rem, 1.7vw, 1.75rem));
+    font-style: var(--font-h4--style);
+    font-weight: var(--font-h4--weight);
+    line-height: var(--font-h4--line-height);
+    letter-spacing: var(--font-h4--letter-spacing);
+    text-transform: var(--font-h4--case);
+  }
+
+  .akn-favourites__price {
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--md);
+    font-style: var(--font-body--style);
+    font-weight: var(--font-body--weight);
+    line-height: 1.45;
+  }
+
+  .akn-favourites__price [ref='priceContainer'] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+  }
+
+  .akn-favourites__footer {
+    display: flex;
+    justify-content: center;
+    margin-block-start: 40px;
+    text-align: center;
+  }
+
+  .akn-favourites__footer-link {
+    min-block-size: 44px;
+    padding-block: 10px;
+    color: var(--akn-favourites-accent);
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--md);
+    font-style: var(--font-body--style);
+    font-weight: var(--font-body--weight);
+    line-height: 1.5;
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.35em;
+  }
+
+  .akn-favourites__footer-link:focus-visible {
+    outline: 3px solid var(--akn-favourites-accent);
+    outline-offset: 3px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .akn-favourites--image-change .akn-favourites__image--hover {
+      display: block;
+      transition: opacity 225ms ease;
+    }
+
+    .akn-favourites--image-change .akn-favourites__card-link--has-hover:focus-visible .akn-favourites__image--hover {
+      opacity: 1;
+    }
+  }
+
+  @media screen and (min-width: 750px) and (hover: hover) and (pointer: fine) {
+    .akn-favourites--image-change .akn-favourites__card-link--has-hover:hover .akn-favourites__image--hover {
+      opacity: 1;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .akn-favourites__inner {
+      padding-block: 56px 68px;
+    }
+
+    .akn-favourites__header {
+      margin-block-end: 24px;
+    }
+
+    .akn-favourites__heading {
+      font-size: min(var(--font-h2--size), clamp(2.25rem, 11vw, 3.5rem));
+    }
+
+    .akn-favourites__image--primary {
+      object-position: var(--akn-favourites-mobile-image-position, var(--akn-favourites-image-position, center center));
+    }
+
+    .akn-favourites__track {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 84%;
+      align-items: start;
+      gap: 14px;
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .akn-favourites__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .akn-favourites__card {
+      scroll-snap-align: start;
+      scroll-snap-stop: normal;
+    }
+
+    .akn-favourites__product-title {
+      font-size: min(var(--font-h4--size), clamp(1.25rem, 6vw, 1.65rem));
+    }
+
+    .akn-favourites__footer {
+      margin-block-start: 30px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .akn-favourites--image-change .akn-favourites__image--hover {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:akn_favourites.name",
+  "class": "akn-favourites-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:akn_favourites.groups.content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:akn_favourites.labels.eyebrow",
+      "default": "t:akn_favourites.defaults.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:akn_favourites.labels.title",
+      "default": "t:akn_favourites.defaults.title"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:akn_favourites.labels.background_color",
+      "default": "#F2E9DC"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:akn_favourites.labels.text_color",
+      "default": "#2B211B"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_favourites.groups.display"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_image_change",
+      "label": "t:akn_favourites.labels.enable_image_change",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "t:akn_favourites.labels.show_price",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:akn_favourites.groups.final_link"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "t:akn_favourites.labels.link_label",
+      "default": "t:akn_favourites.defaults.link_label"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "t:akn_favourites.labels.link_url",
+      "default": "/collections/all"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "t:akn_favourites.block_name",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "t:akn_favourites.labels.product"
+        },
+        {
+          "type": "image_picker",
+          "id": "editorial_image",
+          "label": "t:akn_favourites.labels.editorial_image"
+        },
+        {
+          "type": "image_picker",
+          "id": "hover_image",
+          "label": "t:akn_favourites.labels.hover_image",
+          "info": "t:akn_favourites.help.hover_image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "t:akn_favourites.labels.mobile_image",
+          "info": "t:akn_favourites.help.mobile_image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:akn_favourites.name",
+      "category": "t:akn_favourites.category",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

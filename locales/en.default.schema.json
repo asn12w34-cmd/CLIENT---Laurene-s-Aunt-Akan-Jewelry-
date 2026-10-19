@@ -252,9 +252,6 @@
     "video_external": "Use a YouTube or Vimeo URL",
     "pills_usage": "Used for applied filters, discount codes, and search suggestions",
     "media_type_info": "Features are populated from your menu links",
-    "akn_link": {
-      "link_requirements": "The link is displayed only when both its text and destination are provided."
-    },
     "akn_ctas": {
       "button_requirements": "The button is displayed only when it is enabled and both its text and link are provided.",
       "desktop_interaction": "Interaction colours apply on hover, keyboard focus, and press.",
@@ -429,8 +426,7 @@
     "disclosures": "Disclosures",
     "pills": "Pills",
     "comparison_slider": "Comparison slider",
-    "akn_hero_buttons": "AKAN Hero buttons",
-    "akn_editorial_link": "AKAN — Editorial link"
+    "akn_hero_buttons": "AKAN Hero buttons"
   },
   "options": {
     "above_carousel": "Above carousel",
@@ -1231,18 +1227,6 @@
     "top_row_text": "Top row text",
     "bottom_row_background": "Bottom row background",
     "bottom_row_text": "Bottom row text",
-    "akn_link": {
-      "content_header": "Content",
-      "link_text": "Link text",
-      "link_url": "Destination link",
-      "desktop_header": "Desktop",
-      "show_desktop": "Show on desktop",
-      "mobile_header": "Mobile",
-      "show_mobile": "Show on mobile",
-      "alignment": "Alignment",
-      "color": "Text, arrow, and underline color",
-      "font_size": "Text size"
-    },
     "akn_ctas": {
       "desktop_layout_header": "Desktop — Layout",
       "desktop_primary_header": "Desktop — Primary button",
@@ -1394,6 +1378,39 @@
       "earrings": "Boucles d’oreilles",
       "bracelets": "Bracelets",
       "cta": "Découvrir →"
+    }
+  },
+  "akn_favourites": {
+    "name": "AKAN — Our favourites",
+    "category": "Products",
+    "block_name": "Product card",
+    "groups": {
+      "content": "Text and colours",
+      "display": "Display",
+      "final_link": "Final link"
+    },
+    "labels": {
+      "eyebrow": "Eyebrow",
+      "title": "Title",
+      "background_color": "Background colour",
+      "text_color": "Text colour",
+      "enable_image_change": "Enable image change on desktop",
+      "show_price": "Show price",
+      "link_label": "Final link label",
+      "link_url": "Final link destination",
+      "product": "Product",
+      "editorial_image": "Editorial image",
+      "hover_image": "Image shown on hover",
+      "mobile_image": "Mobile image"
+    },
+    "help": {
+      "hover_image": "Optional. The product’s featured image is used as a fallback. Similar framing keeps the transition stable.",
+      "mobile_image": "Optional. The editorial image, then the product’s featured image, are used as fallbacks."
+    },
+    "defaults": {
+      "eyebrow": "SELECTION",
+      "title": "Our favourites",
+      "link_label": "Shop all →"
     }
   }
 }

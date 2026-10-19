@@ -250,6 +250,54 @@
         "mobile_card_width": 88
       }
     },
+    "akn_favourites_T3qzzp": {
+      "type": "akn-favourites",
+      "blocks": {
+        "product_znQXHL": {
+          "type": "product",
+          "settings": {
+            "product": "boucle-doreille-2",
+            "editorial_image": "shopify://shop_images/Mirrored_gold_crescent_earrings-1.png",
+            "hover_image": "shopify://shop_images/Ivory_cowrie_shell_gold_hoop-1.png",
+            "mobile_image": "shopify://shop_images/Ivory_cowrie_shell_gold_hoop-1.png"
+          }
+        },
+        "product_XNpTCe": {
+          "type": "product",
+          "settings": {
+            "product": "bracelet-3",
+            "editorial_image": "shopify://shop_images/Asymmetric_Gold_Cuff_with_Floating_Bead-4.png",
+            "hover_image": "shopify://shop_images/Grey_braided_bracelet_with_gold_centerpie.png",
+            "mobile_image": "shopify://shop_images/Grey_braided_bracelet_with_gold_centerpie.png"
+          }
+        },
+        "product_caBYfk": {
+          "type": "product",
+          "settings": {
+            "product": "boucle-doreille-3",
+            "editorial_image": "shopify://shop_images/Satin_Gold_Fan_Earrings-3.png",
+            "hover_image": "shopify://shop_images/Gold_crystal_drop_earring_on_cocoa-2.png",
+            "mobile_image": "shopify://shop_images/Gold_crystal_drop_earring_on_cocoa-2.png"
+          }
+        }
+      },
+      "block_order": [
+        "product_znQXHL",
+        "product_XNpTCe",
+        "product_caBYfk"
+      ],
+      "name": "t:akn_favourites.name",
+      "settings": {
+        "eyebrow": "SÉLECTION",
+        "title": "Nos coups de cœur",
+        "background_color": "#F2E9DC",
+        "text_color": "#2B211B",
+        "enable_image_change": true,
+        "show_price": true,
+        "link_label": "Voir toute la boutique →",
+        "link_url": "shopify://collections/all"
+      }
+    },
     "hero_V9DhBT": {
       "type": "hero",
       "blocks": {
@@ -389,11 +437,11 @@
                 "link_url": "shopify://pages/contact",
                 "show_desktop": true,
                 "desktop_alignment": "center",
-                "desktop_color": "#F7F3EB",
+                "desktop_color": "#f7f3eb",
                 "desktop_font_size": 12,
                 "show_mobile": true,
                 "mobile_alignment": "center",
-                "mobile_color": "#E6B74F",
+                "mobile_color": "#e6b74f",
                 "mobile_font_size": 10
               },
               "blocks": {}
@@ -448,6 +496,7 @@
   "order": [
     "hero_iyt6zg",
     "akn_univers_LRbPUh",
+    "akn_favourites_T3qzzp",
     "hero_V9DhBT"
   ]
 }

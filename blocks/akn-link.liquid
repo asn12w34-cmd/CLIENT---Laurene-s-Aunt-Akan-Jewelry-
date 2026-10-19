@@ -21,7 +21,6 @@ CUSTOM FILE [AJ-006] — Responsive editorial link for the AKAN Hero panel
 %}
 
 {% if should_render %}
-  {% # CUSTOM START [AJ-006] — Shared link content with independent responsive presentation. %}
   <div
     class="akn-link{% unless show_desktop %} akn-link--desktop-hidden{% endunless %}{% unless show_mobile %} akn-link--mobile-hidden{% endunless %}"
     style="
@@ -54,11 +53,9 @@ CUSTOM FILE [AJ-006] — Responsive editorial link for the AKAN Hero panel
       </div>
     {% endif %}
   </div>
-  {% # CUSTOM END [AJ-006] %}
 {% endif %}
 
 {% stylesheet %}
-  /* CUSTOM START [AJ-006] — Content-width editorial link with responsive colour, size, and alignment. */
   .hero__content-wrapper .akn-link {
     box-sizing: border-box;
     inline-size: 100%;
@@ -197,7 +194,6 @@ CUSTOM FILE [AJ-006] — Responsive editorial link for the AKAN Hero panel
       transform: none;
     }
   }
-  /* CUSTOM END [AJ-006] */
 {% endstylesheet %}
 
 {% schema %}
