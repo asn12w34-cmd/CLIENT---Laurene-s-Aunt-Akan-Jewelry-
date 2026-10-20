@@ -200,9 +200,9 @@
         "category_MDJ6Pz": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/Elegant_antique-gold_earring_loops-2.png",
-            "alternative_image": "shopify://shop_images/Ivory_cowrie_shell_gold_hoop-1.png",
-            "title": "Boucles d’oreilles",
+            "image": "shopify://shop_images/Burgundy_Canvas_with_Gold_Zigzags-3.png",
+            "alternative_image": "shopify://shop_images/Centered_sculptural_gold_earring-1.png",
+            "title": "Boucles d'oreilles",
             "cta": "Découvrir →",
             "link": "shopify://collections/boucle-doreilles",
             "text_color": "",
@@ -215,8 +215,8 @@
         "category_H8jLPX": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/Burgundy_Canvas_with_Gold_Zigzags-3.png",
-            "alternative_image": "shopify://shop_images/Grey_braided_bracelet_with_gold_centerpie.png",
+            "image": "shopify://shop_images/Elegant_antique-gold_earring_loops-2.png",
+            "alternative_image": "shopify://shop_images/Braided_Bracelet_with_Gold_Symbol-2.png",
             "title": "Bracelets",
             "cta": "Découvrir →",
             "link": "shopify://collections/bracelets",
@@ -257,27 +257,21 @@
           "type": "product",
           "settings": {
             "product": "boucle-doreille-2",
-            "editorial_image": "shopify://shop_images/Mirrored_gold_crescent_earrings-1.png",
-            "hover_image": "shopify://shop_images/Ivory_cowrie_shell_gold_hoop-1.png",
-            "mobile_image": "shopify://shop_images/Ivory_cowrie_shell_gold_hoop-1.png"
+            "editorial_image": "shopify://shop_images/Ivory_cowrie_shell_gold_hoop-1.png"
           }
         },
         "product_XNpTCe": {
           "type": "product",
           "settings": {
             "product": "bracelet-3",
-            "editorial_image": "shopify://shop_images/Asymmetric_Gold_Cuff_with_Floating_Bead-4.png",
-            "hover_image": "shopify://shop_images/Grey_braided_bracelet_with_gold_centerpie.png",
-            "mobile_image": "shopify://shop_images/Grey_braided_bracelet_with_gold_centerpie.png"
+            "editorial_image": "shopify://shop_images/Grey_braided_bracelet_with_gold_centerpie.png"
           }
         },
         "product_caBYfk": {
           "type": "product",
           "settings": {
             "product": "boucle-doreille-3",
-            "editorial_image": "shopify://shop_images/Satin_Gold_Fan_Earrings-3.png",
-            "hover_image": "shopify://shop_images/Gold_crystal_drop_earring_on_cocoa-2.png",
-            "mobile_image": "shopify://shop_images/Gold_crystal_drop_earring_on_cocoa-2.png"
+            "editorial_image": "shopify://shop_images/Gold_and_Crystal_Filigree_Earring.png"
           }
         }
       },
@@ -290,8 +284,8 @@
       "settings": {
         "eyebrow": "SÉLECTION",
         "title": "Nos coups de cœur",
-        "background_color": "#F2E9DC",
-        "text_color": "#2B211B",
+        "background_color": "#f2e9dc",
+        "text_color": "#2b211b",
         "enable_image_change": true,
         "show_price": true,
         "link_label": "Voir toute la boutique →",
