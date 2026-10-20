@@ -1412,5 +1412,52 @@
       "title": "Our favourites",
       "link_label": "Shop all →"
     }
+  },
+  "akn_trust": {
+    "name": "AKAN — Trust bar",
+    "category": "Footer",
+    "block_name": "Service",
+    "groups": {
+      "colors": "Colours",
+      "desktop": "Desktop dimensions and spacing",
+      "mobile": "Mobile dimensions and spacing"
+    },
+    "labels": {
+      "background_color": "Background",
+      "icon_color": "Icons",
+      "title_color": "Titles",
+      "text_color": "Supporting text",
+      "separator_color": "Separators",
+      "icon_size_desktop": "Icon size",
+      "padding_desktop": "Vertical spacing",
+      "icon_size_mobile": "Icon size",
+      "padding_mobile": "Vertical spacing",
+      "show_mobile_chevrons": "Show chevrons for linked services",
+      "title": "Title",
+      "text": "Supporting text",
+      "icon": "Icon",
+      "image": "Custom icon image",
+      "link": "Link"
+    },
+    "options": {
+      "security": "Security or payment",
+      "delivery": "Parcel or delivery",
+      "contact": "Conversation or contact",
+      "none": "No icon"
+    },
+    "help": {
+      "image": "Optional. This image replaces the selected icon and is treated as decorative.",
+      "link": "When a link and visible text are added, the entire service becomes clickable. Without a link, it remains static."
+    },
+    "defaults": {
+      "service_title": "SERVICE",
+      "service_text": "Useful information",
+      "payment_title": "PAYMENT",
+      "payment_text": "Card and Mobile Money",
+      "delivery_title": "DELIVERY",
+      "delivery_text": "Clear information",
+      "contact_title": "CONTACT",
+      "contact_text": "WhatsApp contact"
+    }
   }
 }

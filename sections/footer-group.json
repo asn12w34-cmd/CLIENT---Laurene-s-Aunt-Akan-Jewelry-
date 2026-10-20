@@ -11,6 +11,56 @@
   "type": "footer",
   "name": "t:names.footer",
   "sections": {
+    "akn_trust_N87e9j": {
+      "type": "akn-trust",
+      "blocks": {
+        "service_YfUd4M": {
+          "type": "service",
+          "settings": {
+            "title": "PAIEMENT",
+            "text": "Carte et Mobile Money",
+            "icon": "security",
+            "link": ""
+          }
+        },
+        "service_deAVDr": {
+          "type": "service",
+          "settings": {
+            "title": "LIVRAISON",
+            "text": "Informations claires",
+            "icon": "delivery",
+            "link": ""
+          }
+        },
+        "service_ybDLfN": {
+          "type": "service",
+          "settings": {
+            "title": "CONTACT",
+            "text": "Contact WhatsApp",
+            "icon": "contact",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "service_YfUd4M",
+        "service_deAVDr",
+        "service_ybDLfN"
+      ],
+      "name": "t:akn_trust.name",
+      "settings": {
+        "background_color": "#1B1714",
+        "icon_color": "#C9A56A",
+        "title_color": "#F6EEE2",
+        "text_color": "#D6C7B7",
+        "separator_color": "#7A634D",
+        "icon_size_desktop": 34,
+        "padding_desktop": 28,
+        "icon_size_mobile": 30,
+        "padding_mobile": 18,
+        "show_mobile_chevrons": true
+      }
+    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -349,6 +399,7 @@
     }
   },
   "order": [
+    "akn_trust_N87e9j",
     "footer",
     "utilities"
   ]

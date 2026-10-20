@@ -1315,5 +1315,52 @@
       "title": "Nos coups de cœur",
       "link_label": "Voir toute la boutique →"
     }
+  },
+  "akn_trust": {
+    "name": "AKAN — Réassurance",
+    "category": "Pied de page",
+    "block_name": "Service",
+    "groups": {
+      "colors": "Couleurs",
+      "desktop": "Dimensions et espacements — Ordinateur",
+      "mobile": "Dimensions et espacements — Mobile"
+    },
+    "labels": {
+      "background_color": "Arrière-plan",
+      "icon_color": "Icônes",
+      "title_color": "Titres",
+      "text_color": "Sous-textes",
+      "separator_color": "Séparateurs",
+      "icon_size_desktop": "Taille des icônes",
+      "padding_desktop": "Espacement vertical",
+      "icon_size_mobile": "Taille des icônes",
+      "padding_mobile": "Espacement vertical",
+      "show_mobile_chevrons": "Afficher les chevrons des services liés",
+      "title": "Titre",
+      "text": "Sous-texte",
+      "icon": "Icône",
+      "image": "Image d’icône personnalisée",
+      "link": "Lien"
+    },
+    "options": {
+      "security": "Sécurité ou paiement",
+      "delivery": "Colis ou livraison",
+      "contact": "Discussion ou contact",
+      "none": "Aucune icône"
+    },
+    "help": {
+      "image": "Facultative. Cette image remplace l’icône sélectionnée et est considérée comme décorative.",
+      "link": "Avec un lien et un texte visible, toute la surface du service devient cliquable. Sans lien, elle reste statique."
+    },
+    "defaults": {
+      "service_title": "SERVICE",
+      "service_text": "Information utile",
+      "payment_title": "PAIEMENT",
+      "payment_text": "Carte et Mobile Money",
+      "delivery_title": "LIVRAISON",
+      "delivery_text": "Informations claires",
+      "contact_title": "CONTACT",
+      "contact_text": "Contact WhatsApp"
+    }
   }
 }
