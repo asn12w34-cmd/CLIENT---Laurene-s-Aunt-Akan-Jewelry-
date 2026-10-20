@@ -1400,10 +1400,12 @@
       "link_url": "Final link destination",
       "product": "Product",
       "editorial_image": "Editorial image",
+      "enable_card_image_change": "Enable image change on desktop",
       "hover_image": "Image shown on hover",
       "mobile_image": "Mobile image"
     },
     "help": {
+      "enable_card_image_change": "When this option is disabled, this card keeps its editorial image on hover.",
       "hover_image": "Optional. The product’s featured image is used as a fallback. Similar framing keeps the transition stable.",
       "mobile_image": "Optional. The editorial image, then the product’s featured image, are used as fallbacks."
     },

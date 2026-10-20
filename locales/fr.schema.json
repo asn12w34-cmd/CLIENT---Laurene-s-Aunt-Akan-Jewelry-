@@ -1303,10 +1303,12 @@
       "link_url": "Destination du lien final",
       "product": "Produit",
       "editorial_image": "Image éditoriale",
+      "enable_card_image_change": "Activer le changement d’image sur ordinateur",
       "hover_image": "Image affichée au survol",
       "mobile_image": "Image mobile"
     },
     "help": {
+      "enable_card_image_change": "Lorsque cette option est désactivée, cette carte conserve son image éditoriale au survol.",
       "hover_image": "Facultative. À défaut, l’image principale du produit est utilisée. Un cadrage proche de l’image éditoriale stabilise la transition.",
       "mobile_image": "Facultative. À défaut, l’image éditoriale puis l’image principale du produit sont utilisées."
     },

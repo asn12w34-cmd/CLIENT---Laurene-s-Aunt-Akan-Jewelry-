@@ -85,9 +85,11 @@
             endif
 
             assign has_hover_image = false
-            if section.settings.enable_image_change and primary_image != blank and hover_image != blank
-              if hover_image.id != primary_image.id
-                assign has_hover_image = true
+            if section.settings.enable_image_change and block.settings.enable_card_image_change
+              if primary_image != blank and hover_image != blank
+                if hover_image.id != primary_image.id
+                  assign has_hover_image = true
+                endif
               endif
             endif
           %}
@@ -561,6 +563,13 @@
           "type": "image_picker",
           "id": "editorial_image",
           "label": "t:akn_favourites.labels.editorial_image"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_card_image_change",
+          "label": "t:akn_favourites.labels.enable_card_image_change",
+          "info": "t:akn_favourites.help.enable_card_image_change",
+          "default": true
         },
         {
           "type": "image_picker",

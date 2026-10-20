@@ -257,21 +257,24 @@
           "type": "product",
           "settings": {
             "product": "boucle-doreille-2",
-            "editorial_image": "shopify://shop_images/Ivory_cowrie_shell_gold_hoop-1.png"
+            "editorial_image": "shopify://shop_images/Ivory_cowrie_shell_gold_hoop-1.png",
+            "enable_card_image_change": false
           }
         },
         "product_XNpTCe": {
           "type": "product",
           "settings": {
             "product": "bracelet-3",
-            "editorial_image": "shopify://shop_images/Centered_braided_bracelet_on_warm_backdrop.png"
+            "editorial_image": "shopify://shop_images/Centered_braided_bracelet_on_warm_backdrop.png",
+            "enable_card_image_change": false
           }
         },
         "product_caBYfk": {
           "type": "product",
           "settings": {
             "product": "boucle-doreille-3",
-            "editorial_image": "shopify://shop_images/Gold_and_Crystal_Filigree_Earring.png"
+            "editorial_image": "shopify://shop_images/Gold_and_Crystal_Filigree_Earring.png",
+            "enable_card_image_change": false
           }
         }
       },
