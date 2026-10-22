@@ -11,7 +11,8 @@
     {% endstyle %}
   {% endif %}
   {% liquid
-    assign social_links = 'facebook_url,instagram_url,youtube_url,tiktok_url,twitter_url,threads_url,linkedin_url,bluesky_url,snapchat_url,pinterest_url,tumblr_url,vimeo_url,custom_url' | split: ','
+    # CUSTOM [AJ-011] — Add WhatsApp to the native social-links workflow.
+    assign social_links = 'facebook_url,instagram_url,whatsapp_url,youtube_url,tiktok_url,twitter_url,threads_url,linkedin_url,bluesky_url,snapchat_url,pinterest_url,tumblr_url,vimeo_url,custom_url' | split: ','
   %}
 
   {% for link_key in social_links %}
@@ -26,6 +27,8 @@
             assign platform = 'facebook'
           when 'instagram_url'
             assign platform = 'instagram'
+          when 'whatsapp_url'
+            assign platform = 'whatsapp'
           when 'youtube_url'
             assign platform = 'youtube'
           when 'tiktok_url'
@@ -69,6 +72,11 @@
         unless render_icon
           assign has_profile = true
         endunless
+
+        assign platform_label = platform | capitalize
+        if platform == 'whatsapp'
+          assign platform_label = 'WhatsApp'
+        endif
       endif
     %}
 
@@ -86,7 +94,7 @@
             href="{{ link_url }}"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="{{ platform | capitalize }}"
+            aria-label="{{ platform_label }}"
             {% unless has_profile %}
               {% if request.design_mode %}
                 onclick="return false;"
@@ -94,7 +102,7 @@
               {% endif %}
             {% endunless %}
           >
-            <span class="social-icons__icon-label">{{ platform | capitalize }}</span>
+            <span class="social-icons__icon-label">{{ platform_label }}</span>
             {% if render_icon %}
               <svg
                 class="social-icons__icon icon-default"
@@ -195,6 +203,11 @@
       "type": "url",
       "id": "instagram_url",
       "label": "t:options.instagram"
+    },
+    {
+      "type": "url",
+      "id": "whatsapp_url",
+      "label": "t:options.whatsapp"
     },
     {
       "type": "url",

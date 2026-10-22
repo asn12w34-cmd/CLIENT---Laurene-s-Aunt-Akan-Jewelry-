@@ -1,0 +1,621 @@
+{% comment %}
+  CUSTOM FILE [AJ-009] — Barre inférieure du pied de page AKAN
+
+  Section contract.
+  Barre autonome pour le groupe Footer : copyright et localisation à gauche, paiements à droite.
+  La localisation réutilise le formulaire et le composant natifs d’Atelier ; les logos ajoutés restent optionnels.
+  @example
+  Ajouter « AKAN — Barre inférieure » sous le pied de page principal et supprimer « Politiques et liens ».
+{% endcomment %}
+
+{% liquid
+  assign color_scope = 'akn-footer-utilities-' | append: section.id
+
+  assign show_language = false
+  if section.settings.show_language and localization.available_languages.size > 1
+    assign show_language = true
+  endif
+
+  assign show_country = false
+  if section.settings.show_country and localization.available_countries.size > 1
+    assign show_country = true
+  endif
+
+  assign manual_logo_count = 0
+  for block in section.blocks
+    if block.settings.show_logo and block.settings.image != blank
+      assign manual_logo_count = manual_logo_count | plus: 1
+    endif
+  endfor
+
+  assign show_dynamic_payment_icons = false
+  if section.settings.show_dynamic_payment_icons and shop.enabled_payment_types.size > 0
+    assign show_dynamic_payment_icons = true
+  endif
+
+  assign show_payment_content = false
+  if section.settings.show_payment_group
+    if show_dynamic_payment_icons or manual_logo_count > 0
+      assign show_payment_content = true
+    endif
+  endif
+
+  render 'contrast-override', background_color: section.settings.background_color, text_color: section.settings.text_color, border_color: section.settings.separator_color, section_id: color_scope, preset: 'ui'
+%}
+
+<div class="section-background color-custom-{{ color_scope }}"></div>
+<div
+  class="akn-footer-utilities color-custom-{{ color_scope }}"
+  style="
+    --akn-footer-utilities-separator: {{ section.settings.separator_color }};
+    --akn-footer-utilities-padding-desktop: {{ section.settings.padding_desktop }}px;
+    --akn-footer-utilities-padding-mobile: {{ section.settings.padding_mobile }}px;
+    --akn-footer-utilities-column-gap: {{ section.settings.column_gap }}px;
+    --akn-footer-utilities-payment-gap: {{ section.settings.payment_gap }}px;
+    --akn-footer-utilities-manual-logo-height: {{ section.settings.manual_logo_height }}px;
+  "
+>
+  <div class="section section--page-width akn-footer-utilities__inner">
+    <div class="akn-footer-utilities__left">
+      {% if section.settings.show_copyright %}
+        <p class="akn-footer-utilities__copyright">
+          <span>&copy; {{ 'now' | date: '%Y' }}</span>
+          <a href="{{ routes.root_url }}">{{ shop.name | escape }}</a>
+          {%- if section.settings.copyright_text != blank -%}
+            <span>. {{ section.settings.copyright_text | escape }}</span>
+          {%- endif -%}
+        </p>
+      {% endif %}
+
+      {% if show_language or show_country %}
+        <div class="akn-footer-utilities__localization" aria-label="{{ 'content.localization_region_and_language' | t | escape }}">
+          {% if show_language %}
+            <div class="akn-footer-utilities__language">
+              {% render 'localization-form',
+                show_country: false,
+                show_language: true,
+                localization_style: 'akn-footer-language',
+                form_id: section.id
+              %}
+            </div>
+          {% endif %}
+
+          {% if show_language and show_country %}
+            <span class="akn-footer-utilities__localization-divider" aria-hidden="true"></span>
+          {% endif %}
+
+          {% if show_country %}
+            {% assign country_panel_id = 'AknFooterCountryPanel-' | append: section.id %}
+            <dropdown-localization-component class="akn-footer-utilities__country">
+              <button
+                type="button"
+                class="button button-unstyled akn-footer-utilities__country-button"
+                aria-expanded="false"
+                aria-controls="{{ country_panel_id }}"
+                ref="button"
+                on:click="/toggleSelector"
+              >
+                <span class="visually-hidden">{{ 'accessibility.country_region' | t }}</span>
+                <span aria-hidden="true">{{ localization.country.currency.iso_code }}</span>
+                <span class="svg-wrapper icon-caret" aria-hidden="true">
+                  {{- 'icon-caret.svg' | inline_asset_content -}}
+                </span>
+              </button>
+
+              <div
+                id="{{ country_panel_id }}"
+                class="akn-footer-utilities__country-panel"
+                hidden
+                ref="panel"
+              >
+                {% render 'localization-form',
+                  show_country: true,
+                  show_language: false,
+                  localization_style: 'akn-footer-country',
+                  form_id: section.id
+                %}
+              </div>
+            </dropdown-localization-component>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    {% if show_payment_content %}
+      {% assign payment_heading_id = 'AknFooterPaymentHeading-' | append: section.id %}
+      <div
+        class="akn-footer-utilities__payments"
+        role="group"
+        {% if section.settings.payment_heading != blank %}
+          aria-labelledby="{{ payment_heading_id }}"
+        {% else %}
+          aria-label="{{ 'blocks.payment_methods' | t | escape }}"
+        {% endif %}
+      >
+        {% if section.settings.payment_heading != blank %}
+          <p class="akn-footer-utilities__payment-heading" id="{{ payment_heading_id }}">
+            {{ section.settings.payment_heading | escape }}
+          </p>
+        {% endif %}
+        <ul class="akn-footer-utilities__payment-list" role="list">
+          {% if show_dynamic_payment_icons %}
+            {% for type in shop.enabled_payment_types %}
+              <li class="akn-footer-utilities__payment-item akn-footer-utilities__payment-item--shopify">
+                {{ type | payment_type_svg_tag: class: 'icon icon--full-color akn-footer-utilities__payment-icon' }}
+              </li>
+            {% endfor %}
+          {% endif %}
+
+          {% for block in section.blocks %}
+            {% if block.settings.show_logo and block.settings.image != blank %}
+              {% liquid
+                assign payment_alt = block.settings.alt_text | strip
+                if payment_alt == blank
+                  assign payment_alt = block.settings.image.alt
+                endif
+              %}
+              <li
+                class="akn-footer-utilities__payment-item akn-footer-utilities__payment-item--manual"
+                {{ block.shopify_attributes }}
+              >
+                {{
+                  block.settings.image
+                  | image_url: height: 96
+                  | image_tag:
+                    widths: '48, 72, 96, 144, 192',
+                    sizes: '64px',
+                    loading: 'lazy',
+                    decoding: 'async',
+                    alt: payment_alt,
+                    class: 'akn-footer-utilities__manual-logo'
+                }}
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  /* CUSTOM [AJ-009] — Barre inférieure claire, isolée du footer principal et sans JavaScript propre. */
+  .akn-footer-utilities {
+    min-inline-size: 0;
+    border-block-start: 1px solid var(--akn-footer-utilities-separator);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .akn-footer-utilities__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--akn-footer-utilities-column-gap);
+    min-inline-size: 0;
+    padding-block: var(--akn-footer-utilities-padding-mobile);
+  }
+
+  .akn-footer-utilities__left,
+  .akn-footer-utilities__payments,
+  .akn-footer-utilities__localization,
+  .akn-footer-utilities__payment-list {
+    min-inline-size: 0;
+  }
+
+  /* CUSTOM [AJ-012] — Correction de l’alignement des éléments du pied de page. */
+  .akn-footer-utilities__inner > * {
+    grid-column: auto;
+  }
+
+  .akn-footer-utilities__left,
+  .akn-footer-utilities__payments {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-self: stretch;
+    gap: var(--gap-md);
+    inline-size: 100%;
+  }
+
+  .akn-footer-utilities__copyright,
+  .akn-footer-utilities__payment-heading {
+    inline-size: 100%;
+    max-inline-size: 100%;
+    margin: 0;
+    color: inherit;
+    font-size: var(--font-size--sm);
+    line-height: 1.45;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  .akn-footer-utilities__copyright a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .akn-footer-utilities__copyright a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .akn-footer-utilities__copyright a:focus-visible,
+  .akn-footer-utilities__country-button:focus-visible,
+  .akn-footer-utilities .localization-form__select:focus-visible {
+    outline: var(--focus-outline-width) solid currentcolor;
+    outline-offset: 3px;
+  }
+
+  .akn-footer-utilities__localization {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap-sm);
+    flex-wrap: wrap;
+  }
+
+  .akn-footer-utilities__localization-divider {
+    inline-size: 1px;
+    block-size: 20px;
+    background-color: var(--akn-footer-utilities-separator);
+  }
+
+  .akn-footer-utilities localization-form-component,
+  .akn-footer-utilities .localization-form,
+  .akn-footer-utilities .language-selector {
+    inline-size: auto;
+  }
+
+  .akn-footer-utilities .language-selector {
+    min-block-size: 44px;
+    padding: 0;
+  }
+
+  .akn-footer-utilities .localization-form__select {
+    max-inline-size: min(48vw, 220px);
+    min-block-size: 44px;
+    padding-inline: var(--padding-xs) calc(var(--icon-size-xs) + var(--padding-sm));
+    background-color: transparent;
+    color: inherit;
+    text-align: start;
+  }
+
+  .akn-footer-utilities .language-selector .svg-wrapper.icon-caret {
+    inset-inline-end: var(--padding-xs);
+  }
+
+  .akn-footer-utilities__country {
+    position: relative;
+    display: block;
+  }
+
+  .akn-footer-utilities__country-button {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+    min-block-size: 44px;
+    padding-inline: var(--padding-xs);
+    color: inherit;
+  }
+
+  .akn-footer-utilities__country-button .svg-wrapper {
+    inline-size: var(--icon-size-xs);
+    block-size: var(--icon-size-xs);
+    transition: transform var(--animation-speed) var(--animation-easing);
+  }
+
+  .akn-footer-utilities__country-button[aria-expanded='true'] .svg-wrapper {
+    transform: rotate(180deg);
+  }
+
+  .akn-footer-utilities__country-panel {
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-end: calc(100% + 10px);
+    z-index: var(--layer-raised);
+    inline-size: min(360px, calc(100vw - 32px));
+    max-block-size: min(440px, 70vh);
+    border: var(--style-border-popover);
+    border-radius: var(--style-border-radius-popover);
+    background-color: var(--color-background);
+    box-shadow: var(--shadow-popover);
+    color: var(--color-foreground);
+    overflow: hidden;
+    translate: -50% 12px;
+    opacity: 0;
+    transition: opacity var(--animation-speed) var(--animation-easing), translate var(--animation-speed) var(--animation-easing), display var(--animation-speed) allow-discrete;
+  }
+
+  .akn-footer-utilities__country-panel:not([hidden]) {
+    translate: -50% 0;
+    opacity: 1;
+  }
+
+  @starting-style {
+    .akn-footer-utilities__country-panel:not([hidden]) {
+      translate: -50% 12px;
+      opacity: 0;
+    }
+  }
+
+  .akn-footer-utilities__country-panel .localization-form__list {
+    max-block-size: min(400px, 64vh);
+  }
+
+  .akn-footer-utilities__payment-heading {
+    font-weight: var(--font-body--weight);
+  }
+
+  .akn-footer-utilities__payment-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--akn-footer-utilities-payment-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .akn-footer-utilities__payment-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 0;
+  }
+
+  .akn-footer-utilities__payment-icon {
+    display: block;
+  }
+
+  .akn-footer-utilities__manual-logo {
+    display: block;
+    inline-size: auto;
+    max-inline-size: 96px;
+    block-size: var(--akn-footer-utilities-manual-logo-height);
+    object-fit: contain;
+  }
+
+  @media screen and (min-width: 750px) {
+    .akn-footer-utilities__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+      align-items: center;
+      padding-block: var(--akn-footer-utilities-padding-desktop);
+    }
+
+    .akn-footer-utilities__left {
+      flex-flow: row wrap;
+      justify-content: flex-start;
+      justify-self: start;
+      gap: var(--gap-lg);
+      inline-size: auto;
+    }
+
+    .akn-footer-utilities__copyright,
+    .akn-footer-utilities__payment-heading {
+      inline-size: auto;
+      text-align: start;
+    }
+
+    .akn-footer-utilities__payments {
+      flex-flow: row wrap;
+      justify-content: flex-end;
+      justify-self: end;
+      gap: var(--gap-sm);
+      inline-size: auto;
+    }
+
+    .akn-footer-utilities__payment-list {
+      justify-content: flex-end;
+    }
+
+    .akn-footer-utilities__country-panel {
+      inset-inline-start: 0;
+      translate: 0 12px;
+    }
+
+    .akn-footer-utilities__country-panel:not([hidden]) {
+      translate: 0 0;
+    }
+
+    @starting-style {
+      .akn-footer-utilities__country-panel:not([hidden]) {
+        translate: 0 12px;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .akn-footer-utilities__country-button .svg-wrapper,
+    .akn-footer-utilities__country-panel {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:akn_footer_utilities.name",
+  "class": "akn-footer-utilities-section",
+  "max_blocks": 8,
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:akn_footer_utilities.groups.copyright"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_copyright",
+      "label": "t:akn_footer_utilities.labels.show_copyright",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "t:akn_footer_utilities.labels.copyright_text",
+      "default": "t:akn_footer_utilities.defaults.copyright_text",
+      "visible_if": "{{ section.settings.show_copyright }}"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_footer_utilities.groups.localization"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_language",
+      "label": "t:akn_footer_utilities.labels.show_language",
+      "info": "t:akn_footer_utilities.help.show_language",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country",
+      "label": "t:akn_footer_utilities.labels.show_country",
+      "info": "t:akn_footer_utilities.help.show_country",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:akn_footer_utilities.groups.shopify_payments"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_group",
+      "label": "t:akn_footer_utilities.labels.show_payment_group",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "payment_heading",
+      "label": "t:akn_footer_utilities.labels.payment_heading",
+      "default": "t:akn_footer_utilities.defaults.payment_heading",
+      "visible_if": "{{ section.settings.show_payment_group }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_payment_icons",
+      "label": "t:akn_footer_utilities.labels.show_dynamic_payment_icons",
+      "info": "t:akn_footer_utilities.help.dynamic_payment_icons",
+      "default": true,
+      "visible_if": "{{ section.settings.show_payment_group }}"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_footer_utilities.groups.colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:akn_footer_utilities.labels.background_color",
+      "default": "#F7F1E8"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:akn_footer_utilities.labels.text_color",
+      "default": "#2B211B"
+    },
+    {
+      "type": "color",
+      "id": "separator_color",
+      "label": "t:akn_footer_utilities.labels.separator_color",
+      "default": "#D8CBBB"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_footer_utilities.groups.spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_desktop",
+      "label": "t:akn_footer_utilities.labels.padding_desktop",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "t:akn_footer_utilities.labels.padding_mobile",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "t:akn_footer_utilities.labels.column_gap",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "payment_gap",
+      "label": "t:akn_footer_utilities.labels.payment_gap",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "manual_logo_height",
+      "label": "t:akn_footer_utilities.labels.manual_logo_height",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "blocks": [
+    {
+      "type": "payment_logo",
+      "name": "t:akn_footer_utilities.block_name",
+      "settings": [
+        {
+          "type": "header",
+          "content": "t:akn_footer_utilities.groups.manual_logos"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_logo",
+          "label": "t:akn_footer_utilities.labels.show_logo",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:akn_footer_utilities.labels.logo_image",
+          "info": "t:akn_footer_utilities.help.logo_image",
+          "visible_if": "{{ block.settings.show_logo }}"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "t:akn_footer_utilities.labels.alt_text",
+          "info": "t:akn_footer_utilities.help.alt_text",
+          "visible_if": "{{ block.settings.show_logo }}"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:akn_footer_utilities.name",
+      "category": "t:akn_footer_utilities.category"
+    }
+  ]
+}
+{% endschema %}

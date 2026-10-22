@@ -35,9 +35,12 @@
       assign has_isolated_grid_item_tablet = true
     endif
   %}
+  {% comment %} CUSTOM START [AJ-009] — Scope the AKAN footer layout without altering native blocks. {% endcomment %}
   <div
     class="
       footer-content
+      footer-content--akan
+      {% if total_blocks == 4 %}footer-content--akan-four-zones{% endif %}
       spacing-style
       {% if has_isolated_grid_item_desktop %}footer-content--isolated-grid-item-desktop{% endif %}
       {% if has_isolated_grid_item_tablet %}footer-content--isolated-grid-item-tablet{% endif %}
@@ -52,6 +55,7 @@
   >
     {% content_for 'blocks' %}
   </div>
+  {% comment %} CUSTOM END [AJ-009] {% endcomment %}
 </div>
 
 {% stylesheet %}
@@ -97,6 +101,82 @@
       grid-column: 1 / -1;
     }
   }
+
+  /* CUSTOM START [AJ-009] — AKAN four-zone footer presentation and lightweight mobile reordering. */
+  .footer-content--akan > *,
+  .footer-content--akan .group-block,
+  .footer-content--akan .group-block-content,
+  .footer-content--akan .menu__details,
+  .footer-content--akan .email-signup-block {
+    min-inline-size: 0;
+  }
+
+  .footer-content--akan .menu__heading,
+  .footer-content--akan .menu__item,
+  .footer-content--akan .email-signup__heading {
+    overflow-wrap: anywhere;
+  }
+
+  @media screen and (max-width: 749px) {
+    .footer-content--akan > * {
+      order: 4;
+    }
+
+    .footer-content--akan > .group-block:has(.social-icons__wrapper) {
+      order: 1;
+    }
+
+    .footer-content--akan > .group-block:has(.email-signup-block) {
+      order: 2;
+    }
+
+    .footer-content--akan > accordion-custom.menu {
+      order: 3;
+    }
+
+    .footer-content--akan .social-icons__wrapper {
+      justify-content: flex-start;
+    }
+
+    .footer-content--akan .menu--accordion .menu__details {
+      border-block-end: 1px solid var(--color-border);
+    }
+
+    .footer-content--akan .menu--accordion .menu__heading {
+      display: flex;
+      align-items: center;
+      min-block-size: 48px;
+      padding-block: var(--padding-sm);
+      cursor: pointer;
+    }
+
+    .footer-content--akan .menu--accordion .menu__heading__accordion {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--gap-md);
+      inline-size: 100%;
+    }
+
+    .footer-content--akan .menu--accordion .menu__heading__toggle {
+      flex: 0 0 auto;
+    }
+
+    .footer-content--akan .menu--accordion .details-content {
+      padding-block-end: var(--padding-lg);
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .footer-content--akan-four-zones {
+      grid-template-columns:
+        minmax(0, 1.25fr)
+        minmax(0, 0.75fr)
+        minmax(0, 0.85fr)
+        minmax(0, 1.25fr);
+    }
+  }
+  /* CUSTOM END [AJ-009] */
 {% endstylesheet %}
 
 {% schema %}

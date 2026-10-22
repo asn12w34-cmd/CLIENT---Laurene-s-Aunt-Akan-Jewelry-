@@ -49,11 +49,11 @@
       ],
       "name": "t:akn_trust.name",
       "settings": {
-        "background_color": "#1B1714",
-        "icon_color": "#C9A56A",
-        "title_color": "#F6EEE2",
-        "text_color": "#D6C7B7",
-        "separator_color": "#7A634D",
+        "background_color": "#1b1714",
+        "icon_color": "#c9a56a",
+        "title_color": "#f6eee2",
+        "text_color": "#d6c7b7",
+        "separator_color": "#7a634d",
         "icon_size_desktop": 34,
         "padding_desktop": 28,
         "icon_size_mobile": 30,
@@ -64,17 +64,184 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "group_acXtYY": {
+        "akn_brand_AJ009": {
           "type": "group",
-          "name": "t:names.group",
+          "name": "Marque AKAN",
           "settings": {
-            "content_direction": "row",
+            "content_direction": "column",
             "vertical_on_mobile": true,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-start",
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 14,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "akn_name_AJ009": {
+              "type": "text",
+              "name": "Nom AKAN",
+              "settings": {
+                "text": "<p>A K A N</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-accent--family)",
+                "font_size": "2rem",
+                "line_height": "tight",
+                "letter_spacing": "normal",
+                "case": "uppercase",
+                "wrap": "balance",
+                "text_color": "#c9a56a",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "akn_intro_AJ009": {
+              "type": "text",
+              "name": "Présentation de la marque",
+              "settings": {
+                "text": "<h6>Des bijoux contemporain&nbsp;</h6><h6>inspirés par l’héritage.</h6>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "1.125rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "#d6c7b7",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "akn_social_AJ009": {
+              "type": "social-links",
+              "name": "Réseaux sociaux",
+              "settings": {
+                "icon_color": "#f6eee2",
+                "facebook_url": "https://www.facebook.com/",
+                "instagram_url": "https://www.instagram.com/akan_jewelry/",
+                "whatsapp_url": "https://wa.me/33754481555?text=Bonjour%2C%20je%20vous%20contacte%20depuis%20le%20site%20AKAN%20Jewelry.",
+                "youtube_url": "",
+                "tiktok_url": "",
+                "twitter_url": "",
+                "threads_url": "",
+                "linkedin_url": "",
+                "bluesky_url": "",
+                "snapchat_url": "",
+                "pinterest_url": "https://www.pinterest.com/",
+                "tumblr_url": "",
+                "vimeo_url": "",
+                "custom_url": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "akn_name_AJ009",
+            "akn_intro_AJ009",
+            "akn_social_AJ009"
+          ]
+        },
+        "akn_shop_AJ009": {
+          "type": "menu",
+          "name": "Boutique",
+          "settings": {
+            "menu": "footer",
+            "heading": "BOUTIQUE",
+            "menu_spacing": 12,
+            "show_as_accordion": true,
+            "accordion_icon": "caret",
+            "accordion_dividers": true,
+            "background_color": "",
+            "text_color": "#f6eee2",
+            "heading_preset": "h5",
+            "heading_font_size": "1.25rem",
+            "link_preset": "",
+            "link_font_size": "0.875rem",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "akn_info_AJ009": {
+          "type": "menu",
+          "name": "Informations",
+          "settings": {
+            "menu": "information-pied-de-page",
+            "heading": "INFORMATIONS",
+            "menu_spacing": 12,
+            "show_as_accordion": true,
+            "accordion_icon": "caret",
+            "accordion_dividers": true,
+            "background_color": "",
+            "text_color": "#f6eee2",
+            "heading_preset": "h5",
+            "heading_font_size": "",
+            "link_preset": "",
+            "link_font_size": "0.875rem",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "akn_newsletter_AJ009": {
+          "type": "group",
+          "name": "Newsletter",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
             "gap": 12,
             "width": "fill",
             "custom_width": 100,
@@ -104,303 +271,188 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "group_MTNPDR": {
-              "type": "group",
-              "name": "t:names.menu",
+            "akn_news_title_AJ009": {
+              "type": "text",
+              "name": "Titre newsletter",
               "settings": {
-                "content_direction": "row",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "flex-start",
-                "vertical_alignment": "flex-start",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "flex-start",
-                "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
-                "width": "custom",
-                "custom_width": 50,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "custom_height": 100,
-                "background_media": "none",
-                "background_color": "",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_color": "",
-                "border_radius": 0,
-                "link": "",
-                "open_in_new_tab": false,
-                "placeholder": "",
+                "text": "<h3>RESTEZ INFORMÉ·E</h3>",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "left",
+                "type_preset": "h5",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "balance",
+                "text_color": "#f6eee2",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
-              "blocks": {
-                "menu_zf63TX": {
-                  "type": "menu",
-                  "name": "t:names.menu",
-                  "settings": {
-                    "menu": "footer",
-                    "heading": "Shop",
-                    "menu_spacing": 12,
-                    "show_as_accordion": false,
-                    "accordion_icon": "caret",
-                    "accordion_dividers": false,
-                    "background_color": "",
-                    "text_color": "",
-                    "heading_preset": "h4",
-                    "link_preset": "h5",
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "menu_H4cHLN": {
-                  "type": "menu",
-                  "name": "t:names.menu",
-                  "settings": {
-                    "menu": "",
-                    "heading": "About us",
-                    "menu_spacing": 12,
-                    "show_as_accordion": false,
-                    "accordion_icon": "caret",
-                    "accordion_dividers": false,
-                    "background_color": "",
-                    "text_color": "",
-                    "heading_preset": "h4",
-                    "link_preset": "h5",
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "menu_HFzgCj": {
-                  "type": "menu",
-                  "name": "t:names.menu",
-                  "settings": {
-                    "menu": "",
-                    "heading": "Connect",
-                    "menu_spacing": 12,
-                    "show_as_accordion": false,
-                    "accordion_icon": "caret",
-                    "accordion_dividers": false,
-                    "background_color": "",
-                    "text_color": "",
-                    "heading_preset": "h4",
-                    "link_preset": "h5",
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "menu_zf63TX",
-                "menu_H4cHLN",
-                "menu_HFzgCj"
-              ]
+              "blocks": {}
             },
-            "group_gz8NPq": {
-              "type": "group",
-              "name": "t:names.email_signup",
+            "akn_news_intro_AJ009": {
+              "type": "text",
+              "name": "Introduction newsletter",
               "settings": {
-                "content_direction": "column",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "flex-start",
-                "vertical_alignment": "center",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "flex-start",
-                "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
-                "width": "custom",
-                "custom_width": 30,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "custom_height": 100,
-                "background_media": "none",
-                "background_color": "",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_color": "",
-                "border_radius": 0,
-                "link": "",
-                "open_in_new_tab": false,
-                "placeholder": "",
+                "text": "<p>Nouveautés et inspirations, directement par e-mail.</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.875rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "#d6c7b7",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
-              "blocks": {
-                "text_jXqmE4": {
-                  "type": "text",
-                  "name": "t:names.heading",
-                  "settings": {
-                    "text": "<h3>Sign up for our newsletter</h3>",
-                    "width": "fit-content",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "h4",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "text_color": "",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 12,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "email_signup_XgpLx7": {
-                  "type": "email-signup",
-                  "name": "t:names.email_signup",
-                  "settings": {
-                    "width": "fill",
-                    "custom_width": 100,
-                    "heading": "",
-                    "heading_text_color": "",
-                    "heading_preset": "h3",
-                    "border_style": "underline",
-                    "input_style": "custom",
-                    "border_width": 1,
-                    "border_radius": 100,
-                    "input_background_color": "{{ settings.color_palette.background }}",
-                    "input_text_color": "{{ settings.color_palette.foreground }}",
-                    "input_border_color": "{{ settings.color_palette.foreground }}",
-                    "input_type_preset": "paragraph",
-                    "style_class": "button-unstyled",
-                    "custom_button_background": "{{ settings.color_palette.foreground }}",
-                    "custom_button_text": "{{ settings.color_palette.background }}",
-                    "custom_button_border": "{{ settings.color_palette.background }}",
-                    "link_text_color": "",
-                    "display_type": "arrow",
-                    "label": "Sign up",
-                    "integrated_button": false,
-                    "button_type_preset": "paragraph",
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                }
+              "blocks": {}
+            },
+            "akn_email_AJ009": {
+              "type": "email-signup",
+              "name": "Formulaire newsletter",
+              "settings": {
+                "width": "fill",
+                "custom_width": 100,
+                "heading": "",
+                "heading_text_color": "#f6eee2",
+                "heading_preset": "h5",
+                "border_style": "underline",
+                "input_style": "custom",
+                "border_width": 1,
+                "border_radius": 0,
+                "input_background_color": "#15120f",
+                "input_text_color": "#f6eee2",
+                "input_border_color": "#d6c7b7",
+                "input_type_preset": "paragraph",
+                "style_class": "button-unstyled",
+                "custom_button_background": "{{ settings.color_palette.foreground }}",
+                "custom_button_text": "{{ settings.color_palette.background }}",
+                "custom_button_border": "{{ settings.color_palette.background }}",
+                "link_text_color": "#f6eee2",
+                "display_type": "arrow",
+                "label": "S’inscrire",
+                "integrated_button": false,
+                "button_type_preset": "paragraph",
+                "padding-block-start": 6,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
               },
-              "block_order": [
-                "text_jXqmE4",
-                "email_signup_XgpLx7"
-              ]
+              "blocks": {}
             }
           },
           "block_order": [
-            "group_MTNPDR",
-            "group_gz8NPq"
+            "akn_news_title_AJ009",
+            "akn_news_intro_AJ009",
+            "akn_email_AJ009"
           ]
         }
       },
       "block_order": [
-        "group_acXtYY"
+        "akn_brand_AJ009",
+        "akn_shop_AJ009",
+        "akn_info_AJ009",
+        "akn_newsletter_AJ009"
       ],
+      "name": "AKAN — Footer principal",
       "settings": {
         "section_width": "page-width",
-        "gap": 0,
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 64,
-        "padding-block-end": 0
+        "gap": 40,
+        "background_color": "#15120f",
+        "padding-block-start": 56,
+        "padding-block-end": 48
       }
     },
-    "utilities": {
-      "type": "footer-utilities",
+    "akn_utils_AJ009": {
+      "type": "akn-footer-utilities",
       "blocks": {
-        "copyright": {
-          "type": "footer-copyright",
+        "payment_logo_L3Mqjf": {
+          "type": "payment_logo",
           "settings": {
-            "show_powered_by": true,
-            "text_color": "",
-            "font_size": "0.75rem",
-            "case": "none"
-          },
-          "blocks": {}
+            "show_logo": true,
+            "image": "shopify://shop_images/visa-payment-logo_ef6a89e9-88a7-480a-b335-fb8b3a2458d8.svg",
+            "alt_text": ""
+          }
         },
-        "footer_policy_list_YXDWfF": {
-          "type": "footer-policy-list",
-          "name": "t:names.policy_list",
+        "payment_logo_fcVBrJ": {
+          "type": "payment_logo",
           "settings": {
-            "text_color": "",
-            "font_size": "0.75rem",
-            "case": "none"
-          },
-          "blocks": {}
+            "show_logo": true,
+            "image": "shopify://shop_images/mastercard-payment-logo.svg",
+            "alt_text": ""
+          }
         },
-        "social_links_BGVf9A": {
-          "type": "social-links",
-          "name": "t:names.social_media_links",
+        "payment_logo_jqxUiA": {
+          "type": "payment_logo",
           "settings": {
-            "icon_color": "",
-            "facebook_url": "https://www.facebook.com/",
-            "instagram_url": "https://www.instagram.com/",
-            "youtube_url": "https://www.youtube.com/",
-            "tiktok_url": "https://www.tiktok.com/",
-            "twitter_url": "https://www.x.com/",
-            "threads_url": "",
-            "linkedin_url": "",
-            "bluesky_url": "",
-            "snapchat_url": "",
-            "pinterest_url": "",
-            "tumblr_url": "",
-            "vimeo_url": "",
-            "custom_url": ""
-          },
-          "blocks": {}
+            "show_logo": true,
+            "image": "shopify://shop_images/wave-payment-logo_c54f4b68-e240-4e0e-acf1-a65f4dbd0aa6.svg",
+            "alt_text": ""
+          }
+        },
+        "payment_logo_fVHDnC": {
+          "type": "payment_logo",
+          "settings": {
+            "show_logo": true,
+            "image": "shopify://shop_images/orange-money-payment-logo_1.svg",
+            "alt_text": ""
+          }
+        },
+        "payment_logo_aCCVfc": {
+          "type": "payment_logo",
+          "settings": {
+            "show_logo": true,
+            "image": "shopify://shop_images/mtn-momo-payment-logo_e5a91e42-a1de-419c-a2af-009723aee028.svg",
+            "alt_text": ""
+          }
         }
       },
       "block_order": [
-        "copyright",
-        "footer_policy_list_YXDWfF",
-        "social_links_BGVf9A"
+        "payment_logo_L3Mqjf",
+        "payment_logo_fcVBrJ",
+        "payment_logo_jqxUiA",
+        "payment_logo_fVHDnC",
+        "payment_logo_aCCVfc"
       ],
+      "name": "t:akn_footer_utilities.name",
       "settings": {
-        "section_width": "page-width",
-        "gap": 24,
-        "background_color": "{{ settings.color_palette.background }}",
-        "divider_thickness": 1,
-        "divider_color": "{{ settings.color_palette.color2 }}",
-        "padding-block-start": 12,
-        "padding-block-end": 16
+        "show_copyright": true,
+        "copyright_text": "Tous droits réservés",
+        "show_language": true,
+        "show_country": true,
+        "show_payment_group": true,
+        "payment_heading": "Modes de paiement :",
+        "show_dynamic_payment_icons": false,
+        "background_color": "#f7f1e8",
+        "text_color": "#2b211b",
+        "separator_color": "#d8cbbb",
+        "padding_desktop": 24,
+        "padding_mobile": 26,
+        "column_gap": 24,
+        "payment_gap": 8,
+        "manual_logo_height": 24
       }
     }
   },
   "order": [
     "akn_trust_N87e9j",
     "footer",
-    "utilities"
+    "akn_utils_AJ009"
   ]
 }

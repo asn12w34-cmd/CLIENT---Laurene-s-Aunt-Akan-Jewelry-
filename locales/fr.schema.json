@@ -677,6 +677,7 @@
     "heart": "Cœur",
     "horizontal": "Horizontal",
     "instagram": "Instagram",
+    "whatsapp": "WhatsApp",
     "iron": "Fer à repasser",
     "large": "Grand",
     "leaf": "Feuille",
@@ -968,6 +969,7 @@
     "fonts": "Polices",
     "grid": "Grille",
     "heading_size": "Taille du titre",
+    "menu_links_size": "Taille des liens",
     "image": "Image",
     "input": "Saisie",
     "layout": "Mise en page",
@@ -1363,6 +1365,50 @@
       "delivery_text": "Informations claires",
       "contact_title": "CONTACT",
       "contact_text": "Contact WhatsApp"
+    }
+  },
+  "akn_footer_utilities": {
+    "name": "AKAN — Barre inférieure",
+    "category": "Pied de page",
+    "block_name": "Logo de paiement",
+    "groups": {
+      "copyright": "Copyright",
+      "localization": "Localisation",
+      "shopify_payments": "Moyens de paiement",
+      "manual_logos": "Logo de paiement",
+      "colors": "Couleurs",
+      "spacing": "Espacement"
+    },
+    "labels": {
+      "show_copyright": "Afficher le copyright",
+      "copyright_text": "Texte complémentaire",
+      "show_language": "Afficher le sélecteur de langue",
+      "show_country": "Afficher le sélecteur de pays ou région",
+      "show_payment_group": "Afficher le groupe « Modes de paiement »",
+      "payment_heading": "Titre du groupe",
+      "show_dynamic_payment_icons": "Afficher les icônes Shopify actives",
+      "show_logo": "Afficher ce logo",
+      "background_color": "Couleur du fond",
+      "text_color": "Couleur du texte",
+      "separator_color": "Couleur du séparateur",
+      "padding_desktop": "Espacement vertical — Ordinateur",
+      "padding_mobile": "Espacement vertical — Mobile",
+      "column_gap": "Espace entre les groupes",
+      "payment_gap": "Espace entre les icônes",
+      "manual_logo_height": "Hauteur des logos complémentaires",
+      "logo_image": "Image du logo",
+      "alt_text": "Texte alternatif"
+    },
+    "help": {
+      "show_language": "Le sélecteur reste masqué si Shopify ne propose qu’une seule langue publiée.",
+      "show_country": "Le sélecteur reste masqué si Shopify ne propose qu’un seul pays ou marché. Il modifie réellement le contexte Shopify et le checkout.",
+      "dynamic_payment_icons": "Shopify affiche uniquement les moyens de paiement actifs détectés pour la boutique.",
+      "logo_image": "Ajoutez uniquement un moyen réellement disponible au checkout. Aucun logo n’est ajouté automatiquement.",
+      "alt_text": "Indiquez le nom du moyen de paiement, par exemple « Wave ». Laissez vide seulement si l’image possède déjà un texte alternatif pertinent."
+    },
+    "defaults": {
+      "copyright_text": "Tous droits réservés.",
+      "payment_heading": "Modes de paiement"
     }
   }
 }

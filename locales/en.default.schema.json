@@ -79,6 +79,7 @@
     "grid_layout": "Grid layout",
     "heading": "Heading",
     "heading_size": "Heading size",
+    "menu_links_size": "Links size",
     "utilities": "Utilities",
     "home_page": "Home page",
     "icon": "Icon",
@@ -574,6 +575,7 @@
     "input_field": "Input field",
     "inside_carousel": "Inside carousel",
     "instagram": "Instagram",
+    "whatsapp": "WhatsApp",
     // Menu typography style with large child items
     "inverse_large": "Inverse large",
     "inverse": "Inverse",
@@ -1460,6 +1462,50 @@
       "delivery_text": "Clear information",
       "contact_title": "CONTACT",
       "contact_text": "WhatsApp contact"
+    }
+  },
+  "akn_footer_utilities": {
+    "name": "AKAN — Lower footer bar",
+    "category": "Footer",
+    "block_name": "Payment logo",
+    "groups": {
+      "copyright": "Copyright",
+      "localization": "Localization",
+      "shopify_payments": "Payment methods",
+      "manual_logos": "Payment logo",
+      "colors": "Colors",
+      "spacing": "Spacing"
+    },
+    "labels": {
+      "show_copyright": "Show copyright",
+      "copyright_text": "Additional text",
+      "show_language": "Show language selector",
+      "show_country": "Show country or region selector",
+      "show_payment_group": "Show payment methods group",
+      "payment_heading": "Group heading",
+      "show_dynamic_payment_icons": "Show active Shopify payment icons",
+      "show_logo": "Show this logo",
+      "background_color": "Background color",
+      "text_color": "Text color",
+      "separator_color": "Separator color",
+      "padding_desktop": "Vertical spacing — Desktop",
+      "padding_mobile": "Vertical spacing — Mobile",
+      "column_gap": "Space between groups",
+      "payment_gap": "Space between icons",
+      "manual_logo_height": "Additional logo height",
+      "logo_image": "Logo image",
+      "alt_text": "Alternative text"
+    },
+    "help": {
+      "show_language": "The selector stays hidden when Shopify has only one published language.",
+      "show_country": "The selector stays hidden when Shopify has only one available country or market. It changes the Shopify context and checkout.",
+      "dynamic_payment_icons": "Shopify displays only active payment methods detected for the store.",
+      "logo_image": "Add only a payment method that is actually available at checkout. No logo is added automatically.",
+      "alt_text": "Enter the payment method name, for example ‘Wave’. Leave this blank only when the image already has meaningful alternative text."
+    },
+    "defaults": {
+      "copyright_text": "All rights reserved.",
+      "payment_heading": "Payment methods"
     }
   }
 }

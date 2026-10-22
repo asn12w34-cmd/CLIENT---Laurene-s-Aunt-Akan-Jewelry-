@@ -41,6 +41,10 @@
       data-testid="menu-details"
       style="
         --spacing--size: {{ block_settings.menu_spacing }}px;
+        {% comment %} CUSTOM START [AJ-011] — Optional per-menu title and link sizes. {% endcomment %}
+        {% if block_settings.heading_font_size != blank %}--menu-heading-font-size: {{ block_settings.heading_font_size }};{% endif %}
+        {% if block_settings.link_font_size != blank %}--menu-link-font-size: {{ block_settings.link_font_size }};{% endif %}
+        {% comment %} CUSTOM END [AJ-011] {% endcomment %}
         {% render 'spacing-style', settings: block_settings %}
       "
       {% if show_as_accordion == false %}
@@ -106,6 +110,16 @@
   .menu__item + .menu__item {
     margin-block-start: var(--spacing--size);
   }
+
+  /* CUSTOM START [AJ-011] — Preserve theme presets unless a merchant selects an explicit size. */
+  .menu__heading {
+    font-size: var(--menu-heading-font-size);
+  }
+
+  .menu__item {
+    font-size: var(--menu-link-font-size);
+  }
+  /* CUSTOM END [AJ-011] */
 
   .menu .menu__heading--empty {
     display: none;
@@ -269,6 +283,42 @@
     },
     {
       "type": "select",
+      "id": "heading_font_size",
+      "label": "t:settings.heading_size",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "0.75rem",
+          "label": "12px"
+        },
+        {
+          "value": "0.875rem",
+          "label": "14px"
+        },
+        {
+          "value": "1rem",
+          "label": "16px"
+        },
+        {
+          "value": "1.125rem",
+          "label": "18px"
+        },
+        {
+          "value": "1.25rem",
+          "label": "20px"
+        },
+        {
+          "value": "1.5rem",
+          "label": "24px"
+        }
+      ],
+      "default": ""
+    },
+    {
+      "type": "select",
       "id": "link_preset",
       "label": "t:settings.link_preset",
       "options": [
@@ -306,6 +356,42 @@
         }
       ],
       "default": "paragraph"
+    },
+    {
+      "type": "select",
+      "id": "link_font_size",
+      "label": "t:settings.menu_links_size",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "0.75rem",
+          "label": "12px"
+        },
+        {
+          "value": "0.875rem",
+          "label": "14px"
+        },
+        {
+          "value": "1rem",
+          "label": "16px"
+        },
+        {
+          "value": "1.125rem",
+          "label": "18px"
+        },
+        {
+          "value": "1.25rem",
+          "label": "20px"
+        },
+        {
+          "value": "1.5rem",
+          "label": "24px"
+        }
+      ],
+      "default": ""
     },
     {
       "type": "header",
