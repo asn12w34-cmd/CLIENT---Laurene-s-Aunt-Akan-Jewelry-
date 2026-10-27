@@ -1,6 +1,32 @@
 
 {% assign block_settings = block.settings %}
 
+{% comment %} CUSTOM START [AJ-015] — Support an editable shared fallback and hide rows with no meaningful content. {% endcomment %}
+{% capture accordion_row_content %}
+  {% content_for 'blocks' %}
+{% endcapture %}
+{% liquid
+  assign accordion_row_content_plain = accordion_row_content | strip_html | strip
+
+  if accordion_row_content_plain == blank and block_settings.fallback_content != blank
+    assign accordion_row_content = block_settings.fallback_content
+    assign accordion_row_content_plain = accordion_row_content | strip_html | strip
+  endif
+
+  assign should_render_accordion_row = true
+  assign has_linked_page = false
+
+  if block_settings.linked_page != blank and block_settings.link_label != blank
+    assign has_linked_page = true
+  endif
+
+  if block_settings.hide_when_empty and accordion_row_content_plain == blank and has_linked_page == false
+    assign should_render_accordion_row = false
+  endif
+%}
+{% comment %} CUSTOM END [AJ-015] {% endcomment %}
+
+{% if should_render_accordion_row %}
 {% capture accordion_row_children %}
   <details
     class="details"
@@ -27,7 +53,12 @@
     </summary>
 
     <div class="details-content">
-      {% content_for 'blocks' %}
+      {{ accordion_row_content }}
+      {% if block_settings.linked_page != blank and block_settings.link_label != blank %}
+        <p>
+          <a href="{{ block_settings.linked_page.url }}">{{ block_settings.link_label | escape }}</a>
+        </p>
+      {% endif %}
     </div>
   </details>
 {% endcapture %}
@@ -36,6 +67,7 @@
   open_by_default_on_desktop: block_settings.open_by_default,
   open_by_default_on_mobile: block_settings.open_by_default
 %}
+{% endif %}
 
 {% schema %}
 {
@@ -61,6 +93,30 @@
       "id": "open_by_default",
       "label": "t:settings.open_row_by_default",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_when_empty",
+      "label": "t:akn_product.labels.hide_empty_accordion",
+      "default": false,
+      "info": "t:akn_product.help.hide_empty_accordion"
+    },
+    {
+      "type": "richtext",
+      "id": "fallback_content",
+      "label": "t:akn_product.labels.fallback_content",
+      "info": "t:akn_product.help.fallback_content"
+    },
+    {
+      "type": "page",
+      "id": "linked_page",
+      "label": "t:akn_product.labels.linked_page",
+      "info": "t:akn_product.help.linked_page"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "t:akn_product.labels.link_label"
     },
     {
       "type": "header",

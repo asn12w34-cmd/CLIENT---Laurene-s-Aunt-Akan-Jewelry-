@@ -1,0 +1,324 @@
+{% comment %}
+  CUSTOM FILE [AJ-013] — Mise en page éditoriale des pages d’information AKAN
+
+  Section contract.
+  Affiche le titre et le contenu de la page Shopify active dans une colonne de lecture maîtrisée.
+  Le premier H1 du contenu est masqué lorsqu’il répète le titre natif de la page.
+  @example
+  Utiliser cette section dans le modèle « page.livraison-et-retour ».
+{% endcomment %}
+
+{% liquid
+  assign color_scope = 'akn-policy-' | append: section.id
+  render 'contrast-override', background_color: section.settings.background_color, text_color: section.settings.text_color, section_id: color_scope, preset: 'content'
+%}
+
+<div class="section-background color-custom-{{ color_scope }}"></div>
+<section
+  class="akn-policy color-custom-{{ color_scope }}"
+  style="
+    --akn-policy-content-width: {{ section.settings.content_width }}px;
+    --akn-policy-title-size-desktop: {{ section.settings.title_size_desktop }}px;
+    --akn-policy-title-size-mobile: {{ section.settings.title_size_mobile }}px;
+    --akn-policy-heading-size-desktop: {{ section.settings.heading_size_desktop }}px;
+    --akn-policy-heading-size-mobile: {{ section.settings.heading_size_mobile }}px;
+    --akn-policy-body-size-desktop: {{ section.settings.body_size_desktop }}px;
+    --akn-policy-body-size-mobile: {{ section.settings.body_size_mobile }}px;
+    --akn-policy-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --akn-policy-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    --akn-policy-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --akn-policy-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+  "
+>
+  <div class="section section--page-width akn-policy__inner">
+    <div class="akn-policy__content">
+      <h1 class="akn-policy__title">{{ page.title | escape }}</h1>
+
+      {% if page.content != blank %}
+        <rte-formatter class="akn-policy__body rte">
+          {{ page.content }}
+        </rte-formatter>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  /* CUSTOM [AJ-013] — Typographie et rythme isolés des pages d’information AKAN. */
+  .akn-policy {
+    min-inline-size: 0;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .akn-policy__inner {
+    padding-block-start: var(--akn-policy-padding-top-mobile);
+    padding-block-end: var(--akn-policy-padding-bottom-mobile);
+  }
+
+  .akn-policy__content {
+    inline-size: min(100%, var(--akn-policy-content-width));
+    margin-inline: auto;
+    min-inline-size: 0;
+  }
+
+  .akn-policy__title {
+    max-inline-size: 14ch;
+    margin: 0 0 clamp(36px, 6vw, 64px);
+    color: inherit;
+    font-family: var(--font-h1--family);
+    font-size: var(--akn-policy-title-size-mobile);
+    font-style: var(--font-h1--style);
+    font-weight: var(--font-h1--weight);
+    letter-spacing: var(--font-h1--letter-spacing);
+    line-height: 1.02;
+    text-transform: var(--font-h1--case);
+    text-wrap: balance;
+  }
+
+  .akn-policy__body {
+    display: block;
+    min-inline-size: 0;
+    color: inherit;
+    font-family: var(--font-body--family);
+    font-size: var(--akn-policy-body-size-mobile);
+    line-height: 1.68;
+  }
+
+  .akn-policy__body > h1:first-child {
+    display: none;
+  }
+
+  .akn-policy__body > h1:first-child + p {
+    margin-block-end: clamp(28px, 5vw, 44px);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+    font-size: 0.875em;
+    letter-spacing: 0.02em;
+  }
+
+  .akn-policy__body :is(h2, h3, h4, h5, h6) {
+    max-inline-size: 24ch;
+    margin-block: clamp(38px, 6vw, 60px) 14px;
+    color: inherit;
+    font-family: var(--font-h2--family);
+    font-style: var(--font-h2--style);
+    font-weight: var(--font-h2--weight);
+    letter-spacing: var(--font-h2--letter-spacing);
+    line-height: 1.12;
+    text-transform: var(--font-h2--case);
+    text-wrap: pretty;
+  }
+
+  .akn-policy__body h2 {
+    font-size: var(--akn-policy-heading-size-mobile);
+  }
+
+  .akn-policy__body :is(h3, h4, h5, h6) {
+    font-size: max(20px, calc(var(--akn-policy-heading-size-mobile) * 0.78));
+  }
+
+  .akn-policy__body :is(p, ul, ol) {
+    max-inline-size: 72ch;
+  }
+
+  .akn-policy__body p {
+    margin-block: 0 1em;
+  }
+
+  .akn-policy__body :is(ul, ol) {
+    margin-block: 0 1.25em;
+    padding-inline-start: 1.35em;
+  }
+
+  .akn-policy__body li + li {
+    margin-block-start: 0.45em;
+  }
+
+  .akn-policy__body a {
+    color: currentcolor;
+    text-decoration-color: currentcolor;
+  }
+
+  .akn-policy__body :is(h2, h3, h4, h5, h6, p, li, a) {
+    overflow-wrap: anywhere;
+  }
+
+  @media screen and (min-width: 750px) {
+    .akn-policy__inner {
+      padding-block-start: var(--akn-policy-padding-top-desktop);
+      padding-block-end: var(--akn-policy-padding-bottom-desktop);
+    }
+
+    .akn-policy__title {
+      font-size: var(--akn-policy-title-size-desktop);
+    }
+
+    .akn-policy__body {
+      font-size: var(--akn-policy-body-size-desktop);
+    }
+
+    .akn-policy__body h2 {
+      font-size: var(--akn-policy-heading-size-desktop);
+    }
+
+    .akn-policy__body :is(h3, h4, h5, h6) {
+      font-size: max(22px, calc(var(--akn-policy-heading-size-desktop) * 0.7));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:akn_policy_page.name",
+  "class": "akn-policy-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:akn_policy_page.groups.layout"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "t:akn_policy_page.labels.content_width",
+      "min": 640,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "default": 840
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:akn_policy_page.labels.background_color",
+      "default": "#F7F3EB"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:akn_policy_page.labels.text_color",
+      "default": "#171611"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_policy_page.groups.desktop_typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "t:akn_policy_page.labels.title_size",
+      "min": 44,
+      "max": 88,
+      "step": 2,
+      "unit": "px",
+      "default": 68
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "label": "t:akn_policy_page.labels.heading_size",
+      "min": 26,
+      "max": 52,
+      "step": 1,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "body_size_desktop",
+      "label": "t:akn_policy_page.labels.body_size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "t:akn_policy_page.groups.mobile_typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "t:akn_policy_page.labels.title_size",
+      "min": 34,
+      "max": 56,
+      "step": 1,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "t:akn_policy_page.labels.heading_size",
+      "min": 24,
+      "max": 38,
+      "step": 1,
+      "unit": "px",
+      "default": 29
+    },
+    {
+      "type": "range",
+      "id": "body_size_mobile",
+      "label": "t:akn_policy_page.labels.body_size",
+      "min": 14,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "t:akn_policy_page.groups.spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "t:akn_policy_page.labels.padding_top_desktop",
+      "min": 32,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "t:akn_policy_page.labels.padding_bottom_desktop",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 104
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "t:akn_policy_page.labels.padding_top_mobile",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "t:akn_policy_page.labels.padding_bottom_mobile",
+      "min": 32,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:akn_policy_page.name",
+      "category": "t:categories.text"
+    }
+  ]
+}
+{% endschema %}

@@ -16,9 +16,10 @@
           "static": true,
           "settings": {
             "media_presentation": "grid",
-            "media_columns": "one",
-            "image_gap": 0,
+            "media_columns": "two",
+            "image_gap": 10,
             "large_first_image": false,
+            "akn_editorial_triptych": true,
             "icons_style": "arrow",
             "slideshow_controls_style": "counter",
             "slideshow_mobile_controls_style": "counter",
@@ -29,7 +30,7 @@
             "constrain_to_viewport": false,
             "media_fit": "cover",
             "media_radius": 0,
-            "extend_media": true,
+            "extend_media": false,
             "zoom": true,
             "video_loop": false,
             "hide_variants": true,
@@ -50,7 +51,7 @@
             "custom_width_mobile": 100,
             "height": "fit",
             "details_position": "flex-start",
-            "gap": 12,
+            "gap": 16,
             "sticky_details_desktop": true,
             "background_media": "none",
             "background_color": "",
@@ -67,6 +68,14 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "text_category_AJ015": {
+              "type": "custom-liquid",
+              "name": "Catégorie du produit",
+              "settings": {
+                "custom_liquid": "{% if product.type != blank %}<p style=\"margin: 0; font-family: var(--font-body--family); font-size: 0.75rem; line-height: 1.2; letter-spacing: 0.08em; text-transform: uppercase;\">{{ product.type | escape }}</p>{% endif %}"
+              },
+              "blocks": {}
+            },
             "text_9WaLn7": {
               "type": "text",
               "name": "t:names.title",
@@ -74,11 +83,11 @@
                 "text": "<h1>{{ closest.product.title }}</h1>",
                 "width": "100%",
                 "max_width": "normal",
-                "alignment": "center",
-                "type_preset": "h3",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-heading--family)",
+                "font_size": "3rem",
+                "line_height": "tight",
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
@@ -86,7 +95,7 @@
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
-                "padding-block-start": 50,
+                "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
@@ -97,11 +106,11 @@
               "type": "price",
               "settings": {
                 "show_sale_price_first": true,
-                "show_installments": true,
-                "show_tax_info": true,
-                "type_preset": "h5",
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h4",
                 "width": "100%",
-                "alignment": "center",
+                "alignment": "left",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
@@ -109,7 +118,7 @@
                 "case": "none",
                 "text_color": "",
                 "padding-block-start": 0,
-                "padding-block-end": 50,
+                "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -122,16 +131,42 @@
                 "thickness": 1,
                 "corner_radius": "square",
                 "divider_color": "{{ settings.color_palette.color2 }}",
-                "width_percent": 100,
-                "padding-block-start": 12,
-                "padding-block-end": 12
+                "width_percent": 10,
+                "padding-block-start": 8,
+                "padding-block-end": 8
+              },
+              "blocks": {}
+            },
+            "product_description_AJ015": {
+              "type": "product-description",
+              "name": "Description visible",
+              "settings": {
+                "text": "{{ closest.product.description }}",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-subheading--family)",
+                "font_size": "1.125rem",
+                "line_height": "loose",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 8,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
               },
               "blocks": {}
             },
             "variant_picker_R3rGDr": {
               "type": "variant-picker",
               "settings": {
-                "variant_style": "buttons",
+                "variant_style": "dropdowns",
                 "show_swatches": true,
                 "option_label_text_color": "",
                 "variant_style_class": "default",
@@ -143,8 +178,8 @@
                 "custom_selected_variant_text": "{{ settings.color_palette.background }}",
                 "custom_selected_variant_border": "{{ settings.color_palette.foreground }}",
                 "alignment": "left",
-                "padding-block-start": 12,
-                "padding-block-end": 24,
+                "padding-block-start": 4,
+                "padding-block-end": 12,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -172,7 +207,7 @@
                 "border_width": 1,
                 "border_radius": 0,
                 "padding-block-start": 0,
-                "padding-block-end": 24,
+                "padding-block-end": 8,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -204,12 +239,159 @@
                 },
                 "accelerated-checkout": {
                   "type": "accelerated-checkout",
+                  "disabled": true,
                   "static": true,
                   "settings": {},
                   "blocks": {}
                 }
               },
               "block_order": []
+            },
+            "group_reassurance_AJ015": {
+              "type": "group",
+              "name": "Réassurance produit",
+              "settings": {
+                "content_direction": "row",
+                "vertical_on_mobile": false,
+                "horizontal_alignment": "space-between",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "gap": 16,
+                "width": "fill",
+                "width_mobile": "fill",
+                "height": "fit",
+                "background_media": "none",
+                "background_color": "",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 8,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "group_payment_AJ015": {
+                  "type": "group",
+                  "name": "Paiement sécurisé",
+                  "settings": {
+                    "content_direction": "row",
+                    "vertical_on_mobile": false,
+                    "horizontal_alignment": "flex-start",
+                    "vertical_alignment": "center",
+                    "gap": 8,
+                    "width": "fit-content",
+                    "width_mobile": "fit-content",
+                    "height": "fit",
+                    "background_media": "none",
+                    "border": "none",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {
+                    "icon_payment_AJ015": {
+                      "type": "icon",
+                      "settings": {
+                        "icon": "lock",
+                        "width": 16,
+                        "icon_color": ""
+                      },
+                      "blocks": {}
+                    },
+                    "text_payment_AJ015": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Paiement sécurisé</p>",
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "type_preset": "custom",
+                        "font": "var(--font-body--family)",
+                        "font_size": "0.75rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "nowrap",
+                        "text_color": "",
+                        "background": false,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "icon_payment_AJ015",
+                    "text_payment_AJ015"
+                  ]
+                },
+                "group_delivery_AJ015": {
+                  "type": "group",
+                  "name": "Livraison suivie",
+                  "settings": {
+                    "content_direction": "row",
+                    "vertical_on_mobile": false,
+                    "horizontal_alignment": "flex-start",
+                    "vertical_alignment": "center",
+                    "gap": 8,
+                    "width": "fit-content",
+                    "width_mobile": "fit-content",
+                    "height": "fit",
+                    "background_media": "none",
+                    "border": "none",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {
+                    "icon_delivery_AJ015": {
+                      "type": "icon",
+                      "settings": {
+                        "icon": "truck",
+                        "width": 18,
+                        "icon_color": ""
+                      },
+                      "blocks": {}
+                    },
+                    "text_delivery_AJ015": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Livraison suivie</p>",
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "type_preset": "custom",
+                        "font": "var(--font-body--family)",
+                        "font_size": "0.75rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "nowrap",
+                        "text_color": "",
+                        "background": false,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "icon_delivery_AJ015",
+                    "text_delivery_AJ015"
+                  ]
+                }
+              },
+              "block_order": [
+                "group_payment_AJ015",
+                "group_delivery_AJ015"
+              ]
             },
             "accordion_NKWPiW": {
               "type": "accordion",
@@ -235,34 +417,18 @@
                 "accordion_row_NdBezV": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Description",
+                    "heading": "Matières & dimensions",
                     "open_by_default": false,
+                    "hide_when_empty": true,
+                    "fallback_content": "",
                     "icon": "none",
                     "width": 20
                   },
                   "blocks": {
                     "text_n7A9da": {
-                      "type": "text",
+                      "type": "custom-liquid",
                       "settings": {
-                        "text": "{{ closest.product.description }}",
-                        "width": "100%",
-                        "max_width": "normal",
-                        "alignment": "left",
-                        "type_preset": "custom",
-                        "font": "var(--font-subheading--family)",
-                        "font_size": "1.125rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "text_color": "",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 12,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
+                        "custom_liquid": "{% if product.metafields.custom.matieres_et_dimensions != blank %}{{ product.metafields.custom.matieres_et_dimensions | metafield_tag }}{% endif %}"
                       },
                       "blocks": {}
                     }
@@ -274,34 +440,18 @@
                 "accordion_row_iJM37V": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Care",
+                    "heading": "Conseils d’entretien",
                     "open_by_default": false,
+                    "hide_when_empty": true,
+                    "fallback_content": "<p>Évitez le contact prolongé avec l’eau, les parfums, les crèmes et les produits chimiques. Après utilisation, essuyez délicatement votre bijou avec un chiffon doux et conservez-le séparément dans un endroit sec.</p>",
                     "icon": "none",
                     "width": 20
                   },
                   "blocks": {
                     "text_VdG98J": {
-                      "type": "text",
+                      "type": "custom-liquid",
                       "settings": {
-                        "text": "<p>To maintain the beauty and integrity of your purchase, we recommend treating it with care. Simple maintenance practices, such as gentle washing and proper storage, can effectively preserve the longevity of your favorites. We encourage you to refer to the care instructions included with each item, designed to help you keep your purchase in top condition.</p>",
-                        "width": "100%",
-                        "max_width": "normal",
-                        "alignment": "left",
-                        "type_preset": "custom",
-                        "font": "var(--font-subheading--family)",
-                        "font_size": "1.125rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "text_color": "",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 12,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
+                        "custom_liquid": "{% if product.metafields.custom.care_instructions != blank %}{{ product.metafields.custom.care_instructions | metafield_tag }}{% endif %}"
                       },
                       "blocks": {}
                     }
@@ -313,8 +463,12 @@
                 "accordion_row_pLFDcD": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Design",
+                    "heading": "Livraison & retours",
                     "open_by_default": false,
+                    "hide_when_empty": true,
+                    "fallback_content": "",
+                    "linked_page": "livraison-et-retour",
+                    "link_label": "Consulter les informations de livraison et de retour",
                     "icon": "none",
                     "width": 20
                   },
@@ -322,14 +476,14 @@
                     "text_qLGEN9": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>Our dedication to excellence extends beyond materials; it encompasses the artistry and craftsmanship illustrated in every piece we create.</p>",
+                        "text": "<p>Livraison en Côte d’Ivoire et à l’international. Les délais et les frais varient selon la destination. Les retours sont acceptés conformément à nos conditions.</p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
                         "type_preset": "custom",
                         "font": "var(--font-subheading--family)",
-                        "font_size": "1.125rem",
-                        "line_height": "normal",
+                        "font_size": "1rem",
+                        "line_height": "loose",
                         "letter_spacing": "normal",
                         "case": "none",
                         "wrap": "pretty",
@@ -358,6 +512,7 @@
             },
             "disclosures_hFEnPD": {
               "type": "disclosures",
+              "disabled": true,
               "name": "t:names.disclosures",
               "settings": {
                 "heading": "Disclosures",
@@ -377,26 +532,29 @@
             }
           },
           "block_order": [
+            "text_category_AJ015",
             "text_9WaLn7",
             "price_a7krng",
             "divider_HrJgFt",
+            "product_description_AJ015",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
+            "group_reassurance_AJ015",
             "accordion_NKWPiW",
             "disclosures_hFEnPD"
           ]
         }
       },
       "settings": {
-        "content_width": "content-full-width",
+        "content_width": "content-center-aligned",
         "desktop_media_position": "left",
-        "equal_columns": true,
+        "equal_columns": false,
         "limit_details_width": true,
-        "gap": 0,
+        "gap": 48,
         "enable_sticky_add_to_cart": true,
         "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-start": 24,
+        "padding-block-end": 32
       }
     },
     "product_recommendations_qnzPkn": {
@@ -406,11 +564,11 @@
           "type": "text",
           "name": "t:names.header",
           "settings": {
-            "text": "<h3>You may also like</h3>",
+            "text": "<h3>Dans le même esprit</h3>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
-            "type_preset": "h4",
+            "type_preset": "h3",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
             "line_height": "normal",
@@ -669,8 +827,8 @@
         "recommendation_type": "related",
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "max_products": 4,
-        "columns": 4,
+        "max_products": 3,
+        "columns": 3,
         "mobile_columns": "2",
         "columns_gap": 16,
         "rows_gap": 16,

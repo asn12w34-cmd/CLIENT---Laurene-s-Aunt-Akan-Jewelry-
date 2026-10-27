@@ -359,6 +359,9 @@
       {% if media_presentation == 'grid' %}
         media-gallery--{{ block_settings.media_columns }}-column
         {% if block_settings.media_columns == "two" and block_settings.large_first_image%}media-gallery--large-first-image{% endif %}
+        {% comment %} CUSTOM START [AJ-015] — Optional AKAN editorial triptych on desktop. {% endcomment %}
+        {% if block_settings.media_columns == 'two' and block_settings.akn_editorial_triptych %}media-gallery--akn-editorial-triptych{% endif %}
+        {% comment %} CUSTOM END [AJ-015] {% endcomment %}
       {% endif %}
       media-gallery--{{ media_presentation }}
       {% if block_settings.slideshow_mobile_controls_style == 'hint' %}

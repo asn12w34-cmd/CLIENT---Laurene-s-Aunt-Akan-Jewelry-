@@ -1367,6 +1367,42 @@
       "contact_text": "Contact WhatsApp"
     }
   },
+  "akn_policy_page": {
+    "name": "AKAN — Page d’information",
+    "groups": {
+      "layout": "Mise en page et couleurs",
+      "desktop_typography": "Typographie — Ordinateur",
+      "mobile_typography": "Typographie — Mobile",
+      "spacing": "Espacement vertical"
+    },
+    "labels": {
+      "content_width": "Largeur maximale du contenu",
+      "background_color": "Arrière-plan",
+      "text_color": "Texte",
+      "title_size": "Taille du titre principal",
+      "heading_size": "Taille des intertitres",
+      "body_size": "Taille du corps de texte",
+      "padding_top_desktop": "Espacement supérieur — Ordinateur",
+      "padding_bottom_desktop": "Espacement inférieur — Ordinateur",
+      "padding_top_mobile": "Espacement supérieur — Mobile",
+      "padding_bottom_mobile": "Espacement inférieur — Mobile"
+    }
+  },
+  "akn_product": {
+    "labels": {
+      "editorial_triptych": "Galerie éditoriale AKAN",
+      "hide_empty_accordion": "Masquer lorsque le contenu est vide",
+      "fallback_content": "Contenu commun de remplacement",
+      "linked_page": "Page liée",
+      "link_label": "Texte du lien"
+    },
+    "help": {
+      "editorial_triptych": "Sur ordinateur, affiche la première image en grand à côté des deux suivantes. Sur mobile, la galerie tactile native d’Atelier est conservée.",
+      "hide_empty_accordion": "Masque la ligne lorsque le contenu dynamique et le contenu commun de remplacement sont tous deux vides.",
+      "fallback_content": "Ce texte s’affiche uniquement lorsque le contenu dynamique du produit est vide. Utilisez-le pour une information commune, comme les conseils d’entretien.",
+      "linked_page": "Ajoute un lien administrable vers une page Shopify à la fin de l’accordéon."
+    }
+  },
   "akn_footer_utilities": {
     "name": "AKAN — Barre inférieure",
     "category": "Pied de page",

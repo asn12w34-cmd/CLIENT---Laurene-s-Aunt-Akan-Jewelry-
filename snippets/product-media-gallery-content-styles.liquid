@@ -41,6 +41,32 @@
       grid-template-columns: repeat(2, 1fr);
     }
 
+    /* CUSTOM START [AJ-015] — AKAN desktop gallery: one dominant image beside two supporting images. */
+    .media-gallery--akn-editorial-triptych .media-gallery__grid:has(> :nth-child(3)) {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+    }
+
+    .media-gallery--akn-editorial-triptych .media-gallery__grid:has(> :nth-child(3))
+      > .product-media-container:first-child {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+    }
+
+    .media-gallery--akn-editorial-triptych .media-gallery__grid:has(> :nth-child(3))
+      > .product-media-container:nth-child(2),
+    .media-gallery--akn-editorial-triptych .media-gallery__grid:has(> :nth-child(3))
+      > .product-media-container:nth-child(3) {
+      grid-column: 2;
+    }
+
+    .media-gallery--akn-editorial-triptych .media-gallery__grid:has(> :nth-child(3))
+      > .product-media-container:nth-child(n + 4) {
+      grid-column: auto;
+      grid-row: auto;
+    }
+    /* CUSTOM END [AJ-015] */
+
     /* Display grid view as a carousel on mobile, grid on desktop */
     media-gallery:is(.media-gallery--grid) slideshow-component {
       display: none;

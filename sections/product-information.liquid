@@ -341,6 +341,15 @@
     }
   }
 
+  /* CUSTOM START [AJ-015] — Keep the editorial product title proportionate on narrow screens. */
+  @media screen and (max-width: 749px) {
+    .product-details .text-block--text_9WaLn7 > h1 {
+      font-size: clamp(2rem, 10vw, 2.5rem);
+      line-height: 1;
+    }
+  }
+  /* CUSTOM END [AJ-015] */
+
   /* Small mobile - hide text content and compare price */
   @media screen and (max-width: 389px) {
     .sticky-add-to-cart__bar {

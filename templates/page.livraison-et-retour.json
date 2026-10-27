@@ -1,0 +1,35 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "akn_policy_page_6hE4wV": {
+      "type": "akn-policy-page",
+      "name": "t:akn_policy_page.name",
+      "settings": {
+        "content_width": 960,
+        "background_color": "#f7f3eb",
+        "text_color": "#171611",
+        "title_size_desktop": 56,
+        "heading_size_desktop": 38,
+        "body_size_desktop": 16,
+        "title_size_mobile": 44,
+        "heading_size_mobile": 29,
+        "body_size_mobile": 16,
+        "padding_top_desktop": 72,
+        "padding_bottom_desktop": 104,
+        "padding_top_mobile": 44,
+        "padding_bottom_mobile": 72
+      }
+    }
+  },
+  "order": [
+    "akn_policy_page_6hE4wV"
+  ]
+}
