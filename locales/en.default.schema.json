@@ -1488,6 +1488,7 @@
   "akn_product": {
     "labels": {
       "editorial_triptych": "AKAN editorial gallery",
+      "variant_gallery": "Use complete galleries by variant",
       "hide_empty_accordion": "Hide when content is empty",
       "fallback_content": "Shared fallback content",
       "linked_page": "Linked page",
@@ -1495,6 +1496,7 @@
     },
     "help": {
       "editorial_triptych": "On desktop, shows the first image large beside the next two images. Mobile keeps Atelier’s swipe gallery.",
+      "variant_gallery": "Shows the images selected in the custom.variant_gallery variant metafield when populated. Otherwise, the product’s native gallery is preserved.",
       "hide_empty_accordion": "Hides the row when both its dynamic content and shared fallback content are empty.",
       "fallback_content": "This text is shown only when the product’s dynamic content is empty. Use it for shared information such as care instructions.",
       "linked_page": "Adds a merchant-selectable Shopify page link at the end of the accordion."

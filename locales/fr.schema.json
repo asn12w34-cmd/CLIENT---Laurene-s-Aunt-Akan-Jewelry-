@@ -1391,6 +1391,7 @@
   "akn_product": {
     "labels": {
       "editorial_triptych": "Galerie éditoriale AKAN",
+      "variant_gallery": "Utiliser les galeries complètes par variante",
       "hide_empty_accordion": "Masquer lorsque le contenu est vide",
       "fallback_content": "Contenu commun de remplacement",
       "linked_page": "Page liée",
@@ -1398,6 +1399,7 @@
     },
     "help": {
       "editorial_triptych": "Sur ordinateur, affiche la première image en grand à côté des deux suivantes. Sur mobile, la galerie tactile native d’Atelier est conservée.",
+      "variant_gallery": "Affiche les images du métachamp de variante custom.variant_gallery lorsqu’il est renseigné. Sinon, la galerie native du produit est conservée.",
       "hide_empty_accordion": "Masque la ligne lorsque le contenu dynamique et le contenu commun de remplacement sont tous deux vides.",
       "fallback_content": "Ce texte s’affiche uniquement lorsque le contenu dynamique du produit est vide. Utilisez-le pour une information commune, comme les conseils d’entretien.",
       "linked_page": "Ajoute un lien administrable vers une page Shopify à la fin de l’accordéon."

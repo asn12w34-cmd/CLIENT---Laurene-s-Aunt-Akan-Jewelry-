@@ -26,7 +26,22 @@
 {%- endif -%}
 {%- liquid
   assign selected_product = closest.product
-  assign selected_variant_media = selected_product.selected_or_first_available_variant.featured_media
+  assign selected_variant = selected_product.selected_or_first_available_variant
+  assign selected_variant_media = selected_variant.featured_media
+
+  # CUSTOM START [AJ-016] — Use a complete variant-specific image list when configured; otherwise preserve Atelier's native gallery.
+  assign variant_gallery_media = blank
+  if block_settings.akn_variant_gallery and selected_variant != blank
+    assign variant_gallery_metafield = selected_variant.metafields.custom.variant_gallery
+    if variant_gallery_metafield != blank
+      assign variant_gallery_media = variant_gallery_metafield.value | where: 'media_type', 'image'
+    endif
+  endif
+  assign gallery_media_count = selected_product.media.size
+  if variant_gallery_media != blank
+    assign gallery_media_count = variant_gallery_media.size
+  endif
+  # CUSTOM END [AJ-016]
 
   if block_settings.hide_variants and selected_variant_media == blank
     assign selected_variant_media = selected_product.featured_media
@@ -68,13 +83,13 @@
 
   assign slideshow_controls_style = block_settings.slideshow_controls_style
   # Use a counter instead of dots when there are many images to avoid cropping/overflow.
-  if slideshow_controls_style == 'dots' and selected_product.media.size > 15
+  if slideshow_controls_style == 'dots' and gallery_media_count > 15
     assign slideshow_controls_style = 'counter'
   endif
 
   assign render_slideshow_arrows = false
 
-  if selected_product.media.size <= 1
+  if gallery_media_count <= 1
     assign slideshow_class = 'product-media-gallery__slideshow--single-media slideshow--single-media'
   else
     assign slideshow_class = ''
@@ -113,7 +128,10 @@
   endif
 
   assign sorted_media = '' | split: ','
-  if selected_variant_media
+  # CUSTOM START [AJ-016] — The metafield order is the storefront order for this variant.
+  if variant_gallery_media != blank
+    assign sorted_media = variant_gallery_media
+  elsif selected_variant_media
     assign sorted_media = sorted_media | concat: selected_product.media | where: 'id', selected_variant_media.id
 
     for media in selected_product.media
@@ -131,6 +149,7 @@
   else
     assign sorted_media = selected_product.media
   endif
+  # CUSTOM END [AJ-016]
   assign has_image_drop = sorted_media | has: 'media_type', 'image'
 
   # Determine if we're in single column mode (carousel or grid with one column)
