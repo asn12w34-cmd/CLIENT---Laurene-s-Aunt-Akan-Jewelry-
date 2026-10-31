@@ -272,7 +272,7 @@
               "settings": {
                 "icon": "caret",
                 "dividers": true,
-                "divider_color": "{{ settings.color_palette.color2 }}",
+                "divider_color": "#936222",
                 "type_preset": "h6",
                 "background_color": "",
                 "text_color": "",
@@ -353,7 +353,7 @@
                     "text_qLGEN9": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>Livraison en Côte d’Ivoire et à l’international. Les délais et les frais varient selon la destination. Les retours sont acceptés conformément à nos conditions.</p>",
+                        "text": "<p>Livraison en Côte d’Ivoire et à l’international. Les délais et les frais varient selon la destination. Les retours seront acceptés ou refusés conformément à nos conditions.</p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",

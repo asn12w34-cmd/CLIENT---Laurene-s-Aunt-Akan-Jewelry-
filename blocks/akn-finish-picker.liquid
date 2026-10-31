@@ -1,5 +1,5 @@
 {% comment %}
-CUSTOM FILE [AJ-019] — AKAN finish selector with native Atelier variant updates
+CUSTOM FILE [AJ-019] — AKAN finish selector with native Atelier variant updates | See CUSTOM_CHANGES.md — AJ-019
 {% endcomment %}
 
 {% doc %}
@@ -14,7 +14,7 @@ CUSTOM FILE [AJ-019] — AKAN finish selector with native Atelier variant update
     assign product_resource = collections.all.products.first
   endif
 
-  # CUSTOM [AJ-021] — Use a true regular Newsreader face for the finish label when available.
+  # CUSTOM [AJ-021] — Use a true regular Newsreader face for the finish label when available. | See CUSTOM_CHANGES.md — AJ-021
   assign akn_finish_label_font = settings.type_subheading_font | font_modify: 'weight', 'normal'
   if akn_finish_label_font == blank
     assign akn_finish_label_font = settings.type_subheading_font | font_modify: 'weight', 'bold'
@@ -22,10 +22,31 @@ CUSTOM FILE [AJ-019] — AKAN finish selector with native Atelier variant update
   if akn_finish_label_font == blank
     assign akn_finish_label_font = settings.type_subheading_font
   endif
+
+  # CUSTOM [AJ-025] — Resolve a sturdier Newsreader face for product body copy, with a safe regular fallback. | See CUSTOM_CHANGES.md — AJ-025
+  assign akn_product_copy_font = settings.type_subheading_font | font_modify: 'weight', 300
+  if akn_product_copy_font == blank
+    assign akn_product_copy_font = settings.type_subheading_font | font_modify: 'weight', 'normal'
+  endif
+  if akn_product_copy_font == blank
+    assign akn_product_copy_font = settings.type_subheading_font
+  endif
 %}
 
+{% comment %} CUSTOM START [AJ-025] — Load and scope the resolved product-copy typography without changing the store-wide font settings. | See CUSTOM_CHANGES.md — AJ-025 {% endcomment %}
+{% style %}
+  {{ akn_product_copy_font | font_face: font_display: 'swap' }}
+
+  .product-details {
+    --akn-product-copy-font-family: {{ akn_product_copy_font.family }}, {{ akn_product_copy_font.fallback_families }};
+    --akn-product-copy-font-style: {{ akn_product_copy_font.style }};
+    --akn-product-copy-font-weight: {{ akn_product_copy_font.weight }};
+  }
+{% endstyle %}
+{% comment %} CUSTOM END [AJ-025] {% endcomment %}
+
 {% unless product_resource == blank or product_resource.has_only_default_variant %}
-  {% comment %} CUSTOM START [AJ-021] — Load the resolved label weight without changing store-wide typography. {% endcomment %}
+  {% comment %} CUSTOM START [AJ-021] — Load the resolved label weight without changing store-wide typography. | See CUSTOM_CHANGES.md — AJ-021 {% endcomment %}
   {% if akn_finish_label_font.weight != settings.type_subheading_font.weight %}
     {% style %}
       {{ akn_finish_label_font | font_face: font_display: 'swap' }}
@@ -107,13 +128,13 @@ CUSTOM FILE [AJ-019] — AKAN finish selector with native Atelier variant update
               class="akn-finish-picker__field akn-finish-picker__field--static"
               data-finish-name="{{ selected_option_value | handleize }}"
             >
-              {% # CUSTOM [AJ-020] — Finish-name hook for material-aware swatch rendering. %}
+              {% # CUSTOM [AJ-020] — Finish-name hook for material-aware swatch rendering. | See CUSTOM_CHANGES.md — AJ-020 %}
               {% render 'swatch', swatch: selected_option_value.swatch, mode: 'unscaled' %}
               <span class="akn-finish-picker__value">{{ selected_option_value | escape }}</span>
             </div>
           {% else %}
             {% comment %}
-              CUSTOM START [AJ-020] — Accessible finish disclosure with coordinated close behaviour.
+              CUSTOM START [AJ-020] — Accessible finish disclosure with coordinated close behaviour. | See CUSTOM_CHANGES.md — AJ-020
             {% endcomment %}
             <akn-finish-disclosure>
               <details class="akn-finish-picker__details">
@@ -195,9 +216,13 @@ CUSTOM FILE [AJ-019] — AKAN finish selector with native Atelier variant update
 {% render 'swatch-styles' %}
 
 {% stylesheet %}
-  /* CUSTOM [AJ-019] — Cohesive finish and purchase presentation for AKAN product pages. */
-  /* CUSTOM [AJ-020] — Refined finish selector, product copy, and product accordion presentation. */
-  /* CUSTOM [AJ-021] — Stronger hierarchy, border clarity, and reusable dimensional colour swatches. */
+  /* CUSTOM [AJ-019] — Cohesive finish and purchase presentation for AKAN product pages. | See CUSTOM_CHANGES.md — AJ-019 */
+  /* CUSTOM [AJ-020] — Refined finish selector, product copy, and product accordion presentation. | See CUSTOM_CHANGES.md — AJ-020 */
+  /* CUSTOM [AJ-021] — Stronger hierarchy, border clarity, and reusable dimensional colour swatches. | See CUSTOM_CHANGES.md — AJ-021 */
+  /* CUSTOM [AJ-022] — Harmonised product accordions with editorial headings, gold dividers, and readable content. | See CUSTOM_CHANGES.md — AJ-022 */
+  /* CUSTOM [AJ-023] — Clearer accordion hierarchy and reliable product-page dividers. | See CUSTOM_CHANGES.md — AJ-023 */
+  /* CUSTOM [AJ-025] — Stronger, warm-charcoal Newsreader body copy for descriptions and accordion content. | See CUSTOM_CHANGES.md — AJ-025 */
+  /* CUSTOM [AJ-027] — Make description paragraphs inherit the same resolved weight as accordion content. | See CUSTOM_CHANGES.md — AJ-027 */
   .product-details .akn-finish-picker {
     --variant-picker-swatch-width: 30px;
     --variant-picker-swatch-height: 30px;
@@ -430,15 +455,23 @@ CUSTOM FILE [AJ-019] — AKAN finish selector with native Atelier variant update
     --font-size: 1.0625rem;
     --line-height: 1.52;
 
-    color: rgb(80 7 20 / 0.82);
+    color: #352e2a;
+    font-family: var(--akn-product-copy-font-family, var(--font-subheading--family));
+    font-style: var(--akn-product-copy-font-style, var(--font-subheading--style));
+    font-weight: var(--akn-product-copy-font-weight, 400);
   }
 
   .product-details .product-description > * {
     max-inline-size: min(100%, 48ch);
+    font-weight: inherit;
   }
 
-  .product-details .accordion {
-    --color-border: rgb(147 98 34 / 0.36);
+  .product-details .accordion.accordion--dividers > accordion-custom .details {
+    border-block-start: 1px solid color-mix(in srgb, var(--color-border, #936222) 42%, transparent);
+  }
+
+  .product-details .accordion.accordion--dividers > accordion-custom:last-child .details {
+    border-block-end: 1px solid color-mix(in srgb, var(--color-border, #936222) 42%, transparent);
   }
 
   .product-details .accordion .details__header {
@@ -447,7 +480,7 @@ CUSTOM FILE [AJ-019] — AKAN finish selector with native Atelier variant update
     font-family: var(--font-subheading--family);
     font-size: 18px;
     font-style: var(--font-subheading--style);
-    font-weight: var(--font-subheading--weight);
+    font-weight: 400;
     line-height: 1.3;
     letter-spacing: 0;
     text-transform: none;
@@ -455,6 +488,63 @@ CUSTOM FILE [AJ-019] — AKAN finish selector with native Atelier variant update
 
   .product-details .accordion .details__header .icon-caret {
     color: #936222;
+  }
+
+  .product-details .accordion .details[open] .details-content {
+    padding-block: 4px 20px;
+  }
+
+  .product-details .accordion .details-content {
+    color: #352e2a;
+    font-family: var(--akn-product-copy-font-family, var(--font-subheading--family));
+    font-size: 1.0625rem;
+    font-style: var(--akn-product-copy-font-style, var(--font-subheading--style));
+    font-weight: var(--akn-product-copy-font-weight, 400);
+    line-height: 1.52;
+    text-align: start;
+  }
+
+  .product-details .accordion .details-content > * {
+    max-inline-size: min(100%, 48ch);
+  }
+
+  .product-details .accordion .details-content > .text-block {
+    padding: 0;
+  }
+
+  .product-details .accordion .details-content .text-block,
+  .product-details .accordion .details-content .text-block > * {
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .product-details .accordion .details-content :where(p, ul, ol) {
+    margin-block: 0 10px;
+  }
+
+  .product-details .accordion .details-content :where(p, ul, ol):last-child {
+    margin-block-end: 0;
+  }
+
+  .product-details .accordion .details-content :where(ul, ol) {
+    padding-inline-start: 1.2em;
+  }
+
+  .product-details .accordion .details-content li + li {
+    margin-block-start: 4px;
+  }
+
+  .product-details .accordion .details-content a {
+    color: #500714;
+    text-decoration-color: rgb(147 98 34 / 0.72);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.16em;
   }
 
   .product-details .buy-buttons-block .add-to-cart-button {
@@ -502,6 +592,15 @@ CUSTOM FILE [AJ-019] — AKAN finish selector with native Atelier variant update
     .product-details .accordion .details__header {
       min-block-size: 52px;
       font-size: 17px;
+    }
+
+    .product-details .accordion .details[open] .details-content {
+      padding-block: 2px 18px;
+    }
+
+    .product-details .accordion .details-content {
+      font-size: 1rem;
+      line-height: 1.5;
     }
 
     .product-details .buy-buttons-block .add-to-cart-button {

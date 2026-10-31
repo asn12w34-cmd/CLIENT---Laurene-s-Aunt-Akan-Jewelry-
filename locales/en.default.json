@@ -10,6 +10,7 @@
 {
   "accessibility": {
     "account": "Account",
+    "akn_collection_navigation": "Browse product collections",
     "active_filters": "Active filters:",
     "cart": "Cart",
     "cart_count": "Total items in cart",

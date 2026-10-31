@@ -11,8 +11,9 @@
     {% endstyle %}
   {% endif %}
   {% liquid
-    # CUSTOM [AJ-011] — Add WhatsApp to the native social-links workflow.
+    # CUSTOM START [AJ-011] — Add WhatsApp to the native social-links workflow. | See CUSTOM_CHANGES.md — AJ-011
     assign social_links = 'facebook_url,instagram_url,whatsapp_url,youtube_url,tiktok_url,twitter_url,threads_url,linkedin_url,bluesky_url,snapchat_url,pinterest_url,tumblr_url,vimeo_url,custom_url' | split: ','
+    # CUSTOM END [AJ-011]
   %}
 
   {% for link_key in social_links %}
@@ -27,9 +28,10 @@
             assign platform = 'facebook'
           when 'instagram_url'
             assign platform = 'instagram'
-          # CUSTOM [AJ-011] — Handle WhatsApp as a native social platform.
+          # CUSTOM START [AJ-011] — Handle WhatsApp as a native social platform. | See CUSTOM_CHANGES.md — AJ-011
           when 'whatsapp_url'
             assign platform = 'whatsapp'
+          # CUSTOM END [AJ-011]
           when 'youtube_url'
             assign platform = 'youtube'
           when 'tiktok_url'
@@ -75,10 +77,11 @@
         endunless
 
         assign platform_label = platform | capitalize
-        # CUSTOM [AJ-011] — Preserve WhatsApp's official capitalization.
+        # CUSTOM START [AJ-011] — Preserve WhatsApp's official capitalization. | See CUSTOM_CHANGES.md — AJ-011
         if platform == 'whatsapp'
           assign platform_label = 'WhatsApp'
         endif
+        # CUSTOM END [AJ-011]
       endif
     %}
 

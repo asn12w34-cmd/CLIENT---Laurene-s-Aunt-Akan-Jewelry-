@@ -1,5 +1,5 @@
 /*
-CUSTOM FILE [AJ-020] — Accessible AKAN finish disclosure behaviour
+CUSTOM FILE [AJ-020] — Accessible AKAN finish disclosure behaviour | See CUSTOM_CHANGES.md — AJ-020
 */
 
 class AknFinishDisclosure extends HTMLElement {

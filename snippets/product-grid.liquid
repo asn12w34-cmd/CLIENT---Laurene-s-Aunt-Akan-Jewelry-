@@ -20,12 +20,31 @@
 {% endcapture %}
 {% assign product_card_size = product_card_size | strip %}
 
+{% liquid
+  # CUSTOM START [AJ-024] — A collection can cap its desktop columns while preserving the shared search-grid behaviour. | See CUSTOM_CHANGES.md — AJ-024
+  assign max_columns_desktop = section.settings.max_columns_desktop | default: 0
+  assign desktop_columns = 0
+
+  if max_columns_desktop > 0
+    assign desktop_product_count = collection.all_products_count | default: products.size
+    assign desktop_columns = desktop_product_count | at_most: max_columns_desktop | at_least: 2
+  endif
+  # CUSTOM END [AJ-024]
+%}
+
 {% style %}
   @media screen and (min-width: 750px) {
     {% case section.settings.layout_type %}
       {% when 'grid' %}
         .product-grid--{{ section.id }}:is(.product-grid--grid) {
-          --product-grid-columns-desktop: repeat(auto-fill, minmax({{ product_card_size }}, 1fr));
+          /* CUSTOM START [AJ-024] — Optional collection desktop-column limit. | See CUSTOM_CHANGES.md — AJ-024 */
+          --product-grid-columns-desktop:
+            {% if desktop_columns > 0 %}
+              repeat({{ desktop_columns }}, minmax(0, 1fr));
+            {% else %}
+              repeat(auto-fill, minmax({{ product_card_size }}, 1fr));
+            {% endif %}
+          /* CUSTOM END [AJ-024] */
         }
 
 

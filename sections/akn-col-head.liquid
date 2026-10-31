@@ -1,0 +1,460 @@
+{% comment %}
+  CUSTOM FILE [AJ-024] — En-tête partagé des collections AKAN | See CUSTOM_CHANGES.md — AJ-024
+
+  Section contract.
+  Présente le titre et l’introduction de la collection active, puis relie les trois
+  véritables collections de la boutique sans dupliquer leurs pages.
+  @example
+  Utiliser cette section en tête du modèle collection partagé par Tout, Bracelets et Boucles d’oreilles.
+{% endcomment %}
+
+{% liquid
+  assign catalog_collection = section.settings.catalog_collection
+  assign bracelets_collection = section.settings.bracelets_collection
+  assign earrings_collection = section.settings.earrings_collection
+
+  assign display_title = collection.title
+  assign display_intro = collection.description
+  assign display_intro_text = display_intro | strip_html | strip
+
+  if catalog_collection != blank and catalog_collection.id == collection.id
+    if section.settings.catalog_title != blank
+      assign display_title = section.settings.catalog_title
+    endif
+    if display_intro_text == blank
+      assign display_intro = section.settings.catalog_intro
+    endif
+  elsif bracelets_collection != blank and bracelets_collection.id == collection.id
+    if section.settings.bracelets_title != blank
+      assign display_title = section.settings.bracelets_title
+    endif
+    if display_intro_text == blank
+      assign display_intro = section.settings.bracelets_intro
+    endif
+  elsif earrings_collection != blank and earrings_collection.id == collection.id
+    if section.settings.earrings_title != blank
+      assign display_title = section.settings.earrings_title
+    endif
+    if display_intro_text == blank
+      assign display_intro = section.settings.earrings_intro
+    endif
+  endif
+
+  assign color_scope = 'akn-col-head-' | append: section.id
+  render 'contrast-override', background_color: section.settings.background_color, text_color: section.settings.text_color, border_color: section.settings.divider_color, section_id: color_scope, preset: 'content'
+%}
+
+<div class="section-background color-custom-{{ color_scope }}"></div>
+<section
+  class="section section--page-width akn-col-head color-custom-{{ color_scope }}"
+  style="
+    --akn-col-head-eyebrow: {{ section.settings.eyebrow_color }};
+    --akn-col-head-muted: {{ section.settings.intro_color }};
+    --akn-col-head-accent: {{ section.settings.accent_color }};
+    --akn-col-head-divider: {{ section.settings.divider_color }};
+    --akn-col-head-padding-top: {{ section.settings.padding_top }}px;
+    --akn-col-head-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="akn-col-head__content">
+    {% if section.settings.eyebrow != blank %}
+      <p class="akn-col-head__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {% endif %}
+
+    <h1 class="akn-col-head__title">{{ display_title | escape }}</h1>
+
+    {% if display_intro != blank %}
+      <div class="akn-col-head__intro rte">{{ display_intro }}</div>
+    {% endif %}
+  </div>
+
+  <nav class="akn-col-head__nav" aria-label="{{ 'accessibility.akn_collection_navigation' | t | escape }}">
+    <ul class="akn-col-head__tabs" role="list">
+      {% if catalog_collection != blank %}
+        <li>
+          <a
+            class="akn-col-head__tab{% if catalog_collection.id == collection.id %} akn-col-head__tab--active{% endif %}"
+            href="{{ catalog_collection.url }}"
+            {% if catalog_collection.id == collection.id %}aria-current="page"{% endif %}
+          >
+            {{- section.settings.catalog_label | escape -}}
+          </a>
+        </li>
+      {% endif %}
+
+      {% if bracelets_collection != blank %}
+        <li>
+          <a
+            class="akn-col-head__tab{% if bracelets_collection.id == collection.id %} akn-col-head__tab--active{% endif %}"
+            href="{{ bracelets_collection.url }}"
+            {% if bracelets_collection.id == collection.id %}aria-current="page"{% endif %}
+          >
+            {{- section.settings.bracelets_label | escape -}}
+          </a>
+        </li>
+      {% endif %}
+
+      {% if earrings_collection != blank %}
+        <li>
+          <a
+            class="akn-col-head__tab{% if earrings_collection.id == collection.id %} akn-col-head__tab--active{% endif %}"
+            href="{{ earrings_collection.url }}"
+            {% if earrings_collection.id == collection.id %}aria-current="page"{% endif %}
+          >
+            {{- section.settings.earrings_label | escape -}}
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+</section>
+
+{% stylesheet %}
+  /* CUSTOM [AJ-024] — Hiérarchie éditoriale et navigation responsive des collections. | See CUSTOM_CHANGES.md — AJ-024 */
+  .akn-col-head {
+    min-inline-size: 0;
+    padding-block: var(--akn-col-head-padding-top) var(--akn-col-head-padding-bottom);
+  }
+
+  .akn-col-head__content {
+    display: grid;
+    gap: 0;
+    min-inline-size: 0;
+  }
+
+  .akn-col-head__eyebrow,
+  .akn-col-head__title,
+  .akn-col-head__intro,
+  .akn-col-head__intro > :first-child,
+  .akn-col-head__intro > :last-child {
+    margin: 0;
+  }
+
+  .akn-col-head__eyebrow {
+    color: var(--akn-col-head-eyebrow);
+    font-family: var(--font-accent--family);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.34em;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  .akn-col-head__title {
+    margin-block-start: 0.55rem;
+    color: inherit;
+    font-family: var(--font-heading--family);
+    font-size: clamp(3.5rem, 4.7vw, 5.25rem);
+    font-weight: var(--font-heading--weight);
+    letter-spacing: -0.035em;
+    line-height: 0.9;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  .akn-col-head__intro {
+    max-inline-size: 56rem;
+    margin-block-start: 0.55rem;
+    color: var(--akn-col-head-muted);
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.35rem, 1.75vw, 1.85rem);
+    font-weight: var(--font-heading--weight);
+    letter-spacing: -0.015em;
+    line-height: 1.12;
+    text-wrap: pretty;
+  }
+
+  .akn-col-head__nav {
+    min-inline-size: 0;
+    margin-block-start: clamp(1.35rem, 2vw, 2rem);
+    border-block-end: 1px solid var(--akn-col-head-divider);
+  }
+
+  .akn-col-head__tabs {
+    display: flex;
+    align-items: end;
+    gap: clamp(2rem, 4vw, 4.25rem);
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    list-style: none;
+    overscroll-behavior-inline: contain;
+  }
+
+  .akn-col-head__tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .akn-col-head__tabs li {
+    flex: 0 0 auto;
+  }
+
+  .akn-col-head__tab {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 46px;
+    color: inherit;
+    font-family: var(--font-accent--family);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    line-height: 1.2;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .akn-col-head__tab::after {
+    content: '';
+    position: absolute;
+    inset-block-end: -1px;
+    inset-inline: 0;
+    block-size: 2px;
+    background: var(--akn-col-head-accent);
+    opacity: 0;
+    transform: scaleX(0.5);
+    transform-origin: center;
+    transition: opacity var(--animation-speed) var(--animation-easing),
+      transform var(--animation-speed) var(--animation-easing);
+  }
+
+  .akn-col-head__tab--active {
+    font-weight: 700;
+  }
+
+  .akn-col-head__tab--active::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .akn-col-head__tab:focus-visible {
+    outline: 2px solid var(--akn-col-head-accent);
+    outline-offset: 3px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .akn-col-head__tab:hover::after {
+      opacity: 0.65;
+      transform: scaleX(1);
+    }
+
+    .akn-col-head__tab--active:hover::after {
+      opacity: 1;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .akn-col-head {
+      padding-block-start: max(1.5rem, calc(var(--akn-col-head-padding-top) * 0.58));
+    }
+
+    .akn-col-head__eyebrow {
+      font-size: 0.6875rem;
+      letter-spacing: 0.3em;
+    }
+
+    .akn-col-head__title {
+      margin-block-start: 0.45rem;
+      font-size: clamp(2.45rem, 11vw, 3.65rem);
+      line-height: 0.94;
+    }
+
+    .akn-col-head__intro {
+      margin-block-start: 0.45rem;
+      font-size: clamp(1.1rem, 5vw, 1.45rem);
+      line-height: 1.15;
+    }
+
+    .akn-col-head__nav {
+      margin-block-start: 1.25rem;
+    }
+
+    .akn-col-head__tabs {
+      gap: clamp(1.5rem, 8vw, 2.5rem);
+      scroll-snap-type: inline proximity;
+    }
+
+    .akn-col-head__tabs li {
+      scroll-snap-align: start;
+    }
+
+    .akn-col-head__tab {
+      min-block-size: 44px;
+      font-size: 0.6875rem;
+      letter-spacing: 0.24em;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .akn-col-head__tab::after {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:akn_collection.name",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:akn_collection.groups.content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:akn_collection.labels.eyebrow",
+      "default": "LA COLLECTION"
+    },
+    {
+      "type": "collection",
+      "id": "catalog_collection",
+      "label": "t:akn_collection.labels.catalog_collection"
+    },
+    {
+      "type": "text",
+      "id": "catalog_title",
+      "label": "t:akn_collection.labels.catalog_title",
+      "default": "La boutique"
+    },
+    {
+      "type": "richtext",
+      "id": "catalog_intro",
+      "label": "t:akn_collection.labels.catalog_intro",
+      "default": "<p>Sept pièces, une même histoire.</p>"
+    },
+    {
+      "type": "collection",
+      "id": "bracelets_collection",
+      "label": "t:akn_collection.labels.bracelets_collection"
+    },
+    {
+      "type": "text",
+      "id": "bracelets_title",
+      "label": "t:akn_collection.labels.bracelets_title",
+      "default": "Bracelets"
+    },
+    {
+      "type": "richtext",
+      "id": "bracelets_intro",
+      "label": "t:akn_collection.labels.bracelets_intro",
+      "default": "<p>Des symboles à porter au quotidien.<br>Chaque bracelet relie héritage, couleur et geste artisanal.</p>"
+    },
+    {
+      "type": "collection",
+      "id": "earrings_collection",
+      "label": "t:akn_collection.labels.earrings_collection"
+    },
+    {
+      "type": "text",
+      "id": "earrings_title",
+      "label": "t:akn_collection.labels.earrings_title",
+      "default": "Boucles d’oreilles"
+    },
+    {
+      "type": "richtext",
+      "id": "earrings_intro",
+      "label": "t:akn_collection.labels.earrings_intro",
+      "default": "<p>Des lignes qui attirent la lumière.<br>Des pièces sculpturales, entre élégance et héritage.</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_collection.groups.navigation"
+    },
+    {
+      "type": "text",
+      "id": "catalog_label",
+      "label": "t:akn_collection.labels.catalog_label",
+      "default": "Tout"
+    },
+    {
+      "type": "text",
+      "id": "bracelets_label",
+      "label": "t:akn_collection.labels.bracelets_label",
+      "default": "Bracelets"
+    },
+    {
+      "type": "text",
+      "id": "earrings_label",
+      "label": "t:akn_collection.labels.earrings_label",
+      "default": "Boucles d’oreilles"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_collection.groups.colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:akn_collection.labels.background_color",
+      "default": "#f7f3eb"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:akn_collection.labels.text_color",
+      "default": "#17110e"
+    },
+    {
+      "type": "color",
+      "id": "intro_color",
+      "label": "t:akn_collection.labels.intro_color",
+      "default": "#75665e"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "t:akn_collection.labels.eyebrow_color",
+      "default": "#a76b1f"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "t:akn_collection.labels.accent_color",
+      "default": "#b87928"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "t:akn_collection.labels.divider_color",
+      "default": "#d9d0c3"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_collection.groups.spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:akn_collection.labels.padding_top",
+      "min": 16,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:akn_collection.labels.padding_bottom",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:akn_collection.name",
+      "category": "t:akn_collection.category"
+    }
+  ]
+}
+{% endschema %}

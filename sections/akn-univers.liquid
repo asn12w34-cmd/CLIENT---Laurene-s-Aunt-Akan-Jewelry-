@@ -152,7 +152,7 @@
 </akn-univers-component>
 
 {% stylesheet %}
-  /* CUSTOM [AJ-005] — Présentation isolée ; balayage mobile entièrement natif. */
+  /* CUSTOM [AJ-005] — Présentation isolée ; balayage mobile entièrement natif. | See CUSTOM_CHANGES.md — AJ-005 */
   .akn-univers {
     display: block;
     min-inline-size: 0;
@@ -349,7 +349,7 @@
 {% endstylesheet %}
 
 {% javascript %}
-  /* CUSTOM [AJ-005] — Un délai annulable par carte, pour réinitialiser les survols interrompus. */
+  /* CUSTOM [AJ-005] — Un délai annulable par carte, pour réinitialiser les survols interrompus. | See CUSTOM_CHANGES.md — AJ-005 */
   void import('@theme/component').then(({ Component }) => {
     class AknUniversComponent extends Component {
       #controller;

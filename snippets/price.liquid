@@ -62,7 +62,7 @@
   endif
 
   # Format all prices
-  # CUSTOM START [AJ-018] — Optional AKAN amount-first currency format, scoped by the caller.
+  # CUSTOM START [AJ-018] — Optional AKAN amount-first currency format, scoped by the caller. | See CUSTOM_CHANGES.md — AJ-018
   if currency_code_after_amount
     assign active_currency_code = localization.country.currency.iso_code | default: cart.currency.iso_code | default: shop.currency
     assign price = price | money_without_currency | append: ' ' | append: active_currency_code

@@ -1,5 +1,5 @@
 /*
-CUSTOM FILE [AJ-004] — Idempotent next-section scrolling for the AKAN Hero cue
+CUSTOM FILE [AJ-004] — Idempotent next-section scrolling for the AKAN Hero cue | See CUSTOM_CHANGES.md — AJ-004
 */
 
 (() => {

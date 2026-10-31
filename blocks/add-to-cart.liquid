@@ -13,7 +13,7 @@
   assign class = 'add-to-cart-button ' | append: block.settings.style_class | append: ' ' | append: scoped_class
   assign id = 'BuyButtons-ProductSubmitButton-' | append: block.id
 
-  # CUSTOM START [AJ-019] — Allow product templates to remove the initial bag icon without changing purchase behaviour.
+  # CUSTOM START [AJ-019] — Allow product templates to remove the initial bag icon without changing purchase behaviour. | See CUSTOM_CHANGES.md — AJ-019
   assign show_icon = can_add_to_cart
   if block.settings.show_icon == false
     assign show_icon = false
@@ -65,7 +65,7 @@
       "default": "button-secondary",
       "info": "t:info.edit_button_style_in_theme_settings"
     },
-    /* CUSTOM START [AJ-019] — Product-page control for the initial add-to-cart icon. */
+    /* CUSTOM START [AJ-019] — Product-page control for the initial add-to-cart icon. | See CUSTOM_CHANGES.md — AJ-019 */
     {
       "type": "checkbox",
       "id": "show_icon",

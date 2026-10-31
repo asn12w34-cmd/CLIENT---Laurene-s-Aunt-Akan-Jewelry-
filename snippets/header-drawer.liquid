@@ -43,7 +43,7 @@
   endif
 %}
 
-{%- comment -%} CUSTOM START [AJ-001] — Mobile-only menu, branding, and appearance settings. {%- endcomment -%}
+{%- comment -%} CUSTOM START [AJ-001] — Mobile-only menu, branding, and appearance settings. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
 {% liquid
   assign is_akn_mobile_drawer = false
   assign drawer_accordion = block_settings.drawer_accordion
@@ -73,7 +73,7 @@
   fetchpriority="low"
 ></script>
 
-{%- comment -%} CUSTOM START [AJ-001] — Scope AKAN drawer variables to the mobile drawer instance. {%- endcomment -%}
+{%- comment -%} CUSTOM START [AJ-001] — Scope AKAN drawer variables to the mobile drawer instance. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
 <header-drawer
   class="header-drawer {{ class }}{% if is_akn_mobile_drawer %} header-drawer--akn-mobile{% endif %}"
   style="
@@ -116,7 +116,7 @@
         {% endif %}
       "
     >
-      {%- comment -%} CUSTOM START [AJ-001] — Mobile drawer brand row with safe logo and text fallbacks. {%- endcomment -%}
+      {%- comment -%} CUSTOM START [AJ-001] — Mobile drawer brand row with safe logo and text fallbacks. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
       {% if is_akn_mobile_drawer %}
         <div class="akn-drawer__brand-row">
           <a
@@ -180,7 +180,7 @@
             {% assign animation_index = 0 %}
             {%- for link in linklist.links -%}
               {% assign animation_index = animation_index | plus: 1 %}
-              {%- comment -%} CUSTOM START [AJ-001] — Force Atelier's native accordion for mobile parent links. {%- endcomment -%}
+              {%- comment -%} CUSTOM START [AJ-001] — Force Atelier's native accordion for mobile parent links. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
               <li
                 style="--menu-drawer-animation-index: {{ animation_index }};"
                 class="{%- if drawer_accordion -%}menu-drawer__list-item--deep{%- else -%}menu-drawer__list-item--flat{%- endif -%}{% if block_settings.drawer_dividers %} menu-drawer__list-item--divider{% endif %}"
@@ -197,7 +197,7 @@
                       assign should_open_first = true
                     endif
                   %}
-                  {%- comment -%} CUSTOM START [AJ-001] — Mobile parent groups start collapsed. {%- endcomment -%}
+                  {%- comment -%} CUSTOM START [AJ-001] — Mobile parent groups start collapsed. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
                   {% if is_akn_mobile_drawer %}
                     {% assign should_open_first = false %}
                   {% endif %}
@@ -215,7 +215,7 @@
                           {{- 'icon-plus.svg' | inline_asset_content -}}
                         </span>
                       </summary>
-                      {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. {%- endcomment -%}
+                      {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
                       {% liquid
                         assign render_link_image = false
                         if drawer_menu_style == 'collection_images'
@@ -264,7 +264,7 @@
                     children: accordion_children,
                     open_by_default_on_mobile: should_open_first
                   %}
-                {%- comment -%} CUSTOM START [AJ-001] — Keep the native flat branch available outside the AKAN mobile drawer. {%- endcomment -%}
+                {%- comment -%} CUSTOM START [AJ-001] — Keep the native flat branch available outside the AKAN mobile drawer. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
                 {% elsif drawer_accordion == false and link.links != blank %}
                 {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
                   {%- comment -%}
@@ -280,7 +280,7 @@
                   >
                     <span class="menu-drawer__menu-item-text wrap-text">{{ link.title | escape }}</span>
                   </a>
-                  {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. {%- endcomment -%}
+                  {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
                   {% liquid
                     assign render_link_image = false
                     if drawer_menu_style == 'collection_images'
@@ -405,7 +405,7 @@
                             </span>
                           </button>
                         </div>
-                        {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. {%- endcomment -%}
+                        {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
                         {% liquid
                           assign render_link_image = false
                           if drawer_menu_style == 'collection_images'
@@ -485,7 +485,7 @@
                                           {{- 'icon-plus.svg' | inline_asset_content -}}
                                         </span>
                                       </summary>
-                                      {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. {%- endcomment -%}
+                                      {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
                                       {% liquid
                                         assign render_link_image = false
                                         if drawer_menu_style == 'collection_images'
@@ -552,7 +552,7 @@
                                       {{- childlink.title | escape -}}
                                     </span>
                                   </a>
-                                  {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. {%- endcomment -%}
+                                  {%- comment -%} CUSTOM START [AJ-001] — Suppress desktop menu media in the mobile drawer. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
                                   {% liquid
                                     assign render_link_image = false
                                     if drawer_menu_style == 'collection_images'
@@ -602,7 +602,7 @@
                             </li>
                           {%- endfor -%}
                         </ul>
-                        {%- comment -%} CUSTOM START [AJ-001] — Omit featured collection/product cards from the mobile drawer. {%- endcomment -%}
+                        {%- comment -%} CUSTOM START [AJ-001] — Omit featured collection/product cards from the mobile drawer. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
                         {% liquid
                           if eager_loading
                             if drawer_menu_style == 'featured_collections'
@@ -683,9 +683,9 @@
         class="menu-drawer__utility-links menu-drawer__animated-element"
         style="--menu-drawer-animation-index: {{ linklist.links.size }};"
       >
-        {%- comment -%} CUSTOM START [AJ-001] — Mobile account and configurable WhatsApp utility links. {%- endcomment -%}
+        {%- comment -%} CUSTOM START [AJ-001] — Mobile account and configurable WhatsApp utility links. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
         {% if is_akn_mobile_drawer %}
-          {%- comment -%} CUSTOM START [AJ-002] — Show the utility area when an Instagram link is configured. {%- endcomment -%}
+          {%- comment -%} CUSTOM START [AJ-002] — Show the utility area when an Instagram link is configured. | See CUSTOM_CHANGES.md — AJ-002 {%- endcomment -%}
           {% if shop.customer_accounts_enabled or block_settings.drawer_whatsapp_url != blank or block_settings.drawer_instagram_url != blank %}
           {%- comment -%} CUSTOM END [AJ-002] {%- endcomment -%}
             <div class="akn-drawer__utility">
@@ -715,7 +715,7 @@
                   <span>WhatsApp</span>
                 </a>
               {% endif %}
-              {%- comment -%} CUSTOM START [AJ-002] — Configurable Instagram utility link using Atelier's native icon. {%- endcomment -%}
+              {%- comment -%} CUSTOM START [AJ-002] — Configurable Instagram utility link using Atelier's native icon. | See CUSTOM_CHANGES.md — AJ-002 {%- endcomment -%}
               {% if block_settings.drawer_instagram_url != blank %}
                 <a
                   class="akn-drawer__utility-link focus-inset"
@@ -869,7 +869,7 @@
         {%- comment -%} CUSTOM END [AJ-001] {%- endcomment -%}
       </div>
 
-      {%- comment -%} CUSTOM START [AJ-001] — Omit featured collection/product cards from the mobile drawer. {%- endcomment -%}
+      {%- comment -%} CUSTOM START [AJ-001] — Omit featured collection/product cards from the mobile drawer. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
       {% liquid
         if drawer_menu_style == 'featured_collections'
           assign top_level_featured_collections = linklist.links | where: 'type', 'collection_link'
@@ -1689,7 +1689,7 @@
     transform: none;
   }
 
-  /* CUSTOM START [AJ-001] — AKAN mobile drawer presentation; desktop drawer and mega-menu remain unchanged. */
+  /* CUSTOM START [AJ-001] — AKAN mobile drawer presentation; desktop drawer and mega-menu remain unchanged. | See CUSTOM_CHANGES.md — AJ-001 */
   @media screen and (max-width: 749px) {
     .header-drawer--akn-mobile .menu-drawer {
       width: min(88vw, 26rem);

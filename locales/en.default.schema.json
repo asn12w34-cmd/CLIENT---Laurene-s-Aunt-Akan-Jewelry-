@@ -1557,5 +1557,39 @@
       "copyright_text": "All rights reserved.",
       "payment_heading": "Payment methods"
     }
+  },
+  "akn_collection": {
+    "name": "AKAN — Collection header",
+    "category": "Collections",
+    "groups": {
+      "content": "Collections and fallback content",
+      "navigation": "Navigation labels",
+      "colors": "Colours",
+      "spacing": "Spacing"
+    },
+    "labels": {
+      "eyebrow": "Eyebrow",
+      "catalog_collection": "All products collection",
+      "catalog_title": "All products display title",
+      "catalog_intro": "All products fallback introduction",
+      "bracelets_collection": "Bracelets collection",
+      "bracelets_title": "Bracelets display title",
+      "bracelets_intro": "Bracelets fallback introduction",
+      "earrings_collection": "Earrings collection",
+      "earrings_title": "Earrings display title",
+      "earrings_intro": "Earrings fallback introduction",
+      "catalog_label": "All products tab",
+      "bracelets_label": "Bracelets tab",
+      "earrings_label": "Earrings tab",
+      "background_color": "Background",
+      "text_color": "Title and tab text",
+      "intro_color": "Introduction text",
+      "eyebrow_color": "Eyebrow",
+      "accent_color": "Active tab underline",
+      "divider_color": "Divider",
+      "padding_top": "Top spacing",
+      "padding_bottom": "Bottom spacing",
+      "max_columns_desktop": "Maximum desktop columns"
+    }
   }
 }

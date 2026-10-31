@@ -43,7 +43,7 @@ class HeaderDrawer extends Component {
     return this.refs.details.hasAttribute('open');
   }
 
-  // CUSTOM START [AJ-001] — Keep focus changes scoped to the customized mobile presentation.
+  // CUSTOM START [AJ-001] — Keep focus changes scoped to the customized mobile presentation. | See CUSTOM_CHANGES.md — AJ-001
   get usesAkanMobileFocus() {
     return (
       this.classList.contains('header-drawer--akn-mobile') && window.matchMedia('(max-width: 749px)').matches
@@ -90,7 +90,7 @@ class HeaderDrawer extends Component {
         this.refs.menuDrawer.classList.add('menu-drawer--has-submenu-opened');
       }
 
-      // CUSTOM START [AJ-001] — Trap focus inside the visible panel and move it to the close control.
+      // CUSTOM START [AJ-001] — Trap focus inside the visible panel and move it to the close control. | See CUSTOM_CHANGES.md — AJ-001
       // Wait for the drawer animation to complete before trapping focus.
       const drawer = details.querySelector('.menu-drawer, .menu-drawer__submenu');
       const focusContainer =
@@ -147,14 +147,14 @@ class HeaderDrawer extends Component {
       () => {
         reset(details);
         if (details === this.refs.details) {
-          // CUSTOM START [AJ-001] — Restore focus to the hamburger after the drawer closes.
+          // CUSTOM START [AJ-001] — Restore focus to the hamburger after the drawer closes. | See CUSTOM_CHANGES.md — AJ-001
           removeTrapFocus();
           if (this.usesAkanMobileFocus) summary.focus({ preventScroll: true });
           // CUSTOM END [AJ-001]
           const openDetails = this.querySelectorAll('details[open]:not(accordion-custom > details)');
           openDetails.forEach(reset);
         } else {
-          // CUSTOM START [AJ-001] — Return the trap to the visible main drawer after closing a submenu.
+          // CUSTOM START [AJ-001] — Return the trap to the visible main drawer after closing a submenu. | See CUSTOM_CHANGES.md — AJ-001
           trapFocus(this.usesAkanMobileFocus ? this.refs.menuDrawer : this.refs.details);
           // CUSTOM END [AJ-001]
         }

@@ -1460,5 +1460,39 @@
       "copyright_text": "Tous droits réservés.",
       "payment_heading": "Modes de paiement"
     }
+  },
+  "akn_collection": {
+    "name": "AKAN — En-tête de collection",
+    "category": "Collections",
+    "groups": {
+      "content": "Collections et contenus de remplacement",
+      "navigation": "Libellés de navigation",
+      "colors": "Couleurs",
+      "spacing": "Espacements"
+    },
+    "labels": {
+      "eyebrow": "Surtitre",
+      "catalog_collection": "Collection de tous les produits",
+      "catalog_title": "Titre affiché de la boutique",
+      "catalog_intro": "Introduction de remplacement de la boutique",
+      "bracelets_collection": "Collection Bracelets",
+      "bracelets_title": "Titre affiché des bracelets",
+      "bracelets_intro": "Introduction de remplacement des bracelets",
+      "earrings_collection": "Collection Boucles d’oreilles",
+      "earrings_title": "Titre affiché des boucles d’oreilles",
+      "earrings_intro": "Introduction de remplacement des boucles d’oreilles",
+      "catalog_label": "Onglet Tous les produits",
+      "bracelets_label": "Onglet Bracelets",
+      "earrings_label": "Onglet Boucles d’oreilles",
+      "background_color": "Arrière-plan",
+      "text_color": "Titre et onglets",
+      "intro_color": "Texte d’introduction",
+      "eyebrow_color": "Surtitre",
+      "accent_color": "Soulignement de l’onglet actif",
+      "divider_color": "Séparateur",
+      "padding_top": "Espacement supérieur",
+      "padding_bottom": "Espacement inférieur",
+      "max_columns_desktop": "Nombre maximal de colonnes sur ordinateur"
+    }
   }
 }

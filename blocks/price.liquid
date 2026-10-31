@@ -14,7 +14,9 @@
   endif
 
   capture text_block_classes
+    # CUSTOM START [AJ-018] — Scoped product-price CSS hook. | See CUSTOM_CHANGES.md — AJ-018
     echo ' akn-product-price'
+    # CUSTOM END [AJ-018]
     if block_settings.width == '100%'
       echo 'text-block--align-' | append: block_settings.alignment
       if block_settings.max_width == 'none'
@@ -39,6 +41,7 @@
   endcapture
 %}
 
+{% comment %} CUSTOM START [AJ-018] — Responsive price variable and optional amount-first currency renderer. | See CUSTOM_CHANGES.md — AJ-018 {% endcomment %}
 <product-price
   class="text-block {{ text_block_classes }} text-{{ block_settings.alignment }} {{ block_settings.type_preset | default: 'paragraph' }} spacing-style"
   data-block-id="{{ block.id }}"
@@ -61,6 +64,7 @@
     show_sale_price_first: block_settings.show_sale_price_first,
     currency_code_after_amount: block_settings.akn_currency_code_after_amount
   %}
+{% comment %} CUSTOM END [AJ-018] {% endcomment %}
 
   {% if block_settings.show_tax_info %}
     <div class="tax-note">
@@ -96,13 +100,14 @@
 {% render 'payment-terms-styles' %}
 
 {% stylesheet %}
-  /* CUSTOM [AJ-018] — Responsive AKAN product-price typography while preserving Atelier updates. */
+  /* CUSTOM START [AJ-018] — Responsive AKAN product-price typography while preserving Atelier updates. | See CUSTOM_CHANGES.md — AJ-018 */
   @media screen and (max-width: 749px) {
     .product-details product-price.akn-product-price.custom-font-size,
     .product-details product-price.akn-product-price.custom-font-size > * {
       font-size: var(--akn-product-price-mobile-size);
     }
   }
+  /* CUSTOM END [AJ-018] */
 {% endstylesheet %}
 
 {% schema %}
@@ -136,12 +141,14 @@
       "label": "t:settings.show_tax_info",
       "default": false
     },
+    /* CUSTOM START [AJ-018] — Réglage personnalisé : akn_currency_code_after_amount. | See CUSTOM_CHANGES.md — AJ-018 */
     {
       "type": "checkbox",
       "id": "akn_currency_code_after_amount",
       "label": "t:settings.akn_currency_code_after_amount",
       "default": false
-    },
+    }
+    /* CUSTOM END [AJ-018] */,
     {
       "type": "header",
       "content": "t:content.typography"
@@ -315,6 +322,7 @@
       "default": "1rem",
       "visible_if": "{{ block.settings.type_preset == 'custom' }}"
     },
+    /* CUSTOM START [AJ-018] — Réglage personnalisé : mobile_font_size. | See CUSTOM_CHANGES.md — AJ-018 */
     {
       "type": "range",
       "id": "mobile_font_size",
@@ -325,7 +333,9 @@
       "unit": "px",
       "default": 28,
       "visible_if": "{{ block.settings.type_preset == 'custom' }}"
-    },
+    }
+    /* CUSTOM END [AJ-018] */,
+    /* CUSTOM START [AJ-018] — Réglage personnalisé : weight. | See CUSTOM_CHANGES.md — AJ-018 */
     {
       "type": "select",
       "id": "weight",
@@ -338,7 +348,8 @@
       ],
       "default": "",
       "visible_if": "{{ block.settings.type_preset == 'custom' }}"
-    },
+    }
+    /* CUSTOM END [AJ-018] */,
     {
       "type": "select",
       "id": "line_height",
@@ -402,12 +413,14 @@
       "type": "header",
       "content": "t:content.appearance"
     },
+    /* CUSTOM START [AJ-018] — Réglage personnalisé : text_color. | See CUSTOM_CHANGES.md — AJ-018 */
     {
       "type": "color",
       "id": "text_color",
       "label": "t:settings.text_color",
       "placeholder": "t:settings.default"
-    },
+    }
+    /* CUSTOM END [AJ-018] */,
     {
       "type": "header",
       "content": "t:content.padding"

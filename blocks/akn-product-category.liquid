@@ -1,5 +1,5 @@
 {% comment %}
-CUSTOM FILE [AJ-017] — Product category eyebrow for AKAN product pages
+CUSTOM FILE [AJ-017] — Product category eyebrow for AKAN product pages | See CUSTOM_CHANGES.md — AJ-017
 {% endcomment %}
 
 {% doc %}
@@ -40,7 +40,7 @@ CUSTOM FILE [AJ-017] — Product category eyebrow for AKAN product pages
 {% endif %}
 
 {% stylesheet %}
-  /* CUSTOM [AJ-017] — Editorial product category with responsive, merchant-owned presentation. */
+  /* CUSTOM [AJ-017] — Editorial product category with responsive, merchant-owned presentation. | See CUSTOM_CHANGES.md — AJ-017 */
   .product-details .akn-product-category {
     box-sizing: border-box;
     inline-size: 100%;
@@ -75,6 +75,11 @@ CUSTOM FILE [AJ-017] — Product category eyebrow for AKAN product pages
   }
 
   @media screen and (max-width: 749px) {
+    /* CUSTOM [AJ-026] — Separate the mobile category eyebrow from the gallery edge. | See CUSTOM_CHANGES.md — AJ-026 */
+    .product-details .akn-product-category {
+      margin-block-start: 12px;
+    }
+
     .product-details .akn-product-category p {
       font-size: var(--akn-product-category-size-mobile);
     }

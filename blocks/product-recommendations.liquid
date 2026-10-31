@@ -202,6 +202,81 @@
   .product-recommendations-wrapper:has(product-recommendations[data-shopify-editor-preview]) {
     width: 100vw;
   }
+
+  /* CUSTOM START [AJ-022] — Editorial recommendation headings; mobile refinements also tracked under AJ-026. | See CUSTOM_CHANGES.md — AJ-022 */
+  .product-recommendations .section-resource-list__content > .text-block:first-child {
+    display: grid;
+    grid-template-columns: minmax(24px, 1fr) auto minmax(24px, 1fr);
+    gap: 28px;
+    align-items: center;
+    inline-size: 100%;
+    color: #500714;
+  }
+
+  .product-recommendations .section-resource-list__content > .text-block:first-child::before,
+  .product-recommendations .section-resource-list__content > .text-block:first-child::after {
+    content: '';
+    display: block;
+    block-size: 1px;
+    background: rgb(147 98 34 / 0.52);
+  }
+
+  .product-recommendations .section-resource-list__content > .text-block:first-child > * {
+    inline-size: auto;
+    max-inline-size: min(100%, 22ch);
+    margin: 0;
+    color: inherit;
+    font-family: var(--font-heading--family);
+    font-size: 36px;
+    font-style: var(--font-heading--style);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: 0;
+    text-align: center;
+    text-transform: none;
+    text-wrap: balance;
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-recommendations .section-resource-list__content > .text-block:first-child {
+      grid-template-columns: minmax(16px, 1fr) auto minmax(16px, 1fr);
+      gap: 14px;
+    }
+
+    .product-recommendations .section-resource-list__content > .text-block:first-child > * {
+      font-size: 28px;
+      line-height: 1.15;
+    }
+
+    .product-recommendations .product-grid__card {
+      gap: 10px;
+    }
+
+    .product-recommendations .product-grid__card > .group-block {
+      gap: 7px;
+      padding-block-start: 5px;
+      padding-block-end: 4px;
+    }
+
+    .product-recommendations .product-grid__card h4 {
+      -webkit-line-clamp: 2;
+      min-block-size: 2.5em;
+      font-size: clamp(0.75rem, 3.2vw, 0.875rem);
+      line-height: 1.25;
+      text-wrap: pretty;
+    }
+
+    .product-recommendations .product-grid__card product-price,
+    .product-recommendations .product-grid__card product-price > * {
+      font-size: clamp(0.75rem, 3.2vw, 0.875rem);
+      line-height: 1.25;
+    }
+
+    .product-recommendations .product-grid__card product-swatches {
+      margin-block-start: 2px;
+    }
+  }
+  /* CUSTOM END [AJ-022] */
 {% endstylesheet %}
 
 {% schema %}

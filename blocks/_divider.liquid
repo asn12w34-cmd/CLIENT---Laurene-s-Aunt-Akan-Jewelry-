@@ -1,4 +1,4 @@
-{% comment %} CUSTOM [AJ-017] — Expose the alignment already supported by the native divider renderer. {% endcomment %}
+{% comment %} CUSTOM [AJ-017] — Expose the alignment already supported by the native divider renderer. | See CUSTOM_CHANGES.md — AJ-017 {% endcomment %}
 {% render 'divider', id: block.id, settings: block.settings, attributes: true %}
 
 {% schema %}
@@ -39,6 +39,7 @@
       "label": "t:settings.color",
       "placeholder": "t:settings.default"
     },
+    /* CUSTOM START [AJ-017] — Réglage personnalisé : alignment_horizontal. | See CUSTOM_CHANGES.md — AJ-017 */
     {
       "type": "select",
       "id": "alignment_horizontal",
@@ -58,7 +59,8 @@
         }
       ],
       "default": "center"
-    },
+    }
+    /* CUSTOM END [AJ-017] */,
     {
       "type": "range",
       "id": "width_percent",

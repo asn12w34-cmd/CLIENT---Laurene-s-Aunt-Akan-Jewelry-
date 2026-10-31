@@ -40,7 +40,7 @@
   assign aliases_us = 'us,usa,america,united states of america'
   assign aliases_uk = 'uk,gb,great britain'
 
-  # CUSTOM START [AJ-010] — Keep every localization form and related control ID unique.
+  # CUSTOM START [AJ-010] — Keep every localization form and related control ID unique. | See CUSTOM_CHANGES.md — AJ-010
   assign localization_form_id = 'LocalizationForm-' | append: localization_style | append: '-' | append: form_id
   assign country_filter_input_id = localization_form_id | append: '-CountryFilterInput'
   assign country_results_id = localization_form_id | append: '-CountryResults'
@@ -408,12 +408,14 @@
     }
   }
 
-  /* CUSTOM [AJ-010] — Match the unique no-results ID through a reusable class. */
+  /* CUSTOM [AJ-010] — Match the unique no-results ID through a reusable class. | See CUSTOM_CHANGES.md — AJ-010 */
+/* CUSTOM START [AJ-010] — No-results selector follows the unique-ID markup. | See CUSTOM_CHANGES.md — AJ-010 */
   .localization-form__list-item--no-results {
     grid-template-columns: 1fr;
     text-align: center;
     color: var(--color-foreground-subdued);
   }
+/* CUSTOM END [AJ-010] */
 
   .is-searching .localization-form__list-item .country {
     color: var(--color-foreground-subdued);

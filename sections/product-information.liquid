@@ -293,10 +293,12 @@
 
   /* Mobile adjustments */
   @media screen and (max-width: 749px) {
+    /* CUSTOM START [AJ-026] — Replace the ambiguous icon-only mobile action with a labelled CTA. | See CUSTOM_CHANGES.md — AJ-026 */
     .sticky-add-to-cart__bar {
       bottom: 0;
       width: 100%;
       max-width: none;
+      gap: 10px;
       border-radius: 0;
 
       /* Full-bleed bar touches the physical bottom edge (viewport-fit=cover); keep the
@@ -309,6 +311,16 @@
     }
 
     .sticky-add-to-cart__bar .add-to-cart-text__content {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      line-height: 1.15;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+
+    .sticky-add-to-cart__bar .add-to-cart-text > .svg-wrapper {
       display: none;
     }
 
@@ -317,19 +329,24 @@
     }
 
     .sticky-add-to-cart__title {
-      font-size: var(--font-paragraph--size);
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .sticky-add-to-cart__variant {
+      font-size: 11px;
+      line-height: 1.2;
     }
 
     .sticky-add-to-cart__button {
-      padding: var(--padding-lg);
+      flex: 0 0 clamp(108px, 38vw, 142px);
+      width: clamp(108px, 38vw, 142px);
+      min-width: 0;
+      padding-inline: 12px;
     }
 
     .sticky-add-to-cart__price {
-      font-size: var(--font-paragraph-small--size);
-    }
-
-    .sticky-add-to-cart__button {
-      width: var(--height-buy-buttons);
+      display: none;
     }
 
     sticky-add-to-cart:not([data-variant-available='true']) .add-to-cart-text__content {
@@ -339,9 +356,10 @@
     sticky-add-to-cart:not([data-variant-available='true']) .sticky-add-to-cart__button {
       width: auto;
     }
+    /* CUSTOM END [AJ-026] */
   }
 
-  /* CUSTOM START [AJ-015] — Keep the editorial product title proportionate on narrow screens. */
+  /* CUSTOM START [AJ-015] — Keep the editorial product title proportionate on narrow screens. | See CUSTOM_CHANGES.md — AJ-015 */
   @media screen and (max-width: 749px) {
     .product-details .text-block--text_9WaLn7 > h1 {
       font-size: clamp(2rem, 10vw, 2.5rem);

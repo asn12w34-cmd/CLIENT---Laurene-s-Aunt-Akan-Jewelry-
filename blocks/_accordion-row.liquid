@@ -1,7 +1,7 @@
 
 {% assign block_settings = block.settings %}
 
-{% comment %} CUSTOM START [AJ-015] — Support an editable shared fallback and hide rows with no meaningful content. {% endcomment %}
+{% comment %} CUSTOM START [AJ-015] — Support an editable shared fallback and hide rows with no meaningful content. | See CUSTOM_CHANGES.md — AJ-015 {% endcomment %}
 {% capture accordion_row_content %}
   {% content_for 'blocks' %}
 {% endcapture %}
@@ -26,7 +26,7 @@
 %}
 {% comment %} CUSTOM END [AJ-015] {% endcomment %}
 
-{% comment %} CUSTOM [AJ-015] — Respect the optional empty-row visibility control. {% endcomment %}
+{% comment %} CUSTOM START [AJ-015] — Respect the optional empty-row visibility control. | See CUSTOM_CHANGES.md — AJ-015 {% endcomment %}
 {% if should_render_accordion_row %}
 {% capture accordion_row_children %}
   <details
@@ -55,7 +55,7 @@
 
     <div class="details-content">
       {{ accordion_row_content }}
-      {% comment %} CUSTOM START [AJ-015] — Optional merchant-selected information page link. {% endcomment %}
+      {% comment %} CUSTOM START [AJ-015] — Optional merchant-selected information page link. | See CUSTOM_CHANGES.md — AJ-015 {% endcomment %}
       {% if block_settings.linked_page != blank and block_settings.link_label != blank %}
         <p>
           <a href="{{ block_settings.linked_page.url }}">{{ block_settings.link_label | escape }}</a>
@@ -71,6 +71,7 @@
   open_by_default_on_mobile: block_settings.open_by_default
 %}
 {% endif %}
+{% comment %} CUSTOM END [AJ-015] {% endcomment %}
 
 {% schema %}
 {

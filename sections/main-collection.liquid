@@ -35,13 +35,15 @@
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
 <collection-component view-event-payload="{{ collection | standard_event_data: 'view' | escape }}">
+{% comment %} CUSTOM START [AJ-024] — Collection-specific card styling hook. | See CUSTOM_CHANGES.md — AJ-024 {% endcomment %}
   <results-list
-    class="section product-grid-container{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+    class="section product-grid-container akn-collection-main{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
     style="--padding-block-start: {{ section.settings.padding-block-start }}px; --padding-block-end: {{ section.settings.padding-block-end }}px;"
     section-id="{{ section.id }}"
     infinite-scroll="{{ section.settings.enable_infinite_scroll }}"
   >
-    {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
+
+{% comment %} CUSTOM END [AJ-024] {% endcomment %}    {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
 
     <div
       class="collection-wrapper grid gap-style{% if section.settings.product_grid_width == 'full-width' %} collection-wrapper--grid-full-width{% endif %}"
@@ -91,6 +93,51 @@
   </results-list>
 </collection-component>
 
+{% stylesheet %}
+  /* CUSTOM START [AJ-024] — Finition éditoriale limitée aux cartes des pages collection. | See CUSTOM_CHANGES.md — AJ-024 */
+  .akn-collection-main {
+    --variant-picker-swatch-width: 20px;
+    --variant-picker-swatch-height: 20px;
+    --variant-picker-swatch-radius: 999px;
+  }
+
+  .akn-collection-main .product-grid__card [role='heading'][aria-level='3'] {
+    font-size: 1.25rem;
+    letter-spacing: -0.018em;
+    line-height: 1.15;
+    text-transform: none;
+  }
+
+  .akn-collection-main .product-grid__card product-price,
+  .akn-collection-main .product-grid__card product-price > * {
+    font-size: 1rem;
+    line-height: 1.25;
+    text-transform: none;
+  }
+
+  .akn-collection-main .product-grid__card product-swatches {
+    margin-block-start: 0.35rem;
+  }
+
+  @media screen and (max-width: 749px) {
+    .akn-collection-main {
+      --variant-picker-swatch-width: 18px;
+      --variant-picker-swatch-height: 18px;
+    }
+
+    .akn-collection-main .product-grid__card [role='heading'][aria-level='3'] {
+      font-size: 1rem;
+      line-height: 1.18;
+    }
+
+    .akn-collection-main .product-grid__card product-price,
+    .akn-collection-main .product-grid__card product-price > * {
+      font-size: 0.875rem;
+    }
+  }
+  /* CUSTOM END [AJ-024] */
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "t:names.collection_container",
@@ -139,6 +186,18 @@
       "default": "medium",
       "visible_if": "{{ section.settings.layout_type == 'grid' }}"
     },
+    /* CUSTOM START [AJ-024] — Réglage personnalisé : max_columns_desktop. | See CUSTOM_CHANGES.md — AJ-024 */
+    {
+      "type": "range",
+      "id": "max_columns_desktop",
+      "label": "t:akn_collection.labels.max_columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "visible_if": "{{ section.settings.layout_type == 'grid' }}"
+    }
+    /* CUSTOM END [AJ-024] */,
     {
       "type": "select",
       "id": "mobile_product_card_size",

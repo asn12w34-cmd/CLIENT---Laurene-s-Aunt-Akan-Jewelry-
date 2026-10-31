@@ -29,7 +29,7 @@
   assign selected_variant = selected_product.selected_or_first_available_variant
   assign selected_variant_media = selected_variant.featured_media
 
-  # CUSTOM START [AJ-016] — Use a complete variant-specific image list when configured; otherwise preserve Atelier's native gallery.
+  # CUSTOM START [AJ-016] — Use a complete variant-specific image list when configured; otherwise preserve Atelier's native gallery. | See CUSTOM_CHANGES.md — AJ-016
   assign variant_gallery_media = blank
   if block_settings.akn_variant_gallery and selected_variant != blank
     assign variant_gallery_metafield = selected_variant.metafields.custom.variant_gallery
@@ -128,7 +128,7 @@
   endif
 
   assign sorted_media = '' | split: ','
-  # CUSTOM START [AJ-016] — The metafield order is the storefront order for this variant.
+  # CUSTOM START [AJ-016] — The metafield order is the storefront order for this variant. | See CUSTOM_CHANGES.md — AJ-016
   if variant_gallery_media != blank
     assign sorted_media = variant_gallery_media
   elsif selected_variant_media
@@ -378,7 +378,7 @@
       {% if media_presentation == 'grid' %}
         media-gallery--{{ block_settings.media_columns }}-column
         {% if block_settings.media_columns == "two" and block_settings.large_first_image%}media-gallery--large-first-image{% endif %}
-        {% comment %} CUSTOM START [AJ-015] — Optional AKAN editorial triptych on desktop. {% endcomment %}
+        {% comment %} CUSTOM START [AJ-015] — Optional AKAN editorial triptych on desktop. | See CUSTOM_CHANGES.md — AJ-015 {% endcomment %}
         {% if block_settings.media_columns == 'two' and block_settings.akn_editorial_triptych %}media-gallery--akn-editorial-triptych{% endif %}
         {% comment %} CUSTOM END [AJ-015] {% endcomment %}
       {% endif %}

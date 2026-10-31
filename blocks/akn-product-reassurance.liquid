@@ -1,5 +1,5 @@
 {% comment %}
-CUSTOM FILE [AJ-019] — Compact AKAN product reassurance row
+CUSTOM FILE [AJ-019] — Compact AKAN product reassurance row | See CUSTOM_CHANGES.md — AJ-019
 {% endcomment %}
 
 {% doc %}
@@ -40,7 +40,7 @@ CUSTOM FILE [AJ-019] — Compact AKAN product reassurance row
 {% endif %}
 
 {% stylesheet %}
-  /* CUSTOM [AJ-019] — Centred reassurance pair with mobile-safe wrapping. */
+  /* CUSTOM [AJ-019] — Centred reassurance pair with mobile-safe wrapping. | See CUSTOM_CHANGES.md — AJ-019 */
   .product-details .akn-product-reassurance {
     box-sizing: border-box;
     display: grid;
@@ -93,6 +93,13 @@ CUSTOM FILE [AJ-019] — Compact AKAN product reassurance row
     background: var(--akn-reassurance-divider, currentcolor);
   }
 
+  /* CUSTOM [AJ-026] — Preserve legibility without breaking the compact two-column mobile row. | See CUSTOM_CHANGES.md — AJ-026 */
+  @media screen and (max-width: 749px) {
+    .product-details .akn-product-reassurance__item {
+      font-size: 12.5px;
+    }
+  }
+
   @media screen and (max-width: 374px) {
     .product-details .akn-product-reassurance {
       gap: 9px;
@@ -100,7 +107,7 @@ CUSTOM FILE [AJ-019] — Compact AKAN product reassurance row
 
     .product-details .akn-product-reassurance__item {
       gap: 5px;
-      font-size: 11px;
+      font-size: 11.5px;
     }
 
     .product-details .akn-product-reassurance__icon {

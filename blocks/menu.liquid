@@ -41,7 +41,7 @@
       data-testid="menu-details"
       style="
         --spacing--size: {{ block_settings.menu_spacing }}px;
-        {% comment %} CUSTOM START [AJ-011] — Optional per-menu title and link sizes. {% endcomment %}
+        {% comment %} CUSTOM START [AJ-011] — Optional per-menu title and link sizes. | See CUSTOM_CHANGES.md — AJ-011 {% endcomment %}
         {% if block_settings.heading_font_size != blank %}--menu-heading-font-size: {{ block_settings.heading_font_size }};{% endif %}
         {% if block_settings.link_font_size != blank %}--menu-link-font-size: {{ block_settings.link_font_size }};{% endif %}
         {% comment %} CUSTOM END [AJ-011] {% endcomment %}
@@ -111,7 +111,7 @@
     margin-block-start: var(--spacing--size);
   }
 
-  /* CUSTOM START [AJ-011] — Preserve theme presets unless a merchant selects an explicit size. */
+  /* CUSTOM START [AJ-011] — Preserve theme presets unless a merchant selects an explicit size. | See CUSTOM_CHANGES.md — AJ-011 */
   .menu__heading {
     font-size: var(--menu-heading-font-size);
   }
@@ -281,6 +281,7 @@
       ],
       "default": "h3"
     },
+    /* CUSTOM START [AJ-011] — Réglage personnalisé : heading_font_size. | See CUSTOM_CHANGES.md — AJ-011 */
     {
       "type": "select",
       "id": "heading_font_size",
@@ -316,7 +317,8 @@
         }
       ],
       "default": ""
-    },
+    }
+    /* CUSTOM END [AJ-011] */,
     {
       "type": "select",
       "id": "link_preset",
@@ -357,6 +359,7 @@
       ],
       "default": "paragraph"
     },
+    /* CUSTOM START [AJ-011] — Réglage personnalisé : link_font_size. | See CUSTOM_CHANGES.md — AJ-011 */
     {
       "type": "select",
       "id": "link_font_size",
@@ -392,7 +395,8 @@
         }
       ],
       "default": ""
-    },
+    }
+    /* CUSTOM END [AJ-011] */,
     {
       "type": "header",
       "content": "t:content.padding"
