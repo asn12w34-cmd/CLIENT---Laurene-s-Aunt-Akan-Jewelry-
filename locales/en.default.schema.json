@@ -226,6 +226,7 @@
     "work_quickly_to_ship": "<p>We will work quickly to ship your order as soon as possible. Once your order has shipped, you will receive an email with further information. Delivery times vary depending on your location.</p>"
   },
   "info": {
+    "akn_product_category_override": "Leave blank to use the product type from the product admin automatically. Text entered here applies to every product using this template.",
     "actions_display_style": "Icons are always used on mobile",
     "applies_on_image_only": "Applies to images only",
     "aspect_ratio_adjusted": "Adjusted in some layouts",
@@ -260,6 +261,9 @@
     }
   },
   "names": {
+    "akn_finish_picker": "AKAN finish selector",
+    "akn_product_category": "Product category",
+    "akn_product_reassurance": "AKAN product reassurance",
     "column": "Column",
     "product_title": "Product title",
     "custom_liquid": "Custom Liquid",
@@ -999,6 +1003,9 @@
     "mobile_columns": "Mobile columns",
     "mobile_height": "Mobile height",
     "mobile_logo_image": "Mobile logo",
+    "mobile_size": "Mobile size",
+    "word_spacing": "Word spacing",
+    "akn_currency_code_after_amount": "Show currency code after amount",
     "mobile_pagination": "Mobile pagination",
     "mobile_quick_add": "Mobile quick add",
     "motion": "Motion",
@@ -1487,6 +1494,10 @@
   },
   "akn_product": {
     "labels": {
+      "finish_label": "Displayed option label",
+      "payment_text": "Payment reassurance",
+      "delivery_text": "Delivery reassurance",
+      "show_add_to_cart_icon": "Show bag icon",
       "editorial_triptych": "AKAN editorial gallery",
       "variant_gallery": "Use complete galleries by variant",
       "hide_empty_accordion": "Hide when content is empty",
@@ -1495,6 +1506,7 @@
       "link_label": "Link text"
     },
     "help": {
+      "finish_label": "Leave blank to use the product option name. This override applies to the first product option.",
       "editorial_triptych": "On desktop, shows the first image large beside the next two images. Mobile keeps Atelier’s swipe gallery.",
       "variant_gallery": "Shows the images selected in the custom.variant_gallery variant metafield when populated. Otherwise, the product’s native gallery is preserved.",
       "hide_empty_accordion": "Hides the row when both its dynamic content and shared fallback content are empty.",

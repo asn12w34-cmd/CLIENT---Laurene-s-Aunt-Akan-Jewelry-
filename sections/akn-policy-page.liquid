@@ -45,6 +45,7 @@
 
 {% stylesheet %}
   /* CUSTOM [AJ-013] — Typographie et rythme isolés des pages d’information AKAN. */
+  /* CUSTOM [AJ-014] — Colonne de lecture élargie et séparateurs de section discrets. */
   .akn-policy {
     min-inline-size: 0;
     background-color: var(--color-background);
@@ -97,8 +98,7 @@
   }
 
   .akn-policy__body :is(h2, h3, h4, h5, h6) {
-    max-inline-size: 24ch;
-    margin-block: clamp(38px, 6vw, 60px) 14px;
+    margin-block: clamp(30px, 5vw, 48px) 14px;
     color: inherit;
     font-family: var(--font-h2--family);
     font-style: var(--font-h2--style);
@@ -110,15 +110,20 @@
   }
 
   .akn-policy__body h2 {
+    inline-size: 100%;
+    max-inline-size: none;
+    padding-block-start: clamp(24px, 4vw, 32px);
+    border-block-start: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20));
     font-size: var(--akn-policy-heading-size-mobile);
   }
 
   .akn-policy__body :is(h3, h4, h5, h6) {
+    max-inline-size: 24ch;
     font-size: max(20px, calc(var(--akn-policy-heading-size-mobile) * 0.78));
   }
 
   .akn-policy__body :is(p, ul, ol) {
-    max-inline-size: 72ch;
+    max-inline-size: 86ch;
   }
 
   .akn-policy__body p {
@@ -158,6 +163,8 @@
     }
 
     .akn-policy__body h2 {
+      margin-block-start: clamp(38px, 4vw, 52px);
+      padding-block-start: clamp(28px, 3vw, 36px);
       font-size: var(--akn-policy-heading-size-desktop);
     }
 

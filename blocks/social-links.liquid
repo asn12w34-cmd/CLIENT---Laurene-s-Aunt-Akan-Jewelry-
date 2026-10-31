@@ -27,6 +27,7 @@
             assign platform = 'facebook'
           when 'instagram_url'
             assign platform = 'instagram'
+          # CUSTOM [AJ-011] — Handle WhatsApp as a native social platform.
           when 'whatsapp_url'
             assign platform = 'whatsapp'
           when 'youtube_url'
@@ -74,6 +75,7 @@
         endunless
 
         assign platform_label = platform | capitalize
+        # CUSTOM [AJ-011] — Preserve WhatsApp's official capitalization.
         if platform == 'whatsapp'
           assign platform_label = 'WhatsApp'
         endif
@@ -204,6 +206,7 @@
       "id": "instagram_url",
       "label": "t:options.instagram"
     },
+    /* CUSTOM [AJ-011] — Merchant-configurable WhatsApp profile link | See CUSTOM_CHANGES.md — AJ-011 */
     {
       "type": "url",
       "id": "whatsapp_url",

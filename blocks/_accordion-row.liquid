@@ -26,6 +26,7 @@
 %}
 {% comment %} CUSTOM END [AJ-015] {% endcomment %}
 
+{% comment %} CUSTOM [AJ-015] — Respect the optional empty-row visibility control. {% endcomment %}
 {% if should_render_accordion_row %}
 {% capture accordion_row_children %}
   <details
@@ -54,11 +55,13 @@
 
     <div class="details-content">
       {{ accordion_row_content }}
+      {% comment %} CUSTOM START [AJ-015] — Optional merchant-selected information page link. {% endcomment %}
       {% if block_settings.linked_page != blank and block_settings.link_label != blank %}
         <p>
           <a href="{{ block_settings.linked_page.url }}">{{ block_settings.link_label | escape }}</a>
         </p>
       {% endif %}
+      {% comment %} CUSTOM END [AJ-015] {% endcomment %}
     </div>
   </details>
 {% endcapture %}
@@ -94,6 +97,7 @@
       "label": "t:settings.open_row_by_default",
       "default": false
     },
+    /* CUSTOM [AJ-015] — Optional empty-row, fallback, and linked-page controls | See CUSTOM_CHANGES.md — AJ-015 */
     {
       "type": "checkbox",
       "id": "hide_when_empty",

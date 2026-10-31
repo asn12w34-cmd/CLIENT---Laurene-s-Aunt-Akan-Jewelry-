@@ -9,6 +9,9 @@
  */
 {
   "names": {
+    "akn_finish_picker": "Sélecteur de finition AKAN",
+    "akn_product_category": "Catégorie du produit",
+    "akn_product_reassurance": "Réassurance produit AKAN",
     "404": "404",
     "custom_section": "Section personnalisée",
     "icon": "Icône",
@@ -370,6 +373,9 @@
     "mobile_columns": "Colonnes sur mobile",
     "mobile_height": "Hauteur sur mobile",
     "mobile_logo_image": "Logo sur mobile",
+    "mobile_size": "Taille sur mobile",
+    "word_spacing": "Espacement entre les mots",
+    "akn_currency_code_after_amount": "Afficher le code de devise après le montant",
     "mobile_quick_add": "Ajout rapide sur mobile",
     "motion_direction": "Direction du mouvement",
     "motion": "Mouvement",
@@ -1163,6 +1169,7 @@
     "disclosures": "Divulgations"
   },
   "info": {
+    "akn_product_category_override": "Laissez vide pour utiliser automatiquement le type défini dans l’administration du produit. Un texte saisi ici s’applique à tous les produits utilisant ce modèle.",
     "carousel_layout_on_mobile": "Le carrousel est toujours utilisé sur mobile",
     "video_alt_text": "Décrivez la vidéo pour les utilisateurs de technologies d’assistance",
     "video_autoplay": "Les vidéos seront mises en sourdine par défaut",
@@ -1390,6 +1397,10 @@
   },
   "akn_product": {
     "labels": {
+      "finish_label": "Intitulé affiché de l’option",
+      "payment_text": "Réassurance de paiement",
+      "delivery_text": "Réassurance de livraison",
+      "show_add_to_cart_icon": "Afficher l’icône de sac",
       "editorial_triptych": "Galerie éditoriale AKAN",
       "variant_gallery": "Utiliser les galeries complètes par variante",
       "hide_empty_accordion": "Masquer lorsque le contenu est vide",
@@ -1398,6 +1409,7 @@
       "link_label": "Texte du lien"
     },
     "help": {
+      "finish_label": "Laissez vide pour utiliser le nom de l’option produit. Cette personnalisation s’applique à la première option du produit.",
       "editorial_triptych": "Sur ordinateur, affiche la première image en grand à côté des deux suivantes. Sur mobile, la galerie tactile native d’Atelier est conservée.",
       "variant_gallery": "Affiche les images du métachamp de variante custom.variant_gallery lorsqu’il est renseigné. Sinon, la galerie native du produit est conservée.",
       "hide_empty_accordion": "Masque la ligne lorsque le contenu dynamique et le contenu commun de remplacement sont tous deux vides.",

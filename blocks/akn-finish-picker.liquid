@@ -1,0 +1,599 @@
+{% comment %}
+CUSTOM FILE [AJ-019] — AKAN finish selector with native Atelier variant updates
+{% endcomment %}
+
+{% doc %}
+  Renders product options as refined AKAN selection fields while preserving
+  Atelier's variant-picker data contract. Single-value options remain static;
+  multi-value options use a native details control with radio inputs.
+{% enddoc %}
+
+{% liquid
+  assign product_resource = closest.product
+  if request.visual_preview_mode and product_resource == blank
+    assign product_resource = collections.all.products.first
+  endif
+
+  # CUSTOM [AJ-021] — Use a true regular Newsreader face for the finish label when available.
+  assign akn_finish_label_font = settings.type_subheading_font | font_modify: 'weight', 'normal'
+  if akn_finish_label_font == blank
+    assign akn_finish_label_font = settings.type_subheading_font | font_modify: 'weight', 'bold'
+  endif
+  if akn_finish_label_font == blank
+    assign akn_finish_label_font = settings.type_subheading_font
+  endif
+%}
+
+{% unless product_resource == blank or product_resource.has_only_default_variant %}
+  {% comment %} CUSTOM START [AJ-021] — Load the resolved label weight without changing store-wide typography. {% endcomment %}
+  {% if akn_finish_label_font.weight != settings.type_subheading_font.weight %}
+    {% style %}
+      {{ akn_finish_label_font | font_face: font_display: 'swap' }}
+    {% endstyle %}
+  {% endif %}
+  {% comment %} CUSTOM END [AJ-021] {% endcomment %}
+
+  <variant-picker
+    class="akn-finish-picker spacing-style"
+    style="
+      --akn-finish-border: {{ block.settings.border_color }};
+      --akn-finish-text: {{ block.settings.text_color }};
+      --akn-finish-background: {{ block.settings.background_color }};
+      --akn-finish-label-weight: {{ akn_finish_label_font.weight }};
+      {% render 'spacing-style', settings: block.settings %}
+    "
+    data-section-id="{{ section.id }}"
+    data-product-id="{{ product_resource.id }}"
+    data-product-handle="{{ product_resource.handle }}"
+    data-product-title="{{ product_resource.title | escape }}"
+    data-block-id="{{ block.id }}"
+    data-product-url="{{ product_resource.url }}"
+    ref="mainVariantPicker"
+    {% if product.id == product_resource.id %}
+      data-template-product-match="true"
+    {% endif %}
+    {{ block.shopify_attributes }}
+    {% if request.visual_preview_mode %}
+      data-shopify-visual-preview
+    {% endif %}
+  >
+    <form class="akn-finish-picker__form">
+      {%- for product_option in product_resource.options_with_values -%}
+        {% liquid
+          assign selected_option_value = product_option.values | first
+          for product_option_value in product_option.values
+            if product_option_value.selected
+              assign selected_option_value = product_option_value
+              break
+            endif
+          endfor
+
+          assign option_label = product_option.name
+          if forloop.first and block.settings.label_override != blank
+            assign option_label = block.settings.label_override
+          endif
+
+          assign fieldset_index = forloop.index0
+        %}
+
+        <fieldset
+          class="akn-finish-picker__option"
+          data-fieldset-index="{{ fieldset_index }}"
+          ref="fieldsets[]"
+        >
+          <legend class="akn-finish-picker__label">{{ option_label | escape }}</legend>
+
+          {% if product_option.values.size == 1 %}
+            <input
+              class="akn-finish-picker__native-input"
+              type="radio"
+              name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
+              value="{{ selected_option_value | escape }}"
+              data-previous-checked="false"
+              data-current-checked="true"
+              data-fieldset-index="{{ fieldset_index }}"
+              data-input-index="0"
+              data-input-id="{{ product_option.position }}-0"
+              data-option-name="{{ product_option.name | escape }}"
+              data-option-value-id="{{ selected_option_value.id }}"
+              data-option-available="{{ selected_option_value.available }}"
+              data-connected-product-url="{{ selected_option_value.product_url }}"
+              {% if selected_option_value.variant.id %}
+                data-variant-id="{{ selected_option_value.variant.id }}"
+              {% endif %}
+              checked
+            >
+            <div
+              class="akn-finish-picker__field akn-finish-picker__field--static"
+              data-finish-name="{{ selected_option_value | handleize }}"
+            >
+              {% # CUSTOM [AJ-020] — Finish-name hook for material-aware swatch rendering. %}
+              {% render 'swatch', swatch: selected_option_value.swatch, mode: 'unscaled' %}
+              <span class="akn-finish-picker__value">{{ selected_option_value | escape }}</span>
+            </div>
+          {% else %}
+            {% comment %}
+              CUSTOM START [AJ-020] — Accessible finish disclosure with coordinated close behaviour.
+            {% endcomment %}
+            <akn-finish-disclosure>
+              <details class="akn-finish-picker__details">
+                <summary
+                  class="akn-finish-picker__field"
+                  data-finish-name="{{ selected_option_value | handleize }}"
+                  aria-controls="AknFinishMenu-{{ block.id }}-{{ product_resource.id }}-{{ product_option.position }}"
+                >
+                  {% render 'swatch', swatch: selected_option_value.swatch, mode: 'unscaled' %}
+                  <span class="akn-finish-picker__value">{{ selected_option_value | escape }}</span>
+                  <span class="akn-finish-picker__caret" aria-hidden="true">
+                    <svg viewBox="0 0 10 6" focusable="false">
+                      {% render 'icon', icon: 'caret' %}
+                    </svg>
+                  </span>
+                </summary>
+
+                <div
+                  id="AknFinishMenu-{{ block.id }}-{{ product_resource.id }}-{{ product_option.position }}"
+                  class="akn-finish-picker__menu"
+                >
+                  {%- for product_option_value in product_option.values -%}
+                    <label
+                      class="akn-finish-picker__choice{% unless product_option_value.available %} is-unavailable{% endunless %}"
+                      data-finish-name="{{ product_option_value | handleize }}"
+                    >
+                      <input
+                        class="akn-finish-picker__native-input"
+                        type="radio"
+                        name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
+                        value="{{ product_option_value | escape }}"
+                        aria-label="{{ product_option_value.name | escape }}{% if product_option_value.available == false %} - {{ 'products.product.sold_out' | t }}{% endif %}"
+                        {% if product_option_value.available == false %}
+                          aria-disabled="true"
+                          disabled
+                        {% endif %}
+                        data-previous-checked="false"
+                        data-fieldset-index="{{ fieldset_index }}"
+                        data-input-index="{{ forloop.index0 }}"
+                        data-input-id="{{ product_option.position }}-{{ forloop.index0 }}"
+                        data-option-name="{{ product_option.name | escape }}"
+                        data-option-value-id="{{ product_option_value.id }}"
+                        data-option-available="{{ product_option_value.available }}"
+                        data-connected-product-url="{{ product_option_value.product_url }}"
+                        {% if product_option_value.variant.id %}
+                          data-variant-id="{{ product_option_value.variant.id }}"
+                        {% endif %}
+                        {% if product_option_value.selected %}
+                          data-current-checked="true"
+                          checked
+                        {% else %}
+                          data-current-checked="false"
+                        {% endif %}
+                      >
+                      {% render 'swatch', swatch: product_option_value.swatch, mode: 'unscaled' %}
+                      <span class="akn-finish-picker__choice-text">{{ product_option_value | escape }}</span>
+                      {% if product_option_value.selected %}
+                        <span class="akn-finish-picker__check" aria-hidden="true">
+                          {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                        </span>
+                      {% endif %}
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </details>
+            </akn-finish-disclosure>
+            {% comment %} CUSTOM END [AJ-020] {% endcomment %}
+          {% endif %}
+        </fieldset>
+      {%- endfor -%}
+
+      <script type="application/json">
+        {{ product_resource.selected_or_first_available_variant | json }}
+      </script>
+    </form>
+  </variant-picker>
+{% endunless %}
+
+{% render 'swatch-styles' %}
+
+{% stylesheet %}
+  /* CUSTOM [AJ-019] — Cohesive finish and purchase presentation for AKAN product pages. */
+  /* CUSTOM [AJ-020] — Refined finish selector, product copy, and product accordion presentation. */
+  /* CUSTOM [AJ-021] — Stronger hierarchy, border clarity, and reusable dimensional colour swatches. */
+  .product-details .akn-finish-picker {
+    --variant-picker-swatch-width: 30px;
+    --variant-picker-swatch-height: 30px;
+
+    box-sizing: border-box;
+    display: block;
+    inline-size: 100%;
+    min-inline-size: 0;
+    color: var(--akn-finish-text, var(--color-foreground));
+  }
+
+  .product-details .akn-finish-picker__form,
+  .product-details .akn-finish-picker__option {
+    inline-size: 100%;
+  }
+
+  .product-details .akn-finish-picker__option {
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .product-details .akn-finish-picker__option + .akn-finish-picker__option {
+    margin-block-start: 16px;
+  }
+
+  .product-details .akn-finish-picker__label {
+    margin-block-end: 9px;
+    padding: 0;
+    color: inherit;
+    font-family: var(--font-subheading--family);
+    font-size: 17px;
+    font-style: var(--font-subheading--style);
+    font-weight: var(--akn-finish-label-weight, var(--font-subheading--weight));
+    line-height: 1.22;
+  }
+
+  .product-details akn-finish-disclosure {
+    display: block;
+  }
+
+  .product-details .akn-finish-picker__details {
+    position: relative;
+  }
+
+  .product-details .akn-finish-picker__field {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    inline-size: 100%;
+    min-block-size: 55px;
+    padding: 10px 16px;
+    color: inherit;
+    background: var(--akn-finish-background, var(--color-background));
+    border: 1px solid var(--akn-finish-border, currentcolor);
+    border-radius: 0;
+    transition:
+      background-color var(--animation-speed) var(--animation-easing),
+      border-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .product-details summary.akn-finish-picker__field {
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .product-details summary.akn-finish-picker__field::-webkit-details-marker {
+    display: none;
+  }
+
+  .product-details summary.akn-finish-picker__field:hover {
+    background: color-mix(in srgb, var(--akn-finish-background, var(--color-background)) 92%, #ffffff);
+    border-color: var(--akn-finish-border, currentcolor);
+  }
+
+  .product-details summary.akn-finish-picker__field:focus-visible {
+    outline: 2px solid var(--akn-finish-border, currentcolor);
+    outline-offset: 3px;
+  }
+
+  .product-details .akn-finish-picker__details[open] .akn-finish-picker__field {
+    background: color-mix(in srgb, var(--akn-finish-background, var(--color-background)) 92%, #ffffff);
+    border-color: var(--akn-finish-border, currentcolor);
+    border-block-end-color: transparent;
+  }
+
+  .product-details .akn-finish-picker .swatch {
+    flex: 0 0 auto;
+    --style-border-swatch-width: 1px;
+    --style-border-swatch-style: solid;
+    --color-border: rgb(80 7 20 / 0.3);
+
+    border-radius: 50%;
+  }
+
+  .product-details
+    :is(.akn-finish-picker__field, .akn-finish-picker__choice)
+    .swatch:not(.swatch--unavailable):not([style*='url(']) {
+    background: radial-gradient(
+      circle at 29% 24%,
+      color-mix(in srgb, #ffffff 76%, var(--swatch-background)) 0 7%,
+      color-mix(in srgb, #ffffff 38%, var(--swatch-background)) 18%,
+      color-mix(in srgb, #ffffff 12%, var(--swatch-background)) 38%,
+      var(--swatch-background) 58%,
+      color-mix(in srgb, #000000 24%, var(--swatch-background)) 84%,
+      color-mix(in srgb, #ffffff 10%, var(--swatch-background)) 100%
+    );
+  }
+
+  .product-details
+    :is(.akn-finish-picker__field, .akn-finish-picker__choice)[data-finish-name='or']
+    .swatch:not([style*='url(']),
+  .product-details
+    :is(.akn-finish-picker__field, .akn-finish-picker__choice)[data-finish-name='gold']
+    .swatch:not([style*='url(']),
+  .product-details
+    :is(.akn-finish-picker__field, .akn-finish-picker__choice)[data-finish-name='dore']
+    .swatch:not([style*='url(']) {
+    background: radial-gradient(circle at 30% 25%, #fff1b7 0 10%, #e4b84f 34%, #a7660d 70%, #edc866 100%);
+  }
+
+  .product-details
+    :is(.akn-finish-picker__field, .akn-finish-picker__choice)[data-finish-name='clair']
+    .swatch:not([style*='url(']),
+  .product-details
+    :is(.akn-finish-picker__field, .akn-finish-picker__choice)[data-finish-name='clear']
+    .swatch:not([style*='url(']) {
+    background: radial-gradient(circle at 32% 28%, #ffffff 0 18%, #f8f6f1 44%, #ddd8d0 100%);
+    border-color: rgb(80 7 20 / 0.24);
+  }
+
+  .product-details .akn-finish-picker__value,
+  .product-details .akn-finish-picker__choice-text {
+    min-inline-size: 0;
+    font-family: var(--font-subheading--family);
+    font-size: 16px;
+    font-style: var(--font-subheading--style);
+    font-weight: var(--font-subheading--weight);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .product-details .akn-finish-picker__caret {
+    display: flex;
+    inline-size: 14px;
+    block-size: 14px;
+    transition: transform var(--animation-speed) var(--animation-easing);
+  }
+
+  .product-details .akn-finish-picker__caret svg {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .product-details .akn-finish-picker__details[open] .akn-finish-picker__caret {
+    transform: rotate(180deg);
+  }
+
+  .product-details .akn-finish-picker__menu {
+    max-block-size: 270px;
+    max-block-size: min(270px, 40dvh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--akn-finish-background, var(--color-background));
+    border: 1px solid var(--akn-finish-border, currentcolor);
+    border-block-start: 0;
+  }
+
+  .product-details .akn-finish-picker__choice {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    min-block-size: 50px;
+    padding: 9px 16px;
+    cursor: pointer;
+    transition: background-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .product-details .akn-finish-picker__choice + .akn-finish-picker__choice {
+    border-block-start: 1px solid rgb(147 98 34 / 0.22);
+  }
+
+  .product-details .akn-finish-picker__choice:not(.is-unavailable):hover {
+    background: rgb(147 98 34 / 0.055);
+  }
+
+  .product-details .akn-finish-picker__choice:has(.akn-finish-picker__native-input:checked) {
+    background: rgb(147 98 34 / 0.07);
+  }
+
+  .product-details .akn-finish-picker__choice.is-unavailable {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .product-details .akn-finish-picker__choice.is-unavailable .akn-finish-picker__choice-text {
+    text-decoration: line-through;
+  }
+
+  .product-details .akn-finish-picker__choice:has(.akn-finish-picker__native-input:focus-visible) {
+    outline: var(--focus-outline-width) solid currentcolor;
+    outline-offset: calc(var(--focus-outline-offset) * -1);
+  }
+
+  .product-details .akn-finish-picker__native-input {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: 0;
+    opacity: 0;
+  }
+
+  .product-details .akn-finish-picker__check {
+    display: flex;
+    inline-size: 16px;
+    block-size: 16px;
+  }
+
+  .product-details .akn-finish-picker__check svg {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .product-details .product-description {
+    --font-size: 1.0625rem;
+    --line-height: 1.52;
+
+    color: rgb(80 7 20 / 0.82);
+  }
+
+  .product-details .product-description > * {
+    max-inline-size: min(100%, 48ch);
+  }
+
+  .product-details .accordion {
+    --color-border: rgb(147 98 34 / 0.36);
+  }
+
+  .product-details .accordion .details__header {
+    min-block-size: 56px;
+    color: #500714;
+    font-family: var(--font-subheading--family);
+    font-size: 18px;
+    font-style: var(--font-subheading--style);
+    font-weight: var(--font-subheading--weight);
+    line-height: 1.3;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .product-details .accordion .details__header .icon-caret {
+    color: #936222;
+  }
+
+  .product-details .buy-buttons-block .add-to-cart-button {
+    min-block-size: 58px;
+    padding-block: 14px;
+    border-radius: 0;
+    font-family: var(--font-body--family);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-details .akn-finish-picker__label {
+      font-size: 16px;
+    }
+
+    .product-details .akn-finish-picker__field {
+      min-block-size: 52px;
+      padding-inline: 14px;
+    }
+
+    .product-details .akn-finish-picker {
+      --variant-picker-swatch-width: 28px;
+      --variant-picker-swatch-height: 28px;
+    }
+
+    .product-details .akn-finish-picker__menu {
+      max-block-size: 240px;
+      max-block-size: min(240px, 40dvh);
+    }
+
+    .product-details .akn-finish-picker__choice {
+      min-block-size: 48px;
+      padding-inline: 14px;
+    }
+
+    .product-details .product-description {
+      --font-size: 1rem;
+      --line-height: 1.5;
+    }
+
+    .product-details .accordion .details__header {
+      min-block-size: 52px;
+      font-size: 17px;
+    }
+
+    .product-details .buy-buttons-block .add-to-cart-button {
+      min-block-size: 56px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.akn_finish_picker",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label_override",
+      "label": "t:akn_product.labels.finish_label",
+      "info": "t:akn_product.help.finish_label",
+      "default": "Finition"
+    },
+    {
+      "type": "header",
+      "content": "t:content.colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:settings.text_color",
+      "default": "#500714"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "t:settings.border_color",
+      "default": "#500714"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "default": "#fbf7f0"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.akn_finish_picker",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}

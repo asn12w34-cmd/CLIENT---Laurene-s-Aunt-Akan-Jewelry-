@@ -1,0 +1,210 @@
+{% comment %}
+CUSTOM FILE [AJ-017] — Product title with a locally loaded editorial font weight
+{% endcomment %}
+
+{% doc %}
+  Renders the current product title with responsive typography. The selected
+  weight is loaded only for this block so global AKAN heading styles stay intact.
+{% enddoc %}
+
+{% liquid
+  assign title_font = settings.type_heading_font
+
+  case block.settings.font_weight
+    when 'regular'
+      assign requested_font = title_font | font_modify: 'weight', 'normal'
+    when 'bold'
+      assign requested_font = title_font | font_modify: 'weight', 'bold'
+  endcase
+
+  if requested_font != blank
+    assign title_font = requested_font
+  endif
+
+  assign letter_spacing = block.settings.letter_spacing | divided_by: 100.0
+%}
+
+{% style %}
+  {{ title_font | font_face: font_display: 'swap' }}
+{% endstyle %}
+
+<div
+  class="akn-product-title akn-product-title--{{ block.settings.alignment }} spacing-style"
+  style="
+    --akn-product-title-color: {{ block.settings.text_color }};
+    --akn-product-title-font-family: {{ title_font.family }}, {{ title_font.fallback_families }};
+    --akn-product-title-font-style: {{ title_font.style }};
+    --akn-product-title-font-weight: {{ title_font.weight }};
+    --akn-product-title-size: {{ block.settings.desktop_size }}px;
+    --akn-product-title-size-mobile: {{ block.settings.mobile_size }}px;
+    --akn-product-title-line-height: {{ block.settings.line_height }};
+    --akn-product-title-letter-spacing: {{ letter_spacing }}em;
+    {% render 'spacing-style', settings: block.settings %}
+  "
+  {{ block.shopify_attributes }}
+>
+  <h1>{{ closest.product.title | escape }}</h1>
+</div>
+
+{% stylesheet %}
+  /* CUSTOM [AJ-017] — Denser editorial product title without changing global headings. */
+  .product-details .akn-product-title {
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-inline-size: 0;
+    color: var(--akn-product-title-color, currentcolor);
+  }
+
+  .product-details .akn-product-title h1 {
+    margin: 0;
+    color: inherit;
+    font-family: var(--akn-product-title-font-family);
+    font-size: var(--akn-product-title-size);
+    font-style: var(--akn-product-title-font-style);
+    font-weight: var(--akn-product-title-font-weight);
+    line-height: var(--akn-product-title-line-height);
+    letter-spacing: var(--akn-product-title-letter-spacing);
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
+
+  .product-details .akn-product-title--left { text-align: start; }
+  .product-details .akn-product-title--center { text-align: center; }
+  .product-details .akn-product-title--right { text-align: end; }
+
+  @media screen and (max-width: 749px) {
+    .product-details .akn-product-title h1 {
+      font-size: var(--akn-product-title-size-mobile);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.product_title",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_size",
+      "label": "t:settings.size",
+      "min": 40,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "mobile_size",
+      "label": "t:settings.mobile_size",
+      "min": 28,
+      "max": 56,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "t:settings.font_weight",
+      "options": [
+        { "value": "light", "label": "t:options.light" },
+        { "value": "regular", "label": "t:options.regular" },
+        { "value": "bold", "label": "t:options.bold" }
+      ],
+      "default": "regular"
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "t:settings.line_height",
+      "min": 0.9,
+      "max": 1.2,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "t:settings.letter_spacing",
+      "min": -3,
+      "max": 3,
+      "step": 0.5,
+      "unit": "%",
+      "default": -1
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "t:settings.alignment",
+      "options": [
+        { "value": "left", "label": "t:options.left" },
+        { "value": "center", "label": "t:options.center" },
+        { "value": "right", "label": "t:options.right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:settings.text_color",
+      "default": "#500714"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.product_title",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}

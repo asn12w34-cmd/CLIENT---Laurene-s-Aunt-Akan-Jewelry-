@@ -5,6 +5,7 @@
   @param {product} product_resource - The product to render
   @param {boolean} [show_unit_price] - Whether to show the unit price
   @param {boolean} [show_sale_price_first] - Whether to show the sale price first
+  @param {boolean} [currency_code_after_amount] - Whether to render the active currency code after a symbol-free amount
 {%- enddoc -%}
 
 {% render 'price-styles' %}
@@ -61,7 +62,14 @@
   endif
 
   # Format all prices
-  if use_currency
+  # CUSTOM START [AJ-018] — Optional AKAN amount-first currency format, scoped by the caller.
+  if currency_code_after_amount
+    assign active_currency_code = localization.country.currency.iso_code | default: cart.currency.iso_code | default: shop.currency
+    assign price = price | money_without_currency | append: ' ' | append: active_currency_code
+    assign compare_at_price = compare_at_price | money_without_currency | append: ' ' | append: active_currency_code
+    assign price_min = price_min | money_without_currency | append: ' ' | append: active_currency_code
+    assign price_max = price_max | money_without_currency | append: ' ' | append: active_currency_code
+  elsif use_currency
     assign price = price | money_with_currency
     assign compare_at_price = compare_at_price | money_with_currency
     assign price_min = price_min | money_with_currency
@@ -72,6 +80,7 @@
     assign price_min = price_min | money
     assign price_max = price_max | money
   endif
+  # CUSTOM END [AJ-018]
 -%}
 
 <div ref="priceContainer">
@@ -117,7 +126,9 @@
   {% endif %}
   {%- if selected_variant.unit_price and show_unit_price %}
     {%- liquid
-      if use_currency
+      if currency_code_after_amount
+        assign unit_price = selected_variant.unit_price | money_without_currency | append: ' ' | append: active_currency_code
+      elsif use_currency
         assign unit_price = selected_variant.unit_price | money_with_currency
       else
         assign unit_price = selected_variant.unit_price | money

@@ -12,6 +12,13 @@
   assign scoped_class = block.settings.style_class | append: '--' | append: block.id
   assign class = 'add-to-cart-button ' | append: block.settings.style_class | append: ' ' | append: scoped_class
   assign id = 'BuyButtons-ProductSubmitButton-' | append: block.id
+
+  # CUSTOM START [AJ-019] — Allow product templates to remove the initial bag icon without changing purchase behaviour.
+  assign show_icon = can_add_to_cart
+  if block.settings.show_icon == false
+    assign show_icon = false
+  endif
+  # CUSTOM END [AJ-019]
 %}
 {% render 'button-custom-styles', block_settings: block.settings, block_id: block.id %}
 {% render 'add-to-cart-button-styles' %}
@@ -25,7 +32,7 @@
     id: id,
     class: class,
     can_add_to_cart: can_add_to_cart,
-    show_icon: can_add_to_cart,
+    show_icon: show_icon,
     product: closest.product,
     add_to_cart_text: add_to_cart_text,
     data_testid: 'standalone-add-to-cart'
@@ -58,6 +65,14 @@
       "default": "button-secondary",
       "info": "t:info.edit_button_style_in_theme_settings"
     },
+    /* CUSTOM START [AJ-019] — Product-page control for the initial add-to-cart icon. */
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "t:akn_product.labels.show_add_to_cart_icon",
+      "default": true
+    },
+    /* CUSTOM END [AJ-019] */
     {
       "type": "header",
       "content": "t:content.button_colors",

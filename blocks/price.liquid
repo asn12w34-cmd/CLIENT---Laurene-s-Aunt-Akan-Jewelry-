@@ -14,6 +14,7 @@
   endif
 
   capture text_block_classes
+    echo ' akn-product-price'
     if block_settings.width == '100%'
       echo 'text-block--align-' | append: block_settings.alignment
       if block_settings.max_width == 'none'
@@ -50,13 +51,15 @@
       --color-rgb: {{ block_settings.text_color.rgb }};
     {% endif %}
     --width: {{ block_settings.width }};
+    --akn-product-price-mobile-size: {{ block_settings.mobile_font_size }}px;
   "
   {{ block.shopify_attributes }}
 >
   {% render 'price',
     show_unit_price: true,
     product_resource: product_resource,
-    show_sale_price_first: block_settings.show_sale_price_first
+    show_sale_price_first: block_settings.show_sale_price_first,
+    currency_code_after_amount: block_settings.akn_currency_code_after_amount
   %}
 
   {% if block_settings.show_tax_info %}
@@ -92,6 +95,16 @@
 
 {% render 'payment-terms-styles' %}
 
+{% stylesheet %}
+  /* CUSTOM [AJ-018] — Responsive AKAN product-price typography while preserving Atelier updates. */
+  @media screen and (max-width: 749px) {
+    .product-details product-price.akn-product-price.custom-font-size,
+    .product-details product-price.akn-product-price.custom-font-size > * {
+      font-size: var(--akn-product-price-mobile-size);
+    }
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "t:names.product_price",
@@ -121,6 +134,12 @@
       "type": "checkbox",
       "id": "show_tax_info",
       "label": "t:settings.show_tax_info",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "akn_currency_code_after_amount",
+      "label": "t:settings.akn_currency_code_after_amount",
       "default": false
     },
     {
@@ -294,6 +313,30 @@
         }
       ],
       "default": "1rem",
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_font_size",
+      "label": "t:settings.mobile_size",
+      "min": 20,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 28,
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "weight",
+      "label": "t:settings.font_weight",
+      "options": [
+        { "value": "", "label": "t:options.default" },
+        { "value": "200", "label": "t:options.light" },
+        { "value": "400", "label": "t:options.regular" },
+        { "value": "700", "label": "t:options.bold" }
+      ],
+      "default": "",
       "visible_if": "{{ block.settings.type_preset == 'custom' }}"
     },
     {

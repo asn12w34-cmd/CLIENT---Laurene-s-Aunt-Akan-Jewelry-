@@ -8,7 +8,9 @@
   endif
 %}
 
-{% render 'text', fallback_text: text, block: block %}
+{% comment %} CUSTOM START [AJ-020] — Expose a stable hook for AKAN product-description styling. {% endcomment %}
+{% render 'text', fallback_text: text, block: block, class: 'product-description' %}
+{% comment %} CUSTOM END [AJ-020] {% endcomment %}
 
 {% schema %}
 {

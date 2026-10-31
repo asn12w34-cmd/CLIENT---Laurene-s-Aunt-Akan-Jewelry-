@@ -1,0 +1,240 @@
+{% comment %}
+CUSTOM FILE [AJ-017] — Product category eyebrow for AKAN product pages
+{% endcomment %}
+
+{% doc %}
+  Renders the current product type as a styled category eyebrow. A merchant
+  override can replace the product type without duplicating product templates.
+{% enddoc %}
+
+{% liquid
+  assign category_text = block.settings.custom_text | strip
+  if category_text == blank
+    assign category_text = closest.product.type | strip
+  endif
+
+  assign letter_spacing = block.settings.letter_spacing | divided_by: 100.0
+  assign word_spacing = block.settings.word_spacing | divided_by: 100.0
+%}
+
+{% if category_text != blank %}
+  <div
+    class="akn-product-category akn-product-category--{{ block.settings.alignment }} spacing-style"
+    style="
+      --akn-product-category-color: {{ block.settings.text_color }};
+      --akn-product-category-font-family: var(--font-{{ block.settings.font_role }}--family);
+      --akn-product-category-font-style: var(--font-{{ block.settings.font_role }}--style);
+      --akn-product-category-font-weight: var(--font-{{ block.settings.font_role }}--weight);
+      --akn-product-category-font-weight-override: {{ block.settings.font_weight }};
+      --akn-product-category-size: {{ block.settings.desktop_size }}px;
+      --akn-product-category-size-mobile: {{ block.settings.mobile_size }}px;
+      --akn-product-category-letter-spacing: {{ letter_spacing }}em;
+      --akn-product-category-word-spacing: {{ word_spacing }}em;
+      --akn-product-category-transform: {{ block.settings.case }};
+      {% render 'spacing-style', settings: block.settings %}
+    "
+    {{ block.shopify_attributes }}
+  >
+    <p>{{ category_text | escape }}</p>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  /* CUSTOM [AJ-017] — Editorial product category with responsive, merchant-owned presentation. */
+  .product-details .akn-product-category {
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-inline-size: 0;
+    color: var(--akn-product-category-color, currentcolor);
+  }
+
+  .product-details .akn-product-category p {
+    margin: 0;
+    color: inherit;
+    font-family: var(--akn-product-category-font-family);
+    font-size: var(--akn-product-category-size);
+    font-style: var(--akn-product-category-font-style);
+    font-weight: var(--akn-product-category-font-weight-override, var(--akn-product-category-font-weight));
+    line-height: 1.2;
+    letter-spacing: var(--akn-product-category-letter-spacing);
+    word-spacing: var(--akn-product-category-word-spacing);
+    text-transform: var(--akn-product-category-transform);
+    overflow-wrap: anywhere;
+  }
+
+  .product-details .akn-product-category--left {
+    text-align: start;
+  }
+
+  .product-details .akn-product-category--center {
+    text-align: center;
+  }
+
+  .product-details .akn-product-category--right {
+    text-align: end;
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-details .akn-product-category p {
+      font-size: var(--akn-product-category-size-mobile);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.akn_product_category",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_text",
+      "label": "t:settings.text",
+      "info": "t:info.akn_product_category_override"
+    },
+    {
+      "type": "header",
+      "content": "t:content.typography"
+    },
+    {
+      "type": "select",
+      "id": "font_role",
+      "label": "t:settings.font",
+      "options": [
+        { "value": "body", "label": "t:options.body" },
+        { "value": "subheading", "label": "t:options.subheading" },
+        { "value": "heading", "label": "t:options.heading" },
+        { "value": "accent", "label": "t:options.accent" }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "range",
+      "id": "desktop_size",
+      "label": "t:settings.size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mobile_size",
+      "label": "t:settings.mobile_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "t:settings.letter_spacing",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "%",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "word_spacing",
+      "label": "t:settings.word_spacing",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "t:settings.font_weight",
+      "options": [
+        { "value": "400", "label": "t:options.regular" },
+        { "value": "700", "label": "t:options.bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "case",
+      "label": "t:settings.case",
+      "options": [
+        { "value": "uppercase", "label": "t:options.uppercase" },
+        { "value": "none", "label": "t:options.none" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "t:settings.alignment",
+      "options": [
+        { "value": "left", "label": "t:options.left" },
+        { "value": "center", "label": "t:options.center" },
+        { "value": "right", "label": "t:options.right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:settings.text_color",
+      "default": "#936222"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.akn_product_category",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
