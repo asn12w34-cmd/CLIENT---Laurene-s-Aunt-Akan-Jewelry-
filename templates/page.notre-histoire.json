@@ -1,0 +1,522 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "story_hero": {
+      "type": "hero",
+      "blocks": {
+        "story_hero_panel": {
+          "type": "_akn-panel",
+          "name": "AKAN responsive panel",
+          "settings": {
+            "desktop_position": "center-left",
+            "desktop_max_width": 720,
+            "desktop_edge_space": 64,
+            "desktop_gap": 14,
+            "mobile_position": "center-left",
+            "mobile_max_width": 600,
+            "mobile_edge_space": 24,
+            "mobile_gap": 12
+          },
+          "blocks": {
+            "story_hero_eyebrow": {
+              "type": "akn-text",
+              "name": "AKAN — Texte responsive",
+              "settings": {
+                "desktop_text": "<p>NOTRE HISTOIRE</p>",
+                "use_mobile_text": true,
+                "mobile_text": "<p>NOTRE HISTOIRE</p>",
+                "desktop_font_role": "body",
+                "desktop_size_scale": 105,
+                "desktop_heading_line_height": 110,
+                "desktop_body_line_height": 135,
+                "desktop_element_gap": 0,
+                "desktop_letter_spacing": "loose",
+                "desktop_alignment": "left",
+                "desktop_case": "uppercase",
+                "desktop_color": "#e6b74f",
+                "desktop_max_width": 680,
+                "desktop_padding_vertical": 0,
+                "desktop_padding_horizontal": 0,
+                "mobile_font_role": "body",
+                "mobile_size_scale": 75,
+                "mobile_heading_line_height": 105,
+                "mobile_body_line_height": 130,
+                "mobile_element_gap": 0,
+                "mobile_letter_spacing": "loose",
+                "mobile_alignment": "left",
+                "mobile_case": "uppercase",
+                "mobile_color": "#e6b74f",
+                "mobile_max_width": 260,
+                "mobile_padding_vertical": 0,
+                "mobile_padding_horizontal": 0,
+                "background_color": "rgba(0,0,0,0)",
+                "border_color": "rgba(0,0,0,0)",
+                "border_width": 0,
+                "corner_radius": 0
+              },
+              "blocks": {}
+            },
+            "story_hero_copy": {
+              "type": "akn-text",
+              "name": "AKAN — Texte responsive",
+              "settings": {
+                "desktop_text": "<h2>Porter un héritage. Écrire la suite.</h2>",
+                "use_mobile_text": true,
+                "mobile_text": "<h2>Porter un héritage. Écrire la suite.</h2>",
+                "desktop_font_role": "native",
+                "desktop_size_scale": 110,
+                "desktop_heading_line_height": 98,
+                "desktop_body_line_height": 145,
+                "desktop_element_gap": 24,
+                "desktop_letter_spacing": "native",
+                "desktop_alignment": "left",
+                "desktop_case": "native",
+                "desktop_color": "#f7f3eb",
+                "desktop_max_width": 680,
+                "desktop_padding_vertical": 0,
+                "desktop_padding_horizontal": 0,
+                "mobile_font_role": "native",
+                "mobile_size_scale": 85,
+                "mobile_heading_line_height": 98,
+                "mobile_body_line_height": 145,
+                "mobile_element_gap": 20,
+                "mobile_letter_spacing": "native",
+                "mobile_alignment": "left",
+                "mobile_case": "native",
+                "mobile_color": "#f7f3eb",
+                "mobile_max_width": 270,
+                "mobile_padding_vertical": 0,
+                "mobile_padding_horizontal": 0,
+                "background_color": "rgba(0,0,0,0)",
+                "border_color": "rgba(0,0,0,0)",
+                "border_width": 0,
+                "corner_radius": 0
+              },
+              "blocks": {}
+            },
+            "akn_text_xpdYJJ": {
+              "type": "akn-text",
+              "name": "AKAN — Texte responsive",
+              "settings": {
+                "desktop_text": "<h4>Akan Jewelry imagine des bijoux contemporains inspirés par &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; des formes et des symboles chargés de sens.</h4>",
+                "use_mobile_text": true,
+                "mobile_text": "<h4>Akan Jewelry imagine des bijoux contemporains inspirés par &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; des formes et des symboles chargés de sens.</h4>",
+                "desktop_font_role": "native",
+                "desktop_size_scale": 105,
+                "desktop_heading_line_height": 110,
+                "desktop_body_line_height": 140,
+                "desktop_element_gap": 24,
+                "desktop_letter_spacing": "native",
+                "desktop_alignment": "left",
+                "desktop_case": "native",
+                "desktop_color": "#ffffff",
+                "desktop_max_width": 680,
+                "desktop_padding_vertical": 0,
+                "desktop_padding_horizontal": 0,
+                "mobile_font_role": "native",
+                "mobile_size_scale": 85,
+                "mobile_heading_line_height": 100,
+                "mobile_body_line_height": 140,
+                "mobile_element_gap": 18,
+                "mobile_letter_spacing": "native",
+                "mobile_alignment": "left",
+                "mobile_case": "native",
+                "mobile_color": "#ffffff",
+                "mobile_max_width": 520,
+                "mobile_padding_vertical": 0,
+                "mobile_padding_horizontal": 0,
+                "background_color": "#00000000",
+                "border_color": "#ffffff00",
+                "border_width": 0,
+                "corner_radius": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "story_hero_eyebrow",
+            "story_hero_copy",
+            "akn_text_xpdYJJ"
+          ]
+        }
+      },
+      "block_order": [
+        "story_hero_panel"
+      ],
+      "name": "t:names.hero",
+      "settings": {
+        "media_type_1": "image",
+        "image_1": "shopify://shop_images/Akan_Jewelry_in_Oxblood_Light-1.png",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": true,
+        "media_type_1_mobile": "image",
+        "image_1_mobile": "shopify://shop_images/Oxblood_Muse_with_Sculptural_Gold_Earring.png",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "page-width",
+        "section_height": "custom",
+        "section_height_custom": 78,
+        "background_color": "#3a120d",
+        "toggle_overlay": true,
+        "overlay_color": "#22070426",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "story_editorial": {
+      "type": "akn-story",
+      "name": "t:akn_story.name",
+      "settings": {
+        "eyebrow": "NOTRE HISTOIRE",
+        "title": "Des formes anciennes, un regard contemporain",
+        "content": "<p>Nos créations puisent leur inspiration dans les symboles et les formes de l’héritage akan, un langage riche de sens qui traverse les générations.</p><p>Nous les réinterprétons avec une approche contemporaine pour créer des bijoux qui dialoguent avec notre époque, tout en honorant leur origine.</p>",
+        "image": "shopify://shop_images/Ivory-and-gold_bracelet_on_leather-2_4acb1292-7d9c-4420-a465-4d4e80624b87.png",
+        "mobile_image": "shopify://shop_images/Centeredbraidedbraceletonwarmbackdrop.png",
+        "background_color": "#f7f3eb",
+        "text_color": "#302b27",
+        "accent_color": "#936222",
+        "padding_top": 88,
+        "padding_bottom": 88,
+        "mobile_padding_top": 56,
+        "mobile_padding_bottom": 56
+      }
+    },
+    "story_quote": {
+      "type": "akn-quote",
+      "name": "t:akn_quote.name",
+      "settings": {
+        "quote": "Un bijou peut être plus qu’un ornement : il peut devenir un signe, un souvenir et une manière de se raconter.",
+        "show_curves": true,
+        "background_color": "#690719",
+        "text_color": "#f7f3eb",
+        "accent_color": "#c99a42",
+        "padding_vertical": 88,
+        "mobile_padding_vertical": 64
+      }
+    },
+    "story_values": {
+      "type": "akn-values",
+      "blocks": {
+        "story_value_heritage": {
+          "type": "value",
+          "settings": {
+            "title": "HÉRITAGE",
+            "description": "Nous puisons dans les symboles akan, porteurs de valeurs universelles telles que l’amour, la force, la sagesse et la prospérité."
+          }
+        },
+        "story_value_reinterpretation": {
+          "type": "value",
+          "settings": {
+            "title": "RÉINTERPRÉTATION",
+            "description": "Nous transformons ces formes ancestrales en pièces contemporaines, au design épuré et intemporel."
+          }
+        },
+        "story_value_transmission": {
+          "type": "value",
+          "settings": {
+            "title": "TRANSMISSION",
+            "description": "Nous créons des bijoux pensés pour durer, comme des liens entre les générations, porteurs d’histoires et de sens."
+          }
+        }
+      },
+      "block_order": [
+        "story_value_heritage",
+        "story_value_reinterpretation",
+        "story_value_transmission"
+      ],
+      "name": "t:akn_values.name",
+      "settings": {
+        "title": "Ce qui guide nos créations",
+        "background_color": "#f7f3eb",
+        "text_color": "#302b27",
+        "accent_color": "#936222",
+        "separator_color": "#cfc4b4",
+        "padding_top": 72,
+        "padding_bottom": 48,
+        "mobile_padding_top": 56,
+        "mobile_padding_bottom": 36
+      }
+    },
+    "story_symbols": {
+      "type": "akn-symbols",
+      "blocks": {
+        "story_symbol_akoma": {
+          "type": "symbol",
+          "settings": {
+            "image": "shopify://shop_images/RedAkomaBraceletonWarmBrown.png",
+            "symbol_name": "AKOMA",
+            "title": "L’amour et la patience",
+            "description": "Un symbole de cœur qui rappelle la force des liens, la loyauté et la patience dans les relations."
+          }
+        },
+        "story_symbol_fawohodie": {
+          "type": "symbol",
+          "settings": {
+            "image": "shopify://shop_images/Centeredbraidedbraceletonwarmbackdrop.png",
+            "symbol_name": "FAWOHODIE",
+            "title": "L’indépendance et la liberté",
+            "description": "Un symbole de force intérieure, d’autonomie et de résilience face à l’adversité."
+          }
+        },
+        "story_symbol_nhyira": {
+          "type": "symbol",
+          "settings": {
+            "image": "shopify://shop_images/CaramelNhyirabraceletwithgoldcenter.png",
+            "symbol_name": "NHYIRA",
+            "title": "La chance et la bénédiction",
+            "description": "Un symbole de chance, de prospérité et de bien-être pour soi et pour ceux qui nous entourent."
+          }
+        }
+      },
+      "block_order": [
+        "story_symbol_akoma",
+        "story_symbol_fawohodie",
+        "story_symbol_nhyira"
+      ],
+      "name": "t:akn_symbols.name",
+      "settings": {
+        "title": "Derrière chaque symbole, un sens",
+        "background_color": "#f7f3eb",
+        "text_color": "#302b27",
+        "accent_color": "#936222",
+        "placeholder_color": "#e8ded0",
+        "padding_top": 44,
+        "padding_bottom": 88,
+        "mobile_padding_top": 36,
+        "mobile_padding_bottom": 64,
+        "card_gap": 32
+      }
+    },
+    "story_cta": {
+      "type": "hero",
+      "blocks": {
+        "story_cta_panel": {
+          "type": "_akn-panel",
+          "name": "AKAN responsive panel",
+          "settings": {
+            "desktop_position": "center-left",
+            "desktop_max_width": 640,
+            "desktop_edge_space": 60,
+            "desktop_gap": 14,
+            "mobile_position": "center-left",
+            "mobile_max_width": 520,
+            "mobile_edge_space": 24,
+            "mobile_gap": 12
+          },
+          "blocks": {
+            "story_cta_eyebrow": {
+              "type": "akn-text",
+              "name": "AKAN — Texte responsive",
+              "settings": {
+                "desktop_text": "<p>NOTRE HISTOIRE</p>",
+                "use_mobile_text": false,
+                "mobile_text": "",
+                "desktop_font_role": "body",
+                "desktop_size_scale": 105,
+                "desktop_heading_line_height": 110,
+                "desktop_body_line_height": 130,
+                "desktop_element_gap": 0,
+                "desktop_letter_spacing": "loose",
+                "desktop_alignment": "left",
+                "desktop_case": "uppercase",
+                "desktop_color": "#e6b74f",
+                "desktop_max_width": 620,
+                "desktop_padding_vertical": 0,
+                "desktop_padding_horizontal": 0,
+                "mobile_font_role": "body",
+                "mobile_size_scale": 70,
+                "mobile_heading_line_height": 105,
+                "mobile_body_line_height": 130,
+                "mobile_element_gap": 0,
+                "mobile_letter_spacing": "loose",
+                "mobile_alignment": "left",
+                "mobile_case": "uppercase",
+                "mobile_color": "#e6b74f",
+                "mobile_max_width": 360,
+                "mobile_padding_vertical": 0,
+                "mobile_padding_horizontal": 0,
+                "background_color": "rgba(0,0,0,0)",
+                "border_color": "rgba(0,0,0,0)",
+                "border_width": 0,
+                "corner_radius": 0
+              },
+              "blocks": {}
+            },
+            "story_cta_copy": {
+              "type": "akn-text",
+              "name": "AKAN — Texte responsive",
+              "settings": {
+                "desktop_text": "<h2>Une histoire à porter</h2><h4>Des bijoux ancrés dans un héritage, pensés pour aujourd’hui, et destinés à vous accompagner demain.</h4>",
+                "use_mobile_text": false,
+                "mobile_text": "",
+                "desktop_font_role": "native",
+                "desktop_size_scale": 95,
+                "desktop_heading_line_height": 100,
+                "desktop_body_line_height": 145,
+                "desktop_element_gap": 20,
+                "desktop_letter_spacing": "native",
+                "desktop_alignment": "left",
+                "desktop_case": "native",
+                "desktop_color": "#f7f3eb",
+                "desktop_max_width": 620,
+                "desktop_padding_vertical": 0,
+                "desktop_padding_horizontal": 0,
+                "mobile_font_role": "native",
+                "mobile_size_scale": 85,
+                "mobile_heading_line_height": 100,
+                "mobile_body_line_height": 145,
+                "mobile_element_gap": 18,
+                "mobile_letter_spacing": "native",
+                "mobile_alignment": "left",
+                "mobile_case": "native",
+                "mobile_color": "#f7f3eb",
+                "mobile_max_width": 340,
+                "mobile_padding_vertical": 0,
+                "mobile_padding_horizontal": 0,
+                "background_color": "rgba(0,0,0,0)",
+                "border_color": "rgba(0,0,0,0)",
+                "border_width": 0,
+                "corner_radius": 0
+              },
+              "blocks": {}
+            },
+            "story_cta_button": {
+              "type": "_akn-ctas",
+              "name": "t:names.akn_hero_buttons",
+              "settings": {
+                "desktop_group_alignment": "left",
+                "desktop_group_width": "custom",
+                "desktop_custom_width": 100,
+                "desktop_button_gap": 12,
+                "desktop_distribution": "spread",
+                "desktop_match_sizes": false,
+                "primary_desktop_visible": true,
+                "primary_desktop_label": "DÉCOUVRIR LES BIJOUX",
+                "primary_desktop_link": "shopify://collections/all",
+                "primary_initial_bg": "#690719",
+                "primary_initial_text": "#f7f3eb",
+                "primary_initial_border": "#c99a42",
+                "pd_custom_interaction": true,
+                "pd_animation": "wipe-left",
+                "pd_interaction_bg": "#f7f3eb",
+                "pd_interaction_text": "#690719",
+                "pd_interaction_border": "#f7f3eb",
+                "secondary_desktop_visible": false,
+                "secondary_desktop_label": "Notre histoire",
+                "secondary_desktop_link": "",
+                "secondary_initial_bg": "#302b27",
+                "secondary_initial_text": "#f7f3eb",
+                "secondary_initial_border": "#f7f3eb",
+                "sd_custom_interaction": false,
+                "sd_animation": "fade",
+                "sd_interaction_bg": "#302b27",
+                "sd_interaction_text": "#f7f3eb",
+                "sd_interaction_border": "#f7f3eb",
+                "mobile_group_alignment": "left",
+                "mobile_group_width": "full",
+                "mobile_custom_width": 100,
+                "mobile_button_gap": 12,
+                "mobile_distribution": "packed",
+                "mobile_match_sizes": false,
+                "primary_mobile_visible": true,
+                "primary_mobile_label": "DÉCOUVRIR LES BIJOUX",
+                "primary_mobile_link": "shopify://collections/all",
+                "primary_mobile_initial_bg": "#690719",
+                "primary_mobile_initial_text": "#f7f3eb",
+                "primary_mobile_initial_border": "#c99a42",
+                "pm_custom_interaction": true,
+                "pm_animation": "fade",
+                "pm_interaction_bg": "#f7f3eb",
+                "pm_interaction_text": "#690719",
+                "pm_interaction_border": "#f7f3eb",
+                "secondary_mobile_visible": false,
+                "secondary_mobile_label": "Notre histoire",
+                "secondary_mobile_link": "",
+                "secondary_mobile_initial_bg": "#302b27",
+                "secondary_mobile_initial_text": "#f7f3eb",
+                "secondary_mobile_initial_border": "#f7f3eb",
+                "sm_custom_interaction": false,
+                "sm_animation": "fade",
+                "sm_interaction_bg": "#302b27",
+                "sm_interaction_text": "#f7f3eb",
+                "sm_interaction_border": "#f7f3eb"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "story_cta_eyebrow",
+            "story_cta_copy",
+            "story_cta_button"
+          ]
+        }
+      },
+      "block_order": [
+        "story_cta_panel"
+      ],
+      "name": "t:names.hero",
+      "settings": {
+        "media_type_1": "image",
+        "image_1": "shopify://shop_images/Cowrie_shell_bracelet_in_warm_studio_glow-3.png",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": true,
+        "media_type_1_mobile": "image",
+        "image_1_mobile": "shopify://shop_images/Luxury_cowrie_bracelet_on_oxblood_backdrop-4.png",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "page-width",
+        "section_height": "custom",
+        "section_height_custom": 52,
+        "background_color": "",
+        "toggle_overlay": true,
+        "overlay_color": "rgba(0,0,0,0)",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    }
+  },
+  "order": [
+    "story_hero",
+    "story_editorial",
+    "story_quote",
+    "story_values",
+    "story_symbols",
+    "story_cta"
+  ]
+}

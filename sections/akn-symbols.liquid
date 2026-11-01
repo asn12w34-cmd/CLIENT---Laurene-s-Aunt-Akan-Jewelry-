@@ -1,0 +1,392 @@
+{% comment %}
+  Cartes éditoriales des symboles pour la page « Notre histoire ».
+{% endcomment %}
+
+{% liquid
+  assign color_scope = 'akn-symbols-' | append: section.id
+%}
+
+{% render 'contrast-override',
+  background_color: section.settings.background_color,
+  text_color: section.settings.text_color,
+  section_id: color_scope
+%}
+
+<div
+  class="akn-symbols color-custom-{{ color_scope }}"
+  style="
+    --akn-symbols-accent: {{ section.settings.accent_color }};
+    --akn-symbols-placeholder: {{ section.settings.placeholder_color }};
+    --akn-symbols-padding-top: {{ section.settings.padding_top }}px;
+    --akn-symbols-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --akn-symbols-mobile-padding-top: {{ section.settings.mobile_padding_top }}px;
+    --akn-symbols-mobile-padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    --akn-symbols-gap: {{ section.settings.card_gap }}px;
+  "
+>
+  <div class="section section--page-width akn-symbols__layout">
+    {% if section.settings.title != blank %}
+      <header class="akn-symbols__header">
+        <h2 class="akn-symbols__title">{{ section.settings.title | escape }}</h2>
+        <span class="akn-symbols__accent" aria-hidden="true"></span>
+      </header>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <ul class="akn-symbols__grid">
+        {% for block in section.blocks %}
+          {% liquid
+            assign card_image = block.settings.image
+            assign card_alt = card_image.alt | default: block.settings.title | default: block.settings.symbol_name
+          %}
+          <li class="akn-symbols__card" {{ block.shopify_attributes }}>
+            <div class="akn-symbols__media">
+              {% if card_image != blank %}
+                {{
+                  card_image
+                  | image_url: width: 1200
+                  | image_tag:
+                    class: 'akn-symbols__image',
+                    widths: '360, 540, 720, 960, 1200',
+                    sizes: '(min-width: 990px) calc((100vw - 160px) / 3), (min-width: 750px) calc((100vw - 120px) / 2), calc(100vw - 40px)',
+                    loading: 'lazy',
+                    decoding: 'async',
+                    alt: card_alt
+                }}
+              {% else %}
+                <span class="akn-symbols__placeholder" aria-hidden="true"></span>
+              {% endif %}
+            </div>
+
+            <div class="akn-symbols__content">
+              {% if block.settings.symbol_name != blank %}
+                <p class="akn-symbols__name">{{ block.settings.symbol_name | escape }}</p>
+              {% endif %}
+              {% if block.settings.title != blank %}
+                <h3 class="akn-symbols__card-title">{{ block.settings.title | escape }}</h3>
+              {% endif %}
+              {% if block.settings.description != blank %}
+                <p class="akn-symbols__description">{{ block.settings.description | escape | newline_to_br }}</p>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .akn-symbols {
+    display: block;
+    min-inline-size: 0;
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .akn-symbols__layout {
+    row-gap: clamp(36px, 5vw, 60px);
+    padding-block: var(--akn-symbols-mobile-padding-top) var(--akn-symbols-mobile-padding-bottom);
+  }
+
+  .akn-symbols__header {
+    display: grid;
+    justify-items: center;
+    gap: 22px;
+    min-inline-size: 0;
+    text-align: center;
+  }
+
+  .akn-symbols__title {
+    max-inline-size: 24ch;
+    margin: 0;
+    color: inherit;
+    font-family: var(--font-h2--family);
+    font-size: clamp(2.35rem, 7vw, 4.75rem);
+    font-style: var(--font-h2--style);
+    font-weight: var(--font-h2--weight);
+    line-height: 1;
+    letter-spacing: var(--font-h2--letter-spacing);
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  .akn-symbols__accent {
+    inline-size: 64px;
+    block-size: 1px;
+    background: var(--akn-symbols-accent);
+  }
+
+  .akn-symbols__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(36px, 7vw, 56px);
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .akn-symbols__card,
+  .akn-symbols__content {
+    display: grid;
+    min-inline-size: 0;
+  }
+
+  .akn-symbols__card {
+    align-content: start;
+    gap: 20px;
+  }
+
+  .akn-symbols__media {
+    position: relative;
+    min-inline-size: 0;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--akn-symbols-placeholder);
+  }
+
+  .akn-symbols__image,
+  .akn-symbols__placeholder {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .akn-symbols__image {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .akn-symbols__placeholder {
+    background:
+      radial-gradient(circle at center, transparent 0 11%, var(--akn-symbols-accent) 12% 13%, transparent 14% 24%, var(--akn-symbols-accent) 25% 26%, transparent 27%),
+      linear-gradient(135deg, rgb(48 43 39 / 12%), transparent 60%);
+    opacity: 0.58;
+  }
+
+  .akn-symbols__content {
+    gap: 7px;
+    overflow-wrap: anywhere;
+  }
+
+  .akn-symbols__name,
+  .akn-symbols__card-title,
+  .akn-symbols__description {
+    margin: 0;
+    color: inherit;
+  }
+
+  .akn-symbols__name {
+    color: var(--akn-symbols-accent);
+    font-family: var(--font-body--family);
+    font-size: 0.76rem;
+    font-style: var(--font-body--style);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+
+  .akn-symbols__card-title {
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.65rem, 4vw, 2.25rem);
+    font-style: var(--font-heading--style);
+    font-weight: var(--font-heading--weight);
+    line-height: 1.1;
+  }
+
+  .akn-symbols__description {
+    max-inline-size: 46ch;
+    font-family: var(--font-body--family);
+    font-size: 1rem;
+    font-style: var(--font-body--style);
+    font-weight: var(--font-body--weight);
+    line-height: 1.55;
+  }
+
+  @media screen and (min-width: 750px) {
+    .akn-symbols__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--akn-symbols-gap);
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .akn-symbols__layout {
+      padding-block: var(--akn-symbols-padding-top) var(--akn-symbols-padding-bottom);
+    }
+
+    .akn-symbols__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--akn-symbols-gap);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:akn_symbols.name",
+  "tag": "section",
+  "class": "akn-symbols-section",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:akn_symbols.groups.content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:akn_symbols.labels.title",
+      "default": "Derrière chaque symbole, un sens"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_symbols.groups.colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:akn_symbols.labels.background_color",
+      "default": "#F7F3EB"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:akn_symbols.labels.text_color",
+      "default": "#302B27"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "t:akn_symbols.labels.accent_color",
+      "default": "#936222"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_color",
+      "label": "t:akn_symbols.labels.placeholder_color",
+      "default": "#E8DED0"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_symbols.groups.spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:akn_symbols.labels.padding_top",
+      "min": 24,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:akn_symbols.labels.padding_bottom",
+      "min": 36,
+      "max": 180,
+      "step": 4,
+      "unit": "px",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "t:akn_symbols.labels.mobile_padding_top",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "t:akn_symbols.labels.mobile_padding_bottom",
+      "min": 32,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "t:akn_symbols.labels.card_gap",
+      "min": 16,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "symbol",
+      "name": "t:akn_symbols.block_name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:akn_symbols.labels.image",
+          "info": "t:akn_symbols.help.image"
+        },
+        {
+          "type": "text",
+          "id": "symbol_name",
+          "label": "t:akn_symbols.labels.symbol_name",
+          "default": "AKOMA"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:akn_symbols.labels.card_title",
+          "default": "L’amour et la patience"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "t:akn_symbols.labels.description",
+          "default": "Un symbole de cœur qui rappelle la force des liens, la loyauté et la patience dans les relations."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:akn_symbols.name",
+      "category": "t:categories.storytelling",
+      "blocks": [
+        {
+          "type": "symbol",
+          "settings": {
+            "symbol_name": "AKOMA",
+            "title": "L’amour et la patience",
+            "description": "Un symbole de cœur qui rappelle la force des liens, la loyauté et la patience dans les relations."
+          }
+        },
+        {
+          "type": "symbol",
+          "settings": {
+            "symbol_name": "FAWOHODIE",
+            "title": "L’indépendance et la liberté",
+            "description": "Un symbole de force intérieure, d’autonomie et de résilience face à l’adversité."
+          }
+        },
+        {
+          "type": "symbol",
+          "settings": {
+            "symbol_name": "NHYIRA",
+            "title": "La chance et la bénédiction",
+            "description": "Un symbole de chance, de prospérité et de bien-être pour soi et pour ceux qui nous entourent."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

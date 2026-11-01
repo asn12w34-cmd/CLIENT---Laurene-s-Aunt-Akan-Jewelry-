@@ -1375,24 +1375,91 @@
     }
   },
   "akn_policy_page": {
-    "name": "AKAN — Page d’information",
+    "name": "AKAN — Livraison et retours",
     "groups": {
-      "layout": "Mise en page et couleurs",
+      "introduction": "Introduction",
+      "intro_media": "Média de l’introduction",
+      "summary": "Résumé",
+      "accordions": "Contenu et accordéons",
+      "contact": "Contact",
+      "colors": "Couleurs",
       "desktop_typography": "Typographie — Ordinateur",
       "mobile_typography": "Typographie — Mobile",
-      "spacing": "Espacement vertical"
+      "spacing": "Espacement"
     },
     "labels": {
       "content_width": "Largeur maximale du contenu",
-      "background_color": "Arrière-plan",
-      "text_color": "Texte",
+      "intro_eyebrow": "Surtitre",
+      "intro_text": "Texte introductif",
+      "intro_text_mobile": "Texte introductif — Mobile",
+      "intro_image": "Image d’arrière-plan — Ordinateur",
+      "intro_mobile_image": "Image d’arrière-plan — Mobile",
+      "intro_image_position_desktop": "Position de l’image — Ordinateur",
+      "intro_image_position_mobile": "Position de l’image — Mobile",
+      "intro_overlay_color": "Couleur du voile",
+      "intro_overlay_opacity": "Opacité du voile",
+      "delivery_group_title": "Titre du groupe Livraison",
+      "returns_group_title": "Titre du groupe Retours",
+      "contact_title": "Titre du bandeau",
+      "contact_text": "Texte du bandeau",
+      "contact_button": "Libellé du bouton",
+      "contact_link": "Destination du bouton",
+      "brand_background": "Arrière-plan bordeaux",
+      "brand_text": "Texte sur fond bordeaux",
+      "intro_accent_color": "Accent du bandeau supérieur",
+      "background_color": "Arrière-plan du contenu",
+      "text_color": "Corps de texte",
+      "heading_color": "Titres et accordéons",
+      "accent_color": "Accent doré",
+      "divider_color": "Séparateurs",
       "title_size": "Taille du titre principal",
-      "heading_size": "Taille des intertitres",
+      "group_size": "Taille des titres de groupe",
+      "summary_size": "Taille des informations essentielles",
       "body_size": "Taille du corps de texte",
-      "padding_top_desktop": "Espacement supérieur — Ordinateur",
-      "padding_bottom_desktop": "Espacement inférieur — Ordinateur",
-      "padding_top_mobile": "Espacement supérieur — Mobile",
-      "padding_bottom_mobile": "Espacement inférieur — Mobile"
+      "group_weight": "Graisse des titres de groupe",
+      "emphasis_weight": "Graisse des titres d’accordéon et informations principales",
+      "body_weight": "Graisse du corps de texte",
+      "intro_pad_desktop": "Introduction — Ordinateur",
+      "intro_pad_mobile": "Introduction — Mobile",
+      "content_pad_desktop": "Contenu — Ordinateur",
+      "content_pad_mobile": "Contenu — Mobile",
+      "contact_pad_desktop": "Contact — Ordinateur",
+      "contact_pad_mobile": "Contact — Mobile",
+      "icon": "Icône",
+      "info_title": "Titre court",
+      "info_text": "Information principale",
+      "accordion_group": "Groupe",
+      "accordion_title": "Titre",
+      "accordion_content": "Contenu",
+      "open_by_default": "Ouvert par défaut"
+    },
+    "blocks": {
+      "essential_info": "Information essentielle",
+      "accordion": "Accordéon"
+    },
+    "options": {
+      "box": "Colis",
+      "truck": "Livraison",
+      "return": "Retour",
+      "none": "Aucune icône",
+      "delivery_group": "Livraison",
+      "returns_group": "Retours et remboursements",
+      "left": "Gauche",
+      "center": "Centre",
+      "right": "Droite",
+      "top": "Haut",
+      "bottom": "Bas",
+      "weight_very_light": "Très léger",
+      "weight_light": "Léger",
+      "weight_regular": "Normal",
+      "weight_emphasis": "Soutenu"
+    },
+    "help": {
+      "summary_blocks": "Ajoutez jusqu’à trois blocs « Information essentielle ». Chaque bloc contrôle son icône, son titre et son information principale.",
+      "accordion_fallback": "Le contenu de la page Shopify s’affiche uniquement lorsqu’aucun bloc Accordéon utilisable n’est configuré.",
+      "intro_text_mobile": "Facultatif. Laissez vide pour reprendre le texte introductif de l’ordinateur.",
+      "intro_image": "Facultative. Sans image, la couleur d’arrière-plan bordeaux reste utilisée.",
+      "intro_mobile_image": "Facultative. Laissez vide pour utiliser l’image d’ordinateur sur mobile."
     }
   },
   "akn_product": {
@@ -1493,6 +1560,100 @@
       "padding_top": "Espacement supérieur",
       "padding_bottom": "Espacement inférieur",
       "max_columns_desktop": "Nombre maximal de colonnes sur ordinateur"
+    }
+  },
+  "akn_story": {
+    "name": "AKAN — Éditorial Notre histoire",
+    "groups": {
+      "content": "Contenu",
+      "media": "Images",
+      "colors": "Couleurs",
+      "spacing": "Espacements"
+    },
+    "labels": {
+      "eyebrow": "Surtitre",
+      "title": "Titre",
+      "content": "Texte",
+      "image": "Image — Ordinateur",
+      "mobile_image": "Image — Mobile",
+      "background_color": "Arrière-plan",
+      "text_color": "Texte",
+      "accent_color": "Accent",
+      "padding_top": "Espacement supérieur — Ordinateur",
+      "padding_bottom": "Espacement inférieur — Ordinateur",
+      "mobile_padding_top": "Espacement supérieur — Mobile",
+      "mobile_padding_bottom": "Espacement inférieur — Mobile"
+    },
+    "help": {
+      "image": "Sélectionnez la photographie propre du bijou, sans texte intégré.",
+      "mobile_image": "Facultative. Si elle est vide, l’image ordinateur est réutilisée."
+    }
+  },
+  "akn_quote": {
+    "name": "AKAN — Citation Notre histoire",
+    "groups": {
+      "content": "Contenu",
+      "colors": "Couleurs",
+      "spacing": "Espacements"
+    },
+    "labels": {
+      "quote": "Citation",
+      "show_curves": "Afficher les courbes décoratives",
+      "background_color": "Arrière-plan",
+      "text_color": "Texte",
+      "accent_color": "Guillemet et courbes",
+      "padding_vertical": "Espacement vertical — Ordinateur",
+      "mobile_padding_vertical": "Espacement vertical — Mobile"
+    }
+  },
+  "akn_values": {
+    "name": "AKAN — Valeurs de la marque",
+    "block_name": "Valeur",
+    "groups": {
+      "content": "Contenu",
+      "colors": "Couleurs",
+      "spacing": "Espacements"
+    },
+    "labels": {
+      "title": "Titre de la section",
+      "value_title": "Nom de la valeur",
+      "description": "Description",
+      "background_color": "Arrière-plan",
+      "text_color": "Texte",
+      "accent_color": "Accent",
+      "separator_color": "Séparateurs",
+      "padding_top": "Espacement supérieur — Ordinateur",
+      "padding_bottom": "Espacement inférieur — Ordinateur",
+      "mobile_padding_top": "Espacement supérieur — Mobile",
+      "mobile_padding_bottom": "Espacement inférieur — Mobile"
+    }
+  },
+  "akn_symbols": {
+    "name": "AKAN — Histoires des symboles",
+    "block_name": "Symbole",
+    "groups": {
+      "content": "Contenu",
+      "colors": "Couleurs",
+      "spacing": "Espacements"
+    },
+    "labels": {
+      "title": "Titre de la section",
+      "image": "Image",
+      "symbol_name": "Nom du symbole",
+      "card_title": "Titre de la carte",
+      "description": "Description",
+      "background_color": "Arrière-plan",
+      "text_color": "Texte",
+      "accent_color": "Accent",
+      "placeholder_color": "Fond d’une image vide",
+      "padding_top": "Espacement supérieur — Ordinateur",
+      "padding_bottom": "Espacement inférieur — Ordinateur",
+      "mobile_padding_top": "Espacement supérieur — Mobile",
+      "mobile_padding_bottom": "Espacement inférieur — Mobile",
+      "card_gap": "Espace entre les cartes"
+    },
+    "help": {
+      "image": "Utilisez une image propre, sans texte intégré. Elle est recadrée dans un ratio horizontal cohérent."
     }
   }
 }

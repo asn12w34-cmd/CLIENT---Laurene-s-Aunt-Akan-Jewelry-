@@ -1,0 +1,315 @@
+{% comment %}
+  Valeurs éditoriales de la marque pour la page « Notre histoire ».
+{% endcomment %}
+
+{% liquid
+  assign color_scope = 'akn-values-' | append: section.id
+%}
+
+{% render 'contrast-override',
+  background_color: section.settings.background_color,
+  text_color: section.settings.text_color,
+  border_color: section.settings.separator_color,
+  section_id: color_scope
+%}
+
+<div
+  class="akn-values color-custom-{{ color_scope }}"
+  style="
+    --akn-values-accent: {{ section.settings.accent_color }};
+    --akn-values-separator: {{ section.settings.separator_color }};
+    --akn-values-padding-top: {{ section.settings.padding_top }}px;
+    --akn-values-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --akn-values-mobile-padding-top: {{ section.settings.mobile_padding_top }}px;
+    --akn-values-mobile-padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  "
+>
+  <div class="section section--page-width akn-values__layout">
+    {% if section.settings.title != blank %}
+      <header class="akn-values__header">
+        <h2 class="akn-values__title">{{ section.settings.title | escape }}</h2>
+        <span class="akn-values__accent" aria-hidden="true"></span>
+      </header>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <ul class="akn-values__list">
+        {% for block in section.blocks %}
+          <li class="akn-values__item" {{ block.shopify_attributes }}>
+            {% if block.settings.title != blank %}
+              <h3 class="akn-values__item-title">{{ block.settings.title | escape }}</h3>
+            {% endif %}
+            {% if block.settings.description != blank %}
+              <p class="akn-values__description">{{ block.settings.description | escape | newline_to_br }}</p>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .akn-values {
+    display: block;
+    min-inline-size: 0;
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .akn-values__layout {
+    row-gap: clamp(36px, 5vw, 64px);
+    padding-block: var(--akn-values-mobile-padding-top) var(--akn-values-mobile-padding-bottom);
+  }
+
+  .akn-values__header {
+    display: grid;
+    justify-items: center;
+    gap: 22px;
+    min-inline-size: 0;
+    text-align: center;
+  }
+
+  .akn-values__title {
+    max-inline-size: 24ch;
+    margin: 0;
+    color: inherit;
+    font-family: var(--font-h2--family);
+    font-size: clamp(2.35rem, 7vw, 4.75rem);
+    font-style: var(--font-h2--style);
+    font-weight: var(--font-h2--weight);
+    line-height: 1;
+    letter-spacing: var(--font-h2--letter-spacing);
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  .akn-values__accent {
+    inline-size: 64px;
+    block-size: 1px;
+    background: var(--akn-values-accent);
+  }
+
+  .akn-values__list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .akn-values__item {
+    min-inline-size: 0;
+    padding-block: 28px;
+    overflow-wrap: anywhere;
+  }
+
+  .akn-values__item:first-child {
+    padding-block-start: 0;
+  }
+
+  .akn-values__item:last-child {
+    padding-block-end: 0;
+  }
+
+  .akn-values__item + .akn-values__item {
+    border-block-start: 1px solid var(--akn-values-separator);
+  }
+
+  .akn-values__item-title,
+  .akn-values__description {
+    margin: 0;
+    color: inherit;
+  }
+
+  .akn-values__item-title {
+    margin-block-end: 12px;
+    color: var(--akn-values-accent);
+    font-family: var(--font-body--family);
+    font-size: 0.82rem;
+    font-style: var(--font-body--style);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+
+  .akn-values__description {
+    max-inline-size: 42ch;
+    font-family: var(--font-body--family);
+    font-size: clamp(1rem, 1.7vw, 1.15rem);
+    font-style: var(--font-body--style);
+    font-weight: var(--font-body--weight);
+    line-height: 1.55;
+  }
+
+  @media screen and (min-width: 990px) {
+    .akn-values__layout {
+      padding-block: var(--akn-values-padding-top) var(--akn-values-padding-bottom);
+    }
+
+    .akn-values__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .akn-values__item {
+      padding: 0 clamp(28px, 3.5vw, 56px);
+    }
+
+    .akn-values__item:first-child {
+      padding-inline-start: 0;
+    }
+
+    .akn-values__item:last-child {
+      padding-inline-end: 0;
+    }
+
+    .akn-values__item + .akn-values__item {
+      border-block-start: 0;
+      border-inline-start: 1px solid var(--akn-values-separator);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:akn_values.name",
+  "tag": "section",
+  "class": "akn-values-section",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:akn_values.groups.content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:akn_values.labels.title",
+      "default": "Ce qui guide nos créations"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_values.groups.colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:akn_values.labels.background_color",
+      "default": "#F7F3EB"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:akn_values.labels.text_color",
+      "default": "#302B27"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "t:akn_values.labels.accent_color",
+      "default": "#936222"
+    },
+    {
+      "type": "color",
+      "id": "separator_color",
+      "label": "t:akn_values.labels.separator_color",
+      "default": "#CFC4B4"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_values.groups.spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:akn_values.labels.padding_top",
+      "min": 32,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:akn_values.labels.padding_bottom",
+      "min": 24,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "t:akn_values.labels.mobile_padding_top",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "t:akn_values.labels.mobile_padding_bottom",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "t:akn_values.block_name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:akn_values.labels.value_title",
+          "default": "HÉRITAGE"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "t:akn_values.labels.description",
+          "default": "Nous puisons dans les symboles akan, porteurs de valeurs universelles telles que l’amour, la force, la sagesse et la prospérité."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:akn_values.name",
+      "category": "t:categories.storytelling",
+      "blocks": [
+        {
+          "type": "value",
+          "settings": {
+            "title": "HÉRITAGE",
+            "description": "Nous puisons dans les symboles akan, porteurs de valeurs universelles telles que l’amour, la force, la sagesse et la prospérité."
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "RÉINTERPRÉTATION",
+            "description": "Nous transformons ces formes ancestrales en pièces contemporaines, au design épuré et intemporel."
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "TRANSMISSION",
+            "description": "Nous créons des bijoux pensés pour durer, comme des liens entre les générations, porteurs d’histoires et de sens."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

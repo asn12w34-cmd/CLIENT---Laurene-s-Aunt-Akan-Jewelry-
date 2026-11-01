@@ -1472,24 +1472,91 @@
     }
   },
   "akn_policy_page": {
-    "name": "AKAN — Information page",
+    "name": "AKAN — Delivery and returns",
     "groups": {
-      "layout": "Layout and colours",
+      "introduction": "Introduction",
+      "intro_media": "Introduction media",
+      "summary": "Summary",
+      "accordions": "Content and accordions",
+      "contact": "Contact",
+      "colors": "Colours",
       "desktop_typography": "Typography — Desktop",
       "mobile_typography": "Typography — Mobile",
-      "spacing": "Vertical spacing"
+      "spacing": "Spacing"
     },
     "labels": {
       "content_width": "Maximum content width",
-      "background_color": "Background",
-      "text_color": "Text",
+      "intro_eyebrow": "Eyebrow",
+      "intro_text": "Introduction text",
+      "intro_text_mobile": "Introduction text — Mobile",
+      "intro_image": "Background image — Desktop",
+      "intro_mobile_image": "Background image — Mobile",
+      "intro_image_position_desktop": "Image position — Desktop",
+      "intro_image_position_mobile": "Image position — Mobile",
+      "intro_overlay_color": "Overlay colour",
+      "intro_overlay_opacity": "Overlay opacity",
+      "delivery_group_title": "Delivery group title",
+      "returns_group_title": "Returns group title",
+      "contact_title": "Banner title",
+      "contact_text": "Banner text",
+      "contact_button": "Button label",
+      "contact_link": "Button destination",
+      "brand_background": "Burgundy background",
+      "brand_text": "Text on burgundy",
+      "intro_accent_color": "Top banner accent",
+      "background_color": "Content background",
+      "text_color": "Body text",
+      "heading_color": "Headings and accordions",
+      "accent_color": "Gold accent",
+      "divider_color": "Dividers",
       "title_size": "Main title size",
-      "heading_size": "Section heading size",
+      "group_size": "Group heading size",
+      "summary_size": "Essential information size",
       "body_size": "Body text size",
-      "padding_top_desktop": "Top spacing — Desktop",
-      "padding_bottom_desktop": "Bottom spacing — Desktop",
-      "padding_top_mobile": "Top spacing — Mobile",
-      "padding_bottom_mobile": "Bottom spacing — Mobile"
+      "group_weight": "Group heading weight",
+      "emphasis_weight": "Accordion title and main information weight",
+      "body_weight": "Body text weight",
+      "intro_pad_desktop": "Introduction — Desktop",
+      "intro_pad_mobile": "Introduction — Mobile",
+      "content_pad_desktop": "Content — Desktop",
+      "content_pad_mobile": "Content — Mobile",
+      "contact_pad_desktop": "Contact — Desktop",
+      "contact_pad_mobile": "Contact — Mobile",
+      "icon": "Icon",
+      "info_title": "Short title",
+      "info_text": "Main information",
+      "accordion_group": "Group",
+      "accordion_title": "Title",
+      "accordion_content": "Content",
+      "open_by_default": "Open by default"
+    },
+    "blocks": {
+      "essential_info": "Essential information",
+      "accordion": "Accordion"
+    },
+    "options": {
+      "box": "Parcel",
+      "truck": "Delivery",
+      "return": "Return",
+      "none": "No icon",
+      "delivery_group": "Delivery",
+      "returns_group": "Returns and refunds",
+      "left": "Left",
+      "center": "Centre",
+      "right": "Right",
+      "top": "Top",
+      "bottom": "Bottom",
+      "weight_very_light": "Extra light",
+      "weight_light": "Light",
+      "weight_regular": "Regular",
+      "weight_emphasis": "Emphasised"
+    },
+    "help": {
+      "summary_blocks": "Add up to three Essential information blocks. Each block controls its icon, title and main information.",
+      "accordion_fallback": "The Shopify page content is shown only when no usable Accordion block is configured.",
+      "intro_text_mobile": "Optional. Leave blank to reuse the desktop introduction text.",
+      "intro_image": "Optional. Without an image, the solid burgundy background remains in use.",
+      "intro_mobile_image": "Optional. Leave blank to use the desktop image on mobile."
     }
   },
   "akn_product": {
@@ -1590,6 +1657,100 @@
       "padding_top": "Top spacing",
       "padding_bottom": "Bottom spacing",
       "max_columns_desktop": "Maximum desktop columns"
+    }
+  },
+  "akn_story": {
+    "name": "AKAN — Story editorial",
+    "groups": {
+      "content": "Content",
+      "media": "Images",
+      "colors": "Colors",
+      "spacing": "Spacing"
+    },
+    "labels": {
+      "eyebrow": "Eyebrow",
+      "title": "Heading",
+      "content": "Text",
+      "image": "Desktop image",
+      "mobile_image": "Mobile image",
+      "background_color": "Background",
+      "text_color": "Text",
+      "accent_color": "Accent",
+      "padding_top": "Top spacing — Desktop",
+      "padding_bottom": "Bottom spacing — Desktop",
+      "mobile_padding_top": "Top spacing — Mobile",
+      "mobile_padding_bottom": "Bottom spacing — Mobile"
+    },
+    "help": {
+      "image": "Choose the clean product image without embedded text.",
+      "mobile_image": "Optional. When empty, the desktop image is reused."
+    }
+  },
+  "akn_quote": {
+    "name": "AKAN — Story quote",
+    "groups": {
+      "content": "Content",
+      "colors": "Colors",
+      "spacing": "Spacing"
+    },
+    "labels": {
+      "quote": "Quote",
+      "show_curves": "Show decorative curves",
+      "background_color": "Background",
+      "text_color": "Text",
+      "accent_color": "Quote mark and curves",
+      "padding_vertical": "Vertical spacing — Desktop",
+      "mobile_padding_vertical": "Vertical spacing — Mobile"
+    }
+  },
+  "akn_values": {
+    "name": "AKAN — Brand values",
+    "block_name": "Value",
+    "groups": {
+      "content": "Content",
+      "colors": "Colors",
+      "spacing": "Spacing"
+    },
+    "labels": {
+      "title": "Section heading",
+      "value_title": "Value name",
+      "description": "Description",
+      "background_color": "Background",
+      "text_color": "Text",
+      "accent_color": "Accent",
+      "separator_color": "Separators",
+      "padding_top": "Top spacing — Desktop",
+      "padding_bottom": "Bottom spacing — Desktop",
+      "mobile_padding_top": "Top spacing — Mobile",
+      "mobile_padding_bottom": "Bottom spacing — Mobile"
+    }
+  },
+  "akn_symbols": {
+    "name": "AKAN — Symbol stories",
+    "block_name": "Symbol",
+    "groups": {
+      "content": "Content",
+      "colors": "Colors",
+      "spacing": "Spacing"
+    },
+    "labels": {
+      "title": "Section heading",
+      "image": "Image",
+      "symbol_name": "Symbol name",
+      "card_title": "Card heading",
+      "description": "Description",
+      "background_color": "Background",
+      "text_color": "Text",
+      "accent_color": "Accent",
+      "placeholder_color": "Empty image background",
+      "padding_top": "Top spacing — Desktop",
+      "padding_bottom": "Bottom spacing — Desktop",
+      "mobile_padding_top": "Top spacing — Mobile",
+      "mobile_padding_bottom": "Bottom spacing — Mobile",
+      "card_gap": "Space between cards"
+    },
+    "help": {
+      "image": "Use a clean image without embedded text. The image is cropped to a consistent landscape ratio."
     }
   }
 }

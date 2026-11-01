@@ -1,0 +1,196 @@
+{% comment %}
+  Bandeau de citation décoratif pour la page « Notre histoire ».
+{% endcomment %}
+
+{% liquid
+  assign color_scope = 'akn-quote-' | append: section.id
+  assign quote_text = section.settings.quote | strip
+%}
+
+{% render 'contrast-override',
+  background_color: section.settings.background_color,
+  text_color: section.settings.text_color,
+  section_id: color_scope
+%}
+
+<div
+  class="akn-quote color-custom-{{ color_scope }}{% if section.settings.show_curves %} akn-quote--curves{% endif %}"
+  style="
+    --akn-quote-accent: {{ section.settings.accent_color }};
+    --akn-quote-padding: {{ section.settings.padding_vertical }}px;
+    --akn-quote-mobile-padding: {{ section.settings.mobile_padding_vertical }}px;
+  "
+>
+  <div class="akn-quote__inner">
+    {% if quote_text != blank %}
+      <blockquote class="akn-quote__blockquote">
+        <span class="akn-quote__mark" aria-hidden="true">“</span>
+        <p>{{ quote_text | escape | newline_to_br }}</p>
+      </blockquote>
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .akn-quote {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    min-inline-size: 0;
+    padding-block: var(--akn-quote-mobile-padding);
+    overflow: hidden;
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .akn-quote__inner {
+    position: relative;
+    z-index: 1;
+    inline-size: min(calc(100% - var(--page-margin) - var(--page-margin)), 980px);
+    margin-inline: auto;
+  }
+
+  .akn-quote__blockquote {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    margin: 0;
+    text-align: center;
+  }
+
+  .akn-quote__blockquote p {
+    max-inline-size: 36ch;
+    margin: 0;
+    color: inherit;
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.8rem, 6vw, 3.25rem);
+    font-style: var(--font-heading--style);
+    font-weight: var(--font-heading--weight);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  .akn-quote__mark {
+    block-size: 0.8em;
+    color: var(--akn-quote-accent);
+    font-family: var(--font-heading--family);
+    font-size: clamp(3.25rem, 8vw, 5rem);
+    line-height: 1;
+  }
+
+  .akn-quote--curves::before,
+  .akn-quote--curves::after {
+    position: absolute;
+    inline-size: clamp(260px, 42vw, 720px);
+    block-size: clamp(260px, 42vw, 720px);
+    border: 1px solid var(--akn-quote-accent);
+    border-radius: 50%;
+    content: '';
+    pointer-events: none;
+  }
+
+  .akn-quote--curves::before {
+    inset-block-start: 48%;
+    inset-inline-start: 0;
+    transform: translate(-68%, -50%);
+  }
+
+  .akn-quote--curves::after {
+    inset-block-start: 52%;
+    inset-inline-end: 0;
+    transform: translate(68%, -50%);
+  }
+
+  @media screen and (min-width: 750px) {
+    .akn-quote {
+      padding-block: var(--akn-quote-padding);
+    }
+
+    .akn-quote--curves::before {
+      transform: translate(-58%, -50%) rotate(18deg);
+    }
+
+    .akn-quote--curves::after {
+      transform: translate(58%, -50%) rotate(-18deg);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:akn_quote.name",
+  "tag": "section",
+  "class": "akn-quote-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:akn_quote.groups.content"
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "t:akn_quote.labels.quote",
+      "default": "Un bijou peut être plus qu’un ornement : il peut devenir un signe, un souvenir et une manière de se raconter."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_curves",
+      "label": "t:akn_quote.labels.show_curves",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:akn_quote.groups.colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:akn_quote.labels.background_color",
+      "default": "#690719"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:akn_quote.labels.text_color",
+      "default": "#F7F3EB"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "t:akn_quote.labels.accent_color",
+      "default": "#C99A42"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_quote.groups.spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "t:akn_quote.labels.padding_vertical",
+      "min": 48,
+      "max": 180,
+      "step": 4,
+      "unit": "px",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_vertical",
+      "label": "t:akn_quote.labels.mobile_padding_vertical",
+      "min": 36,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:akn_quote.name",
+      "category": "t:categories.storytelling"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,350 @@
+{% comment %}
+  Section éditoriale image et texte pour la page « Notre histoire ».
+{% endcomment %}
+
+{% liquid
+  assign color_scope = 'akn-story-' | append: section.id
+  assign desktop_image = section.settings.image
+  assign mobile_image = section.settings.mobile_image
+  assign image_alt = desktop_image.alt | default: section.settings.title
+  if mobile_image != blank
+    assign mobile_alt = mobile_image.alt | default: image_alt
+  endif
+%}
+
+{% render 'contrast-override',
+  background_color: section.settings.background_color,
+  text_color: section.settings.text_color,
+  section_id: color_scope
+%}
+
+<div
+  class="akn-story color-custom-{{ color_scope }}"
+  style="
+    --akn-story-accent: {{ section.settings.accent_color }};
+    --akn-story-padding-top: {{ section.settings.padding_top }}px;
+    --akn-story-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --akn-story-mobile-padding-top: {{ section.settings.mobile_padding_top }}px;
+    --akn-story-mobile-padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  "
+>
+  <div class="akn-story__layout">
+    <div class="akn-story__content">
+      {% if section.settings.eyebrow != blank %}
+        <p class="akn-story__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {% endif %}
+
+      {% if section.settings.title != blank %}
+        <h2 class="akn-story__title">{{ section.settings.title | escape }}</h2>
+      {% endif %}
+
+      <span class="akn-story__accent" aria-hidden="true"></span>
+
+      {% if section.settings.content != blank %}
+        <div class="akn-story__body rte">{{ section.settings.content }}</div>
+      {% endif %}
+    </div>
+
+    <div class="akn-story__media">
+      {% if desktop_image != blank %}
+        {% if mobile_image != blank %}
+          <picture>
+            <source
+              media="(max-width: 749px)"
+              srcset="
+                {{ mobile_image | image_url: width: 360 }} 360w,
+                {{ mobile_image | image_url: width: 540 }} 540w,
+                {{ mobile_image | image_url: width: 750 }} 750w,
+                {{ mobile_image | image_url: width: 1000 }} 1000w
+              "
+              sizes="100vw"
+              width="{{ mobile_image.width }}"
+              height="{{ mobile_image.height }}"
+            >
+            {{
+              desktop_image
+              | image_url: width: 1800
+              | image_tag:
+                class: 'akn-story__image',
+                widths: '540, 750, 990, 1200, 1500, 1800',
+                sizes: '(min-width: 990px) 50vw, 100vw',
+                loading: 'lazy',
+                decoding: 'async',
+                alt: image_alt
+            }}
+          </picture>
+        {% else %}
+          {{
+            desktop_image
+            | image_url: width: 1800
+            | image_tag:
+              class: 'akn-story__image',
+              widths: '540, 750, 990, 1200, 1500, 1800',
+              sizes: '(min-width: 990px) 50vw, 100vw',
+              loading: 'lazy',
+              decoding: 'async',
+              alt: image_alt
+          }}
+        {% endif %}
+      {% elsif mobile_image != blank %}
+        {{
+          mobile_image
+          | image_url: width: 1200
+          | image_tag:
+            class: 'akn-story__image',
+            widths: '360, 540, 750, 1000, 1200',
+            sizes: '100vw',
+            loading: 'lazy',
+            decoding: 'async',
+            alt: mobile_alt
+        }}
+      {% else %}
+        <div class="akn-story__placeholder" aria-hidden="true"></div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .akn-story {
+    display: block;
+    min-inline-size: 0;
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .akn-story__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-inline-size: 0;
+  }
+
+  .akn-story__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-inline-size: 0;
+    padding: var(--akn-story-mobile-padding-top) var(--page-margin) var(--akn-story-mobile-padding-bottom);
+    overflow-wrap: anywhere;
+  }
+
+  .akn-story__eyebrow,
+  .akn-story__title,
+  .akn-story__body :where(p) {
+    margin: 0;
+    color: inherit;
+  }
+
+  .akn-story__eyebrow {
+    margin-block-end: 16px;
+    color: var(--akn-story-accent);
+    font-family: var(--font-body--family);
+    font-size: clamp(0.7rem, 1vw, 0.85rem);
+    font-style: var(--font-body--style);
+    font-weight: var(--font-body--weight);
+    line-height: 1.4;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+
+  .akn-story__title {
+    max-inline-size: 18ch;
+    font-family: var(--font-h2--family);
+    font-size: clamp(2.35rem, 8.5vw, 4.5rem);
+    font-style: var(--font-h2--style);
+    font-weight: var(--font-h2--weight);
+    line-height: 0.98;
+    letter-spacing: var(--font-h2--letter-spacing);
+    text-wrap: balance;
+  }
+
+  .akn-story__accent {
+    inline-size: 64px;
+    block-size: 1px;
+    margin-block: 28px;
+    background: var(--akn-story-accent);
+  }
+
+  .akn-story__body {
+    max-inline-size: 56ch;
+    color: inherit;
+    font-family: var(--font-body--family);
+    font-size: clamp(1rem, 1.7vw, 1.2rem);
+    font-style: var(--font-body--style);
+    font-weight: var(--font-body--weight);
+    line-height: 1.65;
+  }
+
+  .akn-story__body > :where(*) {
+    margin-block: 0;
+  }
+
+  .akn-story__body > :where(*) + :where(*) {
+    margin-block-start: 1em;
+  }
+
+  .akn-story__media,
+  .akn-story__media picture {
+    display: block;
+    min-inline-size: 0;
+    background: #4a1c12;
+  }
+
+  .akn-story__image,
+  .akn-story__placeholder {
+    display: block;
+    inline-size: 100%;
+    min-block-size: clamp(320px, 82vw, 640px);
+    block-size: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .akn-story__placeholder {
+    background:
+      radial-gradient(circle at 50% 55%, rgb(147 98 34 / 24%) 0 12%, transparent 13%),
+      linear-gradient(135deg, #3d150f, #7b2a18);
+  }
+
+  @media screen and (min-width: 990px) {
+    .akn-story__layout {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: stretch;
+    }
+
+    .akn-story__content {
+      padding: var(--akn-story-padding-top) clamp(48px, 6vw, 112px) var(--akn-story-padding-bottom);
+    }
+
+    .akn-story__title {
+      font-size: clamp(3.25rem, 4.7vw, 5.5rem);
+    }
+
+    .akn-story__image,
+    .akn-story__placeholder {
+      min-block-size: 560px;
+      aspect-ratio: auto;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:akn_story.name",
+  "tag": "section",
+  "class": "akn-story-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:akn_story.groups.content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:akn_story.labels.eyebrow",
+      "default": "NOTRE HISTOIRE"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:akn_story.labels.title",
+      "default": "Des formes anciennes, un regard contemporain"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "t:akn_story.labels.content",
+      "default": "<p>Nos créations puisent leur inspiration dans les symboles et les formes de l’héritage akan, un langage riche de sens qui traverse les générations.</p><p>Nous les réinterprétons avec une approche contemporaine pour créer des bijoux qui dialoguent avec notre époque, tout en honorant leur origine.</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_story.groups.media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:akn_story.labels.image",
+      "info": "t:akn_story.help.image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "t:akn_story.labels.mobile_image",
+      "info": "t:akn_story.help.mobile_image"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_story.groups.colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:akn_story.labels.background_color",
+      "default": "#F7F3EB"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:akn_story.labels.text_color",
+      "default": "#302B27"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "t:akn_story.labels.accent_color",
+      "default": "#936222"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_story.groups.spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:akn_story.labels.padding_top",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:akn_story.labels.padding_bottom",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "t:akn_story.labels.mobile_padding_top",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "t:akn_story.labels.mobile_padding_bottom",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:akn_story.name",
+      "category": "t:categories.storytelling"
+    }
+  ]
+}
+{% endschema %}

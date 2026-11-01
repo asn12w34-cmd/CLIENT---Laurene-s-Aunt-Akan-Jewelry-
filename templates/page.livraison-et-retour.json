@@ -11,21 +11,163 @@
   "sections": {
     "akn_policy_page_6hE4wV": {
       "type": "akn-policy-page",
+      "blocks": {
+        "summary_preparation": {
+          "type": "essential_info",
+          "settings": {
+            "icon": "box",
+            "title": "PRÉPARATION",
+            "text": "1 à 3 jours ouvrés"
+          }
+        },
+        "summary_delivery": {
+          "type": "essential_info",
+          "settings": {
+            "icon": "truck",
+            "title": "LIVRAISON",
+            "text": "Côte d’Ivoire et international"
+          }
+        },
+        "summary_returns": {
+          "type": "essential_info",
+          "settings": {
+            "icon": "return",
+            "title": "RETOURS",
+            "text": "Consulter les conditions"
+          }
+        },
+        "accordion_preparation": {
+          "type": "accordion",
+          "settings": {
+            "group": "delivery",
+            "title": "Préparation des commandes",
+            "content": "<p>Les commandes sont généralement préparées dans un délai de <strong>[1 à 3 jours ouvrés]</strong> après confirmation du paiement.</p><p>Les commandes passées pendant le week-end ou un jour férié sont traitées à partir du jour ouvré suivant.</p><p>En cas de retard exceptionnel dans la préparation, nous vous en informerons par e-mail ou par WhatsApp.</p><p><strong>Annulation avant expédition</strong></p><p>Si vous souhaitez annuler ou modifier une commande avant son expédition, contactez-nous rapidement.</p><p>Nous ferons notre possible pour répondre à votre demande, mais nous ne pouvons pas garantir l’annulation ou la modification d’une commande dont la préparation ou l’expédition a déjà commencé, sous réserve de vos droits légaux.</p>",
+            "open_by_default": true
+          }
+        },
+        "accordion_zones": {
+          "type": "accordion",
+          "settings": {
+            "group": "delivery",
+            "title": "Zones et délais de livraison",
+            "content": "<p>Nous livrons actuellement dans les zones suivantes :</p><ul><li><strong>Côte d’Ivoire :</strong> [délai de livraison estimé] ;</li><li><strong>France métropolitaine :</strong> [délai de livraison estimé] ;</li><li><strong>Autres destinations :</strong> disponibilité sur demande.</li></ul><p>Les délais de livraison sont distincts du délai de préparation des commandes.</p><p>Ils peuvent varier en fonction de la destination, du transporteur, des jours fériés, des contrôles douaniers ou d’autres circonstances indépendantes de notre volonté.</p>",
+            "open_by_default": false
+          }
+        },
+        "accordion_shipping_fees": {
+          "type": "accordion",
+          "settings": {
+            "group": "delivery",
+            "title": "Frais de livraison",
+            "content": "<p>Les frais de livraison sont indiqués avant la validation de la commande et dépendent de la destination ainsi que du mode de livraison choisi.</p><p>Pour les livraisons internationales, des droits de douane, taxes d’importation ou frais de traitement peuvent s’appliquer selon le pays de destination et les modalités d’expédition. Leur éventuelle prise en charge est précisée lors de la commande ou avant sa confirmation.</p>",
+            "open_by_default": false
+          }
+        },
+        "accordion_address": {
+          "type": "accordion",
+          "settings": {
+            "group": "delivery",
+            "title": "Adresse de livraison",
+            "content": "<p>Avant de confirmer votre commande, vérifiez l’exactitude de votre nom, de votre numéro de téléphone et de votre adresse de livraison.</p><p>Si vous constatez une erreur, contactez-nous rapidement à [adresse e-mail] ou par WhatsApp au [numéro].</p><p>Nous ferons notre possible pour corriger l’adresse avant l’expédition, sans pouvoir le garantir une fois la commande remise au transporteur.</p><p>Les frais occasionnés par une adresse incorrecte ou incomplète peuvent être facturés au client, dans les limites autorisées par la loi.</p>",
+            "open_by_default": false
+          }
+        },
+        "accordion_delay": {
+          "type": "accordion",
+          "settings": {
+            "group": "delivery",
+            "title": "Retard ou colis non reçu",
+            "content": "<p>Si votre commande n’est pas arrivée à la date annoncée, vérifiez d’abord les informations de suivi, puis contactez-nous à [adresse e-mail] en indiquant votre numéro de commande.</p><p>Nous contacterons le transporteur et vous accompagnerons dans les démarches nécessaires.</p>",
+            "open_by_default": false
+          }
+        },
+        "accordion_return_conditions": {
+          "type": "accordion",
+          "settings": {
+            "group": "returns",
+            "title": "Conditions de retour",
+            "content": "<p>Pour demander un retour à la suite d’un changement d’avis, contactez-nous dans un délai de <strong>[délai à confirmer]</strong> après réception de votre commande.</p><p>En cas de retour pour changement d’avis, les articles doivent être :</p><ul><li>Non endommagés ;</li><li>Complets ;</li><li>Protégés correctement pour le transport ;</li><li>Accompagnés, si possible, de leur emballage d’origine et de leur preuve d’achat.</li></ul><p>Ces conditions concernent les retours pour changement d’avis et ne limitent pas les droits applicables aux articles défectueux, endommagés ou non conformes.</p>",
+            "open_by_default": false
+          }
+        },
+        "accordion_return_process": {
+          "type": "accordion",
+          "settings": {
+            "group": "returns",
+            "title": "Procédure de retour",
+            "content": "<p>Avant tout retour, contactez-nous afin de recevoir les instructions et l’adresse de retour.</p><p>Après acceptation de votre demande, le colis devra être expédié dans un délai de <strong>[délai à confirmer]</strong>, sous réserve des délais légaux applicables.</p><p>Les colis envoyés à une autre adresse ou sans informations permettant d’identifier la commande peuvent retarder leur traitement.</p><p><strong>Article endommagé, défectueux ou non conforme</strong></p><p>Vérifiez votre commande dès sa réception.</p><p>Si un article est endommagé, présente un défaut ou ne correspond pas à votre commande, contactez-nous dès que possible à [adresse e-mail], en indiquant :</p><ul><li>Votre numéro de commande ;</li><li>Une description du problème ;</li><li>Des photographies du produit et de son emballage, si possible.</li></ul><p>La demande sera examinée afin de proposer une solution adaptée, telle qu’un remplacement, une réduction du prix ou un remboursement, conformément aux droits applicables.</p>",
+            "open_by_default": false
+          }
+        },
+        "accordion_refunds": {
+          "type": "accordion",
+          "settings": {
+            "group": "returns",
+            "title": "Remboursements",
+            "content": "<p><strong>Frais de retour</strong></p><p>En cas de rétractation ou de changement d’avis, les frais directs de retour sont à la charge du client, sauf disposition légale applicable ou indication contraire de notre part.</p><p>Nous recommandons d’utiliser un mode d’expédition suivi et de conserver la preuve d’envoi.</p><p>En cas de retour organisé par le client, il est important de protéger correctement le produit et de conserver les justificatifs d’expédition. Les responsabilités en cas de perte ou de dommage pendant le transport seront déterminées selon les circonstances et les règles applicables.</p><p>Si le produit reçu est défectueux, endommagé ou différent de celui commandé, les frais raisonnables de retour sont pris en charge par Akan Jewelry après vérification de la demande, conformément aux obligations applicables.</p><p><strong>Remboursements</strong></p><p>Lorsqu’un retour est accepté et que les conditions de remboursement sont réunies, le remboursement est effectué avec le même moyen de paiement que celui utilisé pour la commande, sauf accord exprès pour utiliser un autre moyen sans frais supplémentaires.</p><p>Le remboursement est effectué dans un délai de <strong>[délai à confirmer]</strong>, dans le respect des délais légaux applicables.</p><p>Le délai nécessaire pour que les fonds apparaissent sur votre compte peut varier selon votre banque ou votre prestataire de paiement.</p>",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "summary_preparation",
+        "summary_delivery",
+        "summary_returns",
+        "accordion_preparation",
+        "accordion_zones",
+        "accordion_shipping_fees",
+        "accordion_address",
+        "accordion_delay",
+        "accordion_return_conditions",
+        "accordion_return_process",
+        "accordion_refunds"
+      ],
       "name": "t:akn_policy_page.name",
       "settings": {
-        "content_width": 1000,
+        "intro_eyebrow": "INFORMATIONS CLIENT",
+        "intro_text": "Chez Akan Jewelry, chaque commande est préparée avec soin. Vous trouverez ci-dessous les informations relatives à la préparation, à la livraison et au retour de vos bijoux.",
+        "intro_text_mobile": "Nous mettons tout en œuvre pour que vos bijoux vous parviennent en toute sérénité.",
+        "intro_image": "shopify://shop_images/Deep_burgundy_satin_textile_backdrop-1.png",
+        "intro_mobile_image": "shopify://shop_images/Quiet_burgundy_satin_backdrop-2.png",
+        "intro_image_position_desktop": "center center",
+        "intro_image_position_mobile": "center center",
+        "intro_overlay_color": "#3b000b",
+        "intro_overlay_opacity": 20,
+        "delivery_group_title": "Livraisons",
+        "returns_group_title": "Retours et remboursements",
+        "contact_title": "Une question sur votre commande ?",
+        "contact_text": "Notre équipe est à votre écoute pour vous accompagner.",
+        "contact_button": "NOUS CONTACTER",
+        "contact_link": "/pages/contact",
+        "brand_background": "#690719",
+        "brand_text": "#f7f3eb",
+        "intro_accent_color": "#DAB26F",
         "background_color": "#f7f3eb",
-        "text_color": "#171611",
-        "title_size_desktop": 56,
-        "heading_size_desktop": 38,
-        "body_size_desktop": 18,
-        "title_size_mobile": 44,
-        "heading_size_mobile": 29,
+        "text_color": "#302b27",
+        "heading_color": "#690719",
+        "accent_color": "#936222",
+        "divider_color": "#cfc4b4",
+        "title_size_desktop": 68,
+        "group_size_desktop": 42,
+        "summary_size_desktop": 20,
+        "body_size_desktop": 17,
+        "group_weight_desktop": "200",
+        "emphasis_weight_desktop": "400",
+        "body_weight_desktop": "300",
+        "title_size_mobile": 46,
+        "group_size_mobile": 36,
+        "summary_size_mobile": 16,
         "body_size_mobile": 16,
-        "padding_top_desktop": 72,
-        "padding_bottom_desktop": 104,
-        "padding_top_mobile": 44,
-        "padding_bottom_mobile": 72
+        "group_weight_mobile": "300",
+        "emphasis_weight_mobile": "400",
+        "body_weight_mobile": "400",
+        "content_width": 1600,
+        "intro_pad_desktop": 56,
+        "intro_pad_mobile": 44,
+        "content_pad_desktop": 48,
+        "content_pad_mobile": 36,
+        "contact_pad_desktop": 36,
+        "contact_pad_mobile": 44
       }
     }
   },

@@ -1,71 +1,501 @@
 {% comment %}
   CUSTOM FILE [AJ-013] — Mise en page éditoriale des pages d’information AKAN | See CUSTOM_CHANGES.md — AJ-013
+  CUSTOM [AJ-028] — Refonte structurée de la page Livraison et retours | See CUSTOM_CHANGES.md — AJ-028
+  CUSTOM [AJ-029] — Bandeau d’introduction avec médias adaptatifs administrables | See CUSTOM_CHANGES.md — AJ-029
+  CUSTOM [AJ-030] — Centrage et typographie éditoriale du contenu principal | See CUSTOM_CHANGES.md — AJ-030
+  CUSTOM [AJ-031] — Graisses éditoriales fiables et bandeau de contact responsive | See CUSTOM_CHANGES.md — AJ-031
 
   Section contract.
-  Affiche le titre et le contenu de la page Shopify active dans une colonne de lecture maîtrisée.
-  Le premier H1 du contenu est masqué lorsqu’il répète le titre natif de la page.
+  Affiche une introduction, trois informations essentielles, deux groupes
+  d’accordéons et un bandeau de contact pour la page Shopify active.
+  Le contenu natif de la page reste le secours lorsqu’aucun accordéon utilisable
+  n’est configuré.
   @example
   Utiliser cette section dans le modèle « page.livraison-et-retour ».
 {% endcomment %}
 
 {% liquid
-  assign color_scope = 'akn-policy-' | append: section.id
-  render 'contrast-override', background_color: section.settings.background_color, text_color: section.settings.text_color, section_id: color_scope, preset: 'content'
+  assign intro_scope = 'akn-policy-intro-' | append: section.id
+  assign content_scope = 'akn-policy-content-' | append: section.id
+  assign contact_scope = 'akn-policy-contact-' | append: section.id
+
+  render 'contrast-override', background_color: section.settings.brand_background, text_color: section.settings.brand_text, border_color: section.settings.intro_accent_color, section_id: intro_scope, preset: 'content'
+  render 'contrast-override', background_color: section.settings.background_color, text_color: section.settings.text_color, border_color: section.settings.divider_color, section_id: content_scope, preset: 'content'
+  render 'contrast-override', background_color: section.settings.brand_background, text_color: section.settings.brand_text, border_color: section.settings.accent_color, section_id: contact_scope, preset: 'content'
+
+  assign information_count = 0
+  assign accordion_count = 0
+
+  for block in section.blocks
+    if block.type == 'essential_info'
+      assign info_title = block.settings.title | strip
+      assign info_text = block.settings.text | strip
+      if info_title != blank or info_text != blank
+        assign information_count = information_count | plus: 1
+      endif
+    elsif block.type == 'accordion'
+      assign accordion_title = block.settings.title | strip
+      assign accordion_content = block.settings.content | strip_html | strip
+      if accordion_title != blank and accordion_content != blank
+        assign accordion_count = accordion_count | plus: 1
+      endif
+    endif
+  endfor
+
+  assign information_grid_count = information_count
+  if information_grid_count < 1
+    assign information_grid_count = 1
+  endif
+
+  assign fallback_content = page.content
+  capture repeated_page_heading
+    echo '<h1>'
+    echo page.title
+    echo '</h1>'
+  endcapture
+  assign fallback_content = fallback_content | replace: repeated_page_heading, ''
+
+  assign policy_group_weight_desktop = section.settings.group_weight_desktop | plus: 0
+  assign policy_emphasis_weight_desktop = section.settings.emphasis_weight_desktop | plus: 0
+  assign policy_body_weight_desktop = section.settings.body_weight_desktop | plus: 0
+  assign policy_group_weight_mobile = section.settings.group_weight_mobile | plus: 0
+  assign policy_emphasis_weight_mobile = section.settings.emphasis_weight_mobile | plus: 0
+  assign policy_body_weight_mobile = section.settings.body_weight_mobile | plus: 0
+
+  if policy_group_weight_desktop == settings.type_subheading_font.weight
+    assign policy_group_font_desktop = settings.type_subheading_font
+  else
+    assign policy_group_font_desktop = settings.type_subheading_font | font_modify: 'weight', policy_group_weight_desktop
+  endif
+  if policy_group_font_desktop == blank
+    if policy_group_weight_desktop > 400
+      assign policy_group_font_desktop = settings.type_subheading_font | font_modify: 'weight', 'bold'
+    elsif policy_group_weight_desktop > 300
+      assign policy_group_font_desktop = settings.type_subheading_font | font_modify: 'weight', 'normal'
+    else
+      assign policy_group_font_desktop = settings.type_subheading_font
+    endif
+  endif
+  if policy_group_font_desktop == blank
+    assign policy_group_font_desktop = settings.type_subheading_font
+  endif
+
+  if policy_emphasis_weight_desktop == settings.type_subheading_font.weight
+    assign policy_emphasis_font_desktop = settings.type_subheading_font
+  else
+    assign policy_emphasis_font_desktop = settings.type_subheading_font | font_modify: 'weight', policy_emphasis_weight_desktop
+  endif
+  if policy_emphasis_font_desktop == blank
+    if policy_emphasis_weight_desktop > 400
+      assign policy_emphasis_font_desktop = settings.type_subheading_font | font_modify: 'weight', 'bold'
+    elsif policy_emphasis_weight_desktop > 300
+      assign policy_emphasis_font_desktop = settings.type_subheading_font | font_modify: 'weight', 'normal'
+    else
+      assign policy_emphasis_font_desktop = settings.type_subheading_font
+    endif
+  endif
+  if policy_emphasis_font_desktop == blank
+    assign policy_emphasis_font_desktop = settings.type_subheading_font
+  endif
+
+  if policy_body_weight_desktop == settings.type_subheading_font.weight
+    assign policy_body_font_desktop = settings.type_subheading_font
+  else
+    assign policy_body_font_desktop = settings.type_subheading_font | font_modify: 'weight', policy_body_weight_desktop
+  endif
+  if policy_body_font_desktop == blank
+    if policy_body_weight_desktop > 400
+      assign policy_body_font_desktop = settings.type_subheading_font | font_modify: 'weight', 'bold'
+    elsif policy_body_weight_desktop > 300
+      assign policy_body_font_desktop = settings.type_subheading_font | font_modify: 'weight', 'normal'
+    else
+      assign policy_body_font_desktop = settings.type_subheading_font
+    endif
+  endif
+  if policy_body_font_desktop == blank
+    assign policy_body_font_desktop = settings.type_subheading_font
+  endif
+
+  if policy_group_weight_mobile == settings.type_subheading_font.weight
+    assign policy_group_font_mobile = settings.type_subheading_font
+  else
+    assign policy_group_font_mobile = settings.type_subheading_font | font_modify: 'weight', policy_group_weight_mobile
+  endif
+  if policy_group_font_mobile == blank
+    if policy_group_weight_mobile > 400
+      assign policy_group_font_mobile = settings.type_subheading_font | font_modify: 'weight', 'bold'
+    elsif policy_group_weight_mobile > 300
+      assign policy_group_font_mobile = settings.type_subheading_font | font_modify: 'weight', 'normal'
+    else
+      assign policy_group_font_mobile = settings.type_subheading_font
+    endif
+  endif
+  if policy_group_font_mobile == blank
+    assign policy_group_font_mobile = settings.type_subheading_font
+  endif
+
+  if policy_emphasis_weight_mobile == settings.type_subheading_font.weight
+    assign policy_emphasis_font_mobile = settings.type_subheading_font
+  else
+    assign policy_emphasis_font_mobile = settings.type_subheading_font | font_modify: 'weight', policy_emphasis_weight_mobile
+  endif
+  if policy_emphasis_font_mobile == blank
+    if policy_emphasis_weight_mobile > 400
+      assign policy_emphasis_font_mobile = settings.type_subheading_font | font_modify: 'weight', 'bold'
+    elsif policy_emphasis_weight_mobile > 300
+      assign policy_emphasis_font_mobile = settings.type_subheading_font | font_modify: 'weight', 'normal'
+    else
+      assign policy_emphasis_font_mobile = settings.type_subheading_font
+    endif
+  endif
+  if policy_emphasis_font_mobile == blank
+    assign policy_emphasis_font_mobile = settings.type_subheading_font
+  endif
+
+  if policy_body_weight_mobile == settings.type_subheading_font.weight
+    assign policy_body_font_mobile = settings.type_subheading_font
+  else
+    assign policy_body_font_mobile = settings.type_subheading_font | font_modify: 'weight', policy_body_weight_mobile
+  endif
+  if policy_body_font_mobile == blank
+    if policy_body_weight_mobile > 400
+      assign policy_body_font_mobile = settings.type_subheading_font | font_modify: 'weight', 'bold'
+    elsif policy_body_weight_mobile > 300
+      assign policy_body_font_mobile = settings.type_subheading_font | font_modify: 'weight', 'normal'
+    else
+      assign policy_body_font_mobile = settings.type_subheading_font
+    endif
+  endif
+  if policy_body_font_mobile == blank
+    assign policy_body_font_mobile = settings.type_subheading_font
+  endif
 %}
 
-<div class="section-background color-custom-{{ color_scope }}"></div>
+{% comment %} CUSTOM START [AJ-030] — Charge les graisses réellement disponibles pour la typographie éditoriale de la section. | See CUSTOM_CHANGES.md — AJ-030 {% endcomment %}
+{% style %}
+  {{ policy_group_font_desktop | font_face: font_display: 'swap' }}
+  {{ policy_emphasis_font_desktop | font_face: font_display: 'swap' }}
+  {{ policy_body_font_desktop | font_face: font_display: 'swap' }}
+  {{ policy_group_font_mobile | font_face: font_display: 'swap' }}
+  {{ policy_emphasis_font_mobile | font_face: font_display: 'swap' }}
+  {{ policy_body_font_mobile | font_face: font_display: 'swap' }}
+{% endstyle %}
+{% comment %} CUSTOM END [AJ-030] {% endcomment %}
+
 <section
-  class="akn-policy color-custom-{{ color_scope }}"
+  class="akn-policy"
   style="
     --akn-policy-content-width: {{ section.settings.content_width }}px;
+    --akn-policy-info-count: {{ information_grid_count }};
+    --akn-policy-accent: {{ section.settings.accent_color }};
+    --akn-policy-intro-accent: {{ section.settings.intro_accent_color }};
+    --akn-policy-intro-overlay: {{ section.settings.intro_overlay_color }};
+    --akn-policy-intro-overlay-opacity: {{ section.settings.intro_overlay_opacity | divided_by: 100.0 }};
+    --akn-policy-intro-position-desktop: {{ section.settings.intro_image_position_desktop }};
+    --akn-policy-intro-position-mobile: {{ section.settings.intro_image_position_mobile }};
+    --akn-policy-heading: {{ section.settings.heading_color }};
+    --akn-policy-divider: {{ section.settings.divider_color }};
     --akn-policy-title-size-desktop: {{ section.settings.title_size_desktop }}px;
     --akn-policy-title-size-mobile: {{ section.settings.title_size_mobile }}px;
-    --akn-policy-heading-size-desktop: {{ section.settings.heading_size_desktop }}px;
-    --akn-policy-heading-size-mobile: {{ section.settings.heading_size_mobile }}px;
+    --akn-policy-group-size-desktop: {{ section.settings.group_size_desktop }}px;
+    --akn-policy-group-size-mobile: {{ section.settings.group_size_mobile }}px;
+    --akn-policy-summary-size-desktop: {{ section.settings.summary_size_desktop }}px;
+    --akn-policy-summary-size-mobile: {{ section.settings.summary_size_mobile }}px;
     --akn-policy-body-size-desktop: {{ section.settings.body_size_desktop }}px;
     --akn-policy-body-size-mobile: {{ section.settings.body_size_mobile }}px;
-    --akn-policy-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
-    --akn-policy-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
-    --akn-policy-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
-    --akn-policy-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --akn-policy-editorial-family: {{ settings.type_subheading_font.family }}, {{ settings.type_subheading_font.fallback_families }};
+    --akn-policy-editorial-style: {{ settings.type_subheading_font.style }};
+    --akn-policy-group-weight-desktop: {{ policy_group_font_desktop.weight }};
+    --akn-policy-emphasis-weight-desktop: {{ policy_emphasis_font_desktop.weight }};
+    --akn-policy-body-weight-desktop: {{ policy_body_font_desktop.weight }};
+    --akn-policy-group-weight-mobile: {{ policy_group_font_mobile.weight }};
+    --akn-policy-emphasis-weight-mobile: {{ policy_emphasis_font_mobile.weight }};
+    --akn-policy-body-weight-mobile: {{ policy_body_font_mobile.weight }};
+    --akn-policy-intro-padding-desktop: {{ section.settings.intro_pad_desktop }}px;
+    --akn-policy-intro-padding-mobile: {{ section.settings.intro_pad_mobile }}px;
+    --akn-policy-content-padding-desktop: {{ section.settings.content_pad_desktop }}px;
+    --akn-policy-content-padding-mobile: {{ section.settings.content_pad_mobile }}px;
+    --akn-policy-contact-padding-desktop: {{ section.settings.contact_pad_desktop }}px;
+    --akn-policy-contact-padding-mobile: {{ section.settings.contact_pad_mobile }}px;
   "
 >
-  <div class="section section--page-width akn-policy__inner">
-    <div class="akn-policy__content">
+  <div class="akn-policy__intro color-custom-{{ intro_scope }}{% if section.settings.intro_image != blank %} akn-policy__intro--has-media{% endif %}">
+    {% if section.settings.intro_image != blank %}
+      <picture class="akn-policy__intro-media" aria-hidden="true">
+        {% if section.settings.intro_mobile_image != blank %}
+          <source
+            media="(max-width: 749px)"
+            srcset="
+              {{ section.settings.intro_mobile_image | image_url: width: 480 }} 480w,
+              {{ section.settings.intro_mobile_image | image_url: width: 750 }} 750w,
+              {{ section.settings.intro_mobile_image | image_url: width: 1000 }} 1000w
+            "
+            sizes="100vw"
+          >
+        {% endif %}
+        {{ section.settings.intro_image
+          | image_url: width: 2400
+          | image_tag:
+            class: 'akn-policy__intro-image',
+            widths: '750, 1100, 1500, 2000, 2400',
+            sizes: '100vw',
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: ''
+        }}
+      </picture>
+      <span class="akn-policy__intro-overlay" aria-hidden="true"></span>
+    {% endif %}
+
+    <div class="section section--page-width akn-policy__intro-inner">
+      {% if section.settings.intro_eyebrow != blank %}
+        <p class="akn-policy__eyebrow">{{ section.settings.intro_eyebrow | escape }}</p>
+      {% endif %}
+
       <h1 class="akn-policy__title">{{ page.title | escape }}</h1>
 
-      {% if page.content != blank %}
-        <rte-formatter class="akn-policy__body rte">
-          {{ page.content }}
+      {% if section.settings.intro_text != blank %}
+        <p class="akn-policy__intro-text{% if section.settings.intro_text_mobile != blank %} akn-policy__intro-text--desktop{% endif %}">{{ section.settings.intro_text | escape | newline_to_br }}</p>
+      {% endif %}
+      {% if section.settings.intro_text_mobile != blank %}
+        <p class="akn-policy__intro-text akn-policy__intro-text--mobile">{{ section.settings.intro_text_mobile | escape | newline_to_br }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="akn-policy__main color-custom-{{ content_scope }}">
+    <div class="section section--page-width akn-policy__main-inner">
+      {% if information_count > 0 %}
+        <div class="akn-policy__summary" role="list">
+          {% for block in section.blocks %}
+            {% if block.type != 'essential_info' %}
+              {% continue %}
+            {% endif %}
+
+            {% assign info_title = block.settings.title | strip %}
+            {% assign info_text = block.settings.text | strip %}
+            {% if info_title == blank and info_text == blank %}
+              {% continue %}
+            {% endif %}
+
+            <div class="akn-policy__summary-item" role="listitem" {{ block.shopify_attributes }}>
+              {% if block.settings.icon != 'none' %}
+                <span class="akn-policy__summary-icon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" focusable="false">
+                    {% render 'icon', icon: block.settings.icon %}
+                  </svg>
+                </span>
+              {% endif %}
+
+              <span class="akn-policy__summary-copy">
+                {% if info_title != blank %}
+                  <span class="akn-policy__summary-title">{{ info_title | escape }}</span>
+                {% endif %}
+                {% if info_text != blank %}
+                  <span class="akn-policy__summary-text">{{ info_text | escape }}</span>
+                {% endif %}
+              </span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if accordion_count > 0 %}
+        <div class="akn-policy__accordions">
+          <div class="akn-policy__group">
+            {% if section.settings.delivery_group_title != blank %}
+              <h2 class="akn-policy__group-title">{{ section.settings.delivery_group_title | escape }}</h2>
+            {% endif %}
+
+            <div class="akn-policy__group-items">
+              {% for block in section.blocks %}
+                {% unless block.type == 'accordion' and block.settings.group == 'delivery' %}
+                  {% continue %}
+                {% endunless %}
+
+                {% assign accordion_title = block.settings.title | strip %}
+                {% assign accordion_content = block.settings.content | strip_html | strip %}
+                {% if accordion_title == blank or accordion_content == blank %}
+                  {% continue %}
+                {% endif %}
+
+                {% capture accordion_children %}
+                  <details class="akn-policy__details"{% if block.settings.open_by_default %} open{% endif %} {{ block.shopify_attributes }}>
+                    <summary class="akn-policy__summary-row">
+                      <span>{{ accordion_title | escape }}</span>
+                      <span class="svg-wrapper icon-caret icon-animated" aria-hidden="true">
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                      </span>
+                    </summary>
+                    <div class="details-content akn-policy__details-content rte">
+                      {{ block.settings.content }}
+                    </div>
+                  </details>
+                {% endcapture %}
+                {% render 'accordion-custom-component',
+                  children: accordion_children,
+                  class: 'akn-policy__accordion',
+                  open_by_default_on_desktop: block.settings.open_by_default,
+                  open_by_default_on_mobile: block.settings.open_by_default
+                %}
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="akn-policy__group">
+            {% if section.settings.returns_group_title != blank %}
+              <h2 class="akn-policy__group-title">{{ section.settings.returns_group_title | escape }}</h2>
+            {% endif %}
+
+            <div class="akn-policy__group-items">
+              {% for block in section.blocks %}
+                {% unless block.type == 'accordion' and block.settings.group == 'returns' %}
+                  {% continue %}
+                {% endunless %}
+
+                {% assign accordion_title = block.settings.title | strip %}
+                {% assign accordion_content = block.settings.content | strip_html | strip %}
+                {% if accordion_title == blank or accordion_content == blank %}
+                  {% continue %}
+                {% endif %}
+
+                {% capture accordion_children %}
+                  <details class="akn-policy__details"{% if block.settings.open_by_default %} open{% endif %} {{ block.shopify_attributes }}>
+                    <summary class="akn-policy__summary-row">
+                      <span>{{ accordion_title | escape }}</span>
+                      <span class="svg-wrapper icon-caret icon-animated" aria-hidden="true">
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                      </span>
+                    </summary>
+                    <div class="details-content akn-policy__details-content rte">
+                      {{ block.settings.content }}
+                    </div>
+                  </details>
+                {% endcapture %}
+                {% render 'accordion-custom-component',
+                  children: accordion_children,
+                  class: 'akn-policy__accordion',
+                  open_by_default_on_desktop: block.settings.open_by_default,
+                  open_by_default_on_mobile: block.settings.open_by_default
+                %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% elsif fallback_content != blank %}
+        <rte-formatter class="akn-policy__fallback rte">
+          {{ fallback_content }}
         </rte-formatter>
       {% endif %}
     </div>
   </div>
+
+  {% if section.settings.contact_title != blank or section.settings.contact_text != blank or section.settings.contact_button != blank %}
+    <div class="akn-policy__contact color-custom-{{ contact_scope }}">
+      <div class="section section--page-width akn-policy__contact-inner">
+        <div class="akn-policy__contact-layout">
+          <div class="akn-policy__contact-copy">
+            {% if section.settings.contact_title != blank %}
+              <h2 class="akn-policy__contact-title">{{ section.settings.contact_title | escape }}</h2>
+            {% endif %}
+            {% if section.settings.contact_text != blank %}
+              <p class="akn-policy__contact-text">{{ section.settings.contact_text | escape | newline_to_br }}</p>
+            {% endif %}
+          </div>
+
+          {% if section.settings.contact_button != blank and section.settings.contact_link != blank %}
+            <a class="akn-policy__contact-button" href="{{ section.settings.contact_link | escape }}">
+              <span>{{ section.settings.contact_button | escape }}</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                {% render 'icon', icon: 'arrow' %}
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
 </section>
 
 {% stylesheet %}
-  /* CUSTOM [AJ-013] — Typographie et rythme isolés des pages d’information AKAN. | See CUSTOM_CHANGES.md — AJ-013 */
-  /* CUSTOM [AJ-014] — Colonne de lecture élargie et séparateurs de section discrets. | See CUSTOM_CHANGES.md — AJ-014 */
+  /* CUSTOM [AJ-028] — Page Livraison et retours responsive et isolée. | See CUSTOM_CHANGES.md — AJ-028 */
+  /* CUSTOM [AJ-029] — Média adaptatif et contraste du bandeau d’introduction. | See CUSTOM_CHANGES.md — AJ-029 */
+  /* CUSTOM [AJ-030] — Contenu principal centré et hiérarchie typographique alignée sur les fiches produit. | See CUSTOM_CHANGES.md — AJ-030 */
+  /* CUSTOM [AJ-031] — Graisses éditoriales fiables et grille interne du bandeau de contact. | See CUSTOM_CHANGES.md — AJ-031 */
   .akn-policy {
     min-inline-size: 0;
+  }
+
+  .akn-policy :is(.akn-policy__intro, .akn-policy__main, .akn-policy__contact) {
+    min-inline-size: 0;
+  }
+
+  .akn-policy__intro {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
 
-  .akn-policy__inner {
-    padding-block-start: var(--akn-policy-padding-top-mobile);
-    padding-block-end: var(--akn-policy-padding-bottom-mobile);
+  .akn-policy__intro-media,
+  .akn-policy__intro-overlay {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
   }
 
-  .akn-policy__content {
-    inline-size: min(100%, var(--akn-policy-content-width));
-    margin-inline: auto;
-    min-inline-size: 0;
+  .akn-policy__intro-media {
+    display: block;
+  }
+
+  .akn-policy__intro-image {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: var(--akn-policy-intro-position-mobile);
+  }
+
+  .akn-policy__intro-overlay {
+    z-index: 1;
+    background: var(--akn-policy-intro-overlay);
+    opacity: var(--akn-policy-intro-overlay-opacity);
+  }
+
+  .akn-policy__intro-inner {
+    position: relative;
+    z-index: 2;
+    padding-block: var(--akn-policy-intro-padding-mobile);
+    text-align: center;
+  }
+
+  .akn-policy__eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin: 0 0 14px;
+    color: var(--akn-policy-intro-accent);
+    font-family: var(--font-subheading--family);
+    font-size: 12px;
+    font-style: var(--font-subheading--style);
+    font-weight: var(--font-subheading--weight);
+    letter-spacing: 0.22em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  .akn-policy__eyebrow::after {
+    display: none;
+    inline-size: 46px;
+    block-size: 1px;
+    background: currentcolor;
+    content: '';
   }
 
   .akn-policy__title {
-    max-inline-size: 14ch;
-    margin: 0 0 clamp(36px, 6vw, 64px);
+    margin: 0;
     color: inherit;
     font-family: var(--font-h1--family);
     font-size: var(--akn-policy-title-size-mobile);
@@ -75,101 +505,514 @@
     line-height: 1.02;
     text-transform: var(--font-h1--case);
     text-wrap: balance;
-  }
-
-  .akn-policy__body {
-    display: block;
-    min-inline-size: 0;
-    color: inherit;
-    font-family: var(--font-body--family);
-    font-size: var(--akn-policy-body-size-mobile);
-    line-height: 1.68;
-  }
-
-  .akn-policy__body > h1:first-child {
-    display: none;
-  }
-
-  .akn-policy__body > h1:first-child + p {
-    margin-block-end: clamp(28px, 5vw, 44px);
-    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
-    font-size: 0.875em;
-    letter-spacing: 0.02em;
-  }
-
-  .akn-policy__body :is(h2, h3, h4, h5, h6) {
-    margin-block: clamp(30px, 5vw, 48px) 14px;
-    color: inherit;
-    font-family: var(--font-h2--family);
-    font-style: var(--font-h2--style);
-    font-weight: var(--font-h2--weight);
-    letter-spacing: var(--font-h2--letter-spacing);
-    line-height: 1.12;
-    text-transform: var(--font-h2--case);
-    text-wrap: pretty;
-  }
-
-  .akn-policy__body h2 {
-    inline-size: 100%;
-    max-inline-size: none;
-    padding-block-start: clamp(24px, 4vw, 32px);
-    border-block-start: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20));
-    font-size: var(--akn-policy-heading-size-mobile);
-  }
-
-  .akn-policy__body :is(h3, h4, h5, h6) {
-    max-inline-size: 24ch;
-    font-size: max(20px, calc(var(--akn-policy-heading-size-mobile) * 0.78));
-  }
-
-  .akn-policy__body :is(p, ul, ol) {
-    max-inline-size: 86ch;
-  }
-
-  .akn-policy__body p {
-    margin-block: 0 1em;
-  }
-
-  .akn-policy__body :is(ul, ol) {
-    margin-block: 0 1.25em;
-    padding-inline-start: 1.35em;
-  }
-
-  .akn-policy__body li + li {
-    margin-block-start: 0.45em;
-  }
-
-  .akn-policy__body a {
-    color: currentcolor;
-    text-decoration-color: currentcolor;
-  }
-
-  .akn-policy__body :is(h2, h3, h4, h5, h6, p, li, a) {
     overflow-wrap: anywhere;
   }
 
+  .akn-policy__title::after {
+    display: block;
+    inline-size: 46px;
+    block-size: 2px;
+    margin: 24px auto 22px;
+    background: var(--akn-policy-intro-accent);
+    content: '';
+  }
+
+  .akn-policy__intro-text {
+    max-inline-size: 700px;
+    margin: 0 auto;
+    color: inherit;
+    font-family: var(--font-body--family);
+    font-size: var(--akn-policy-body-size-mobile);
+    line-height: 1.55;
+    text-wrap: pretty;
+    overflow-wrap: anywhere;
+  }
+
+  .akn-policy__intro-text--mobile {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .akn-policy__intro-text--desktop {
+      display: none;
+    }
+
+    .akn-policy__intro-text--mobile {
+      display: block;
+    }
+  }
+
+  .akn-policy__main {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .akn-policy__main-inner {
+    --page-content-width: var(--akn-policy-content-width);
+    --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+
+    inline-size: 100%;
+    padding-block: var(--akn-policy-content-padding-mobile);
+  }
+
+  .akn-policy__summary {
+    display: grid;
+    grid-template-columns: repeat(var(--akn-policy-info-count), minmax(0, 1fr));
+    inline-size: 100%;
+    margin-block-end: clamp(48px, 8vw, 72px);
+    border-block-end: 1px solid var(--akn-policy-divider);
+  }
+
+  .akn-policy__summary-item {
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+    min-inline-size: 0;
+    padding: 0 10px 28px;
+    text-align: center;
+  }
+
+  .akn-policy__summary-item + .akn-policy__summary-item {
+    border-inline-start: 1px solid var(--akn-policy-divider);
+  }
+
+  .akn-policy__summary-icon {
+    display: grid;
+    place-items: center;
+    inline-size: 38px;
+    block-size: 38px;
+    color: var(--akn-policy-accent);
+  }
+
+  .akn-policy__summary-icon svg {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    fill: currentcolor;
+  }
+
+  .akn-policy__summary-copy {
+    display: grid;
+    gap: 6px;
+    min-inline-size: 0;
+  }
+
+  .akn-policy__summary-title {
+    color: var(--akn-policy-heading);
+    font-family: var(--akn-policy-editorial-family);
+    font-size: 10px;
+    font-style: var(--akn-policy-editorial-style);
+    font-weight: var(--akn-policy-emphasis-weight-mobile);
+    letter-spacing: 0.18em;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  .akn-policy__summary-text {
+    color: var(--akn-policy-heading);
+    font-family: var(--akn-policy-editorial-family);
+    font-size: var(--akn-policy-summary-size-mobile);
+    font-style: var(--akn-policy-editorial-style);
+    font-weight: var(--akn-policy-emphasis-weight-mobile);
+    line-height: 1.25;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  .akn-policy__accordions {
+    display: grid;
+    gap: 52px;
+    min-inline-size: 0;
+  }
+
+  .akn-policy__group {
+    min-inline-size: 0;
+  }
+
+  .akn-policy__group-title {
+    margin: 0;
+    padding-block-end: 16px;
+    border-block-end: 1px solid var(--akn-policy-divider);
+    color: var(--akn-policy-heading);
+    font-family: var(--akn-policy-editorial-family);
+    font-size: var(--akn-policy-group-size-mobile);
+    font-style: var(--akn-policy-editorial-style);
+    font-weight: var(--akn-policy-group-weight-mobile);
+    letter-spacing: var(--font-h2--letter-spacing);
+    line-height: 1.08;
+    text-transform: var(--font-h2--case);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  .akn-policy__group-items accordion-custom {
+    display: block;
+  }
+
+  .akn-policy__details {
+    border-block-end: 1px solid var(--akn-policy-divider);
+  }
+
+  .akn-policy__summary-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+    min-block-size: 58px;
+    padding-block: 14px;
+    color: var(--akn-policy-heading);
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--akn-policy-editorial-family);
+    font-size: var(--akn-policy-body-size-mobile);
+    font-style: var(--akn-policy-editorial-style);
+    font-weight: var(--akn-policy-emphasis-weight-mobile);
+    line-height: 1.3;
+    text-wrap: pretty;
+    overflow-wrap: anywhere;
+  }
+
+  .akn-policy__summary-row::-webkit-details-marker {
+    display: none;
+  }
+
+  .akn-policy__summary-row:focus-visible {
+    outline: 2px solid var(--akn-policy-heading);
+    outline-offset: -2px;
+  }
+
+  .akn-policy__summary-row .svg-wrapper {
+    flex: 0 0 16px;
+    inline-size: 16px;
+    block-size: 16px;
+    color: var(--akn-policy-accent);
+  }
+
+  .akn-policy__details-content {
+    color: var(--color-foreground);
+    font-family: var(--akn-policy-editorial-family);
+    font-size: var(--akn-policy-body-size-mobile);
+    font-style: var(--akn-policy-editorial-style);
+    font-weight: var(--akn-policy-body-weight-mobile);
+    line-height: 1.58;
+  }
+
+  .akn-policy__details-content > * {
+    max-inline-size: min(100%, 58ch);
+  }
+
+  .akn-policy__details[open] .akn-policy__details-content {
+    padding-block: 2px 22px;
+  }
+
+  .akn-policy__details-content :is(p, ul, ol) {
+    margin-block: 0 0 0.9em;
+  }
+
+  .akn-policy__details-content :is(ul, ol) {
+    padding-inline-start: 1.25em;
+  }
+
+  .akn-policy__details-content li + li {
+    margin-block-start: 0.35em;
+  }
+
+  .akn-policy__details-content :is(p, li, a, strong) {
+    overflow-wrap: anywhere;
+  }
+
+  .akn-policy__fallback {
+    display: block;
+    font-family: var(--akn-policy-editorial-family);
+    font-size: var(--akn-policy-body-size-mobile);
+    font-style: var(--akn-policy-editorial-style);
+    font-weight: var(--akn-policy-body-weight-mobile);
+    line-height: 1.65;
+  }
+
+  .akn-policy__fallback :is(h2, h3, h4, h5, h6) {
+    margin-block: 1.6em 0.55em;
+    color: var(--akn-policy-heading);
+    font-family: var(--akn-policy-editorial-family);
+    font-weight: var(--akn-policy-group-weight-mobile);
+  }
+
+  .akn-policy__fallback :is(p, li, a) {
+    overflow-wrap: anywhere;
+  }
+
+  .akn-policy__contact {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .akn-policy__contact-inner {
+    padding-block: var(--akn-policy-contact-padding-mobile);
+  }
+
+  .akn-policy__contact-layout {
+    display: grid;
+    justify-items: center;
+    gap: 26px;
+    inline-size: 100%;
+    text-align: center;
+  }
+
+  .akn-policy__contact-copy {
+    min-inline-size: 0;
+  }
+
+  .akn-policy__contact-title {
+    margin: 0;
+    color: inherit;
+    font-family: var(--font-h2--family);
+    font-size: clamp(28px, 8vw, 38px);
+    font-style: var(--font-h2--style);
+    font-weight: var(--font-h2--weight);
+    letter-spacing: var(--font-h2--letter-spacing);
+    line-height: 1.1;
+    text-transform: var(--font-h2--case);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  .akn-policy__contact-title::before {
+    display: block;
+    inline-size: 46px;
+    block-size: 2px;
+    margin: 0 auto 20px;
+    background: var(--akn-policy-accent);
+    content: '';
+  }
+
+  .akn-policy__contact-text {
+    margin: 10px 0 0;
+    color: inherit;
+    font-family: var(--font-body--family);
+    font-size: var(--akn-policy-body-size-mobile);
+    line-height: 1.45;
+    text-wrap: pretty;
+    overflow-wrap: anywhere;
+  }
+
+  .akn-policy__contact-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 34px;
+    min-block-size: var(--minimum-touch-target);
+    inline-size: min(100%, 360px);
+    padding: 14px 22px;
+    border: 1px solid currentcolor;
+    color: inherit;
+    font-family: var(--font-subheading--family);
+    font-size: 12px;
+    font-style: var(--font-subheading--style);
+    font-weight: var(--font-subheading--weight);
+    letter-spacing: 0.2em;
+    line-height: 1.2;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color var(--animation-speed) var(--animation-easing), color var(--animation-speed) var(--animation-easing);
+  }
+
+  .akn-policy__contact-button svg {
+    inline-size: 18px;
+    block-size: 18px;
+    fill: currentcolor;
+  }
+
+  .akn-policy__contact-button:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 3px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .akn-policy__contact-button:hover {
+      background: var(--color-foreground);
+      color: var(--color-background);
+    }
+  }
+
+  @media screen and (max-width: 349px) {
+    .akn-policy__summary {
+      grid-template-columns: 1fr;
+    }
+
+    .akn-policy__summary-item {
+      grid-template-columns: 34px minmax(0, 1fr);
+      justify-items: start;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 0;
+      text-align: start;
+    }
+
+    .akn-policy__summary-item + .akn-policy__summary-item {
+      border-block-start: 1px solid var(--akn-policy-divider);
+      border-inline-start: 0;
+    }
+
+    .akn-policy__summary-copy {
+      text-align: start;
+    }
+
+    .akn-policy__summary-text {
+      text-wrap: pretty;
+    }
+  }
+
   @media screen and (min-width: 750px) {
-    .akn-policy__inner {
-      padding-block-start: var(--akn-policy-padding-top-desktop);
-      padding-block-end: var(--akn-policy-padding-bottom-desktop);
+    .akn-policy__intro-image {
+      object-position: var(--akn-policy-intro-position-desktop);
+    }
+
+    .akn-policy__intro-inner {
+      padding-block: var(--akn-policy-intro-padding-desktop);
+      text-align: start;
+    }
+
+    .akn-policy__eyebrow {
+      justify-content: flex-start;
+      font-size: 13px;
+    }
+
+    .akn-policy__eyebrow::after {
+      display: block;
     }
 
     .akn-policy__title {
+      max-inline-size: 16ch;
       font-size: var(--akn-policy-title-size-desktop);
     }
 
-    .akn-policy__body {
+    .akn-policy__title::after {
+      display: none;
+    }
+
+    .akn-policy__intro-text {
+      max-inline-size: 780px;
+      margin: 16px 0 0;
+      font-size: var(--akn-policy-body-size-desktop);
+      line-height: 1.5;
+    }
+
+    .akn-policy__main-inner {
+      padding-block: var(--akn-policy-content-padding-desktop);
+    }
+
+    .akn-policy__summary {
+      margin-block-end: 56px;
+    }
+
+    .akn-policy__summary-item {
+      grid-template-columns: 54px minmax(0, 1fr);
+      justify-content: center;
+      justify-items: start;
+      align-items: center;
+      gap: 22px;
+      padding: 0 clamp(20px, 3vw, 42px) 28px;
+      text-align: start;
+    }
+
+    .akn-policy__summary-icon {
+      inline-size: 44px;
+      block-size: 44px;
+    }
+
+    .akn-policy__summary-copy {
+      max-inline-size: 290px;
+    }
+
+    .akn-policy__summary-title {
+      font-size: 12px;
+      font-weight: var(--akn-policy-emphasis-weight-desktop);
+    }
+
+    .akn-policy__summary-text {
+      font-size: var(--akn-policy-summary-size-desktop);
+      font-weight: var(--akn-policy-emphasis-weight-desktop);
+      text-wrap: pretty;
+    }
+
+    .akn-policy__group-title {
+      font-size: var(--akn-policy-group-size-desktop);
+      font-weight: var(--akn-policy-group-weight-desktop);
+    }
+
+    .akn-policy__summary-row {
+      font-size: var(--akn-policy-body-size-desktop);
+      font-weight: var(--akn-policy-emphasis-weight-desktop);
+    }
+
+    .akn-policy__details-content,
+    .akn-policy__fallback {
+      font-size: var(--akn-policy-body-size-desktop);
+      font-weight: var(--akn-policy-body-weight-desktop);
+    }
+
+    .akn-policy__fallback :is(h2, h3, h4, h5, h6) {
+      font-weight: var(--akn-policy-group-weight-desktop);
+    }
+
+    .akn-policy__contact-inner {
+      padding-block: var(--akn-policy-contact-padding-desktop);
+    }
+
+    .akn-policy__contact-layout {
+      grid-template-columns: minmax(0, 1fr) auto;
+      justify-items: stretch;
+      align-items: center;
+      gap: 48px;
+      text-align: start;
+    }
+
+    .akn-policy__contact-title {
+      font-size: clamp(32px, 2.6vw, 38px);
+    }
+
+    .akn-policy__contact-title::before {
+      display: none;
+    }
+
+    .akn-policy__contact-text {
       font-size: var(--akn-policy-body-size-desktop);
     }
 
-    .akn-policy__body h2 {
-      margin-block-start: clamp(38px, 4vw, 52px);
-      padding-block-start: clamp(28px, 3vw, 36px);
-      font-size: var(--akn-policy-heading-size-desktop);
+    .akn-policy__contact-button {
+      inline-size: auto;
+      min-inline-size: 270px;
+    }
+  }
+
+  @media screen and (min-width: 900px) {
+    .akn-policy__accordions {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0;
     }
 
-    .akn-policy__body :is(h3, h4, h5, h6) {
-      font-size: max(22px, calc(var(--akn-policy-heading-size-desktop) * 0.7));
+    .akn-policy__group:first-child {
+      padding-inline-end: clamp(34px, 4vw, 58px);
+    }
+
+    .akn-policy__group:last-child {
+      padding-inline-start: clamp(34px, 4vw, 58px);
+      border-inline-start: 1px solid var(--akn-policy-divider);
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .akn-policy__summary-item {
+      grid-template-columns: 54px minmax(0, max-content);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .akn-policy__contact-button,
+    .akn-policy__summary-row .svg-wrapper,
+    .akn-policy accordion-custom details::details-content,
+    .akn-policy accordion-custom .details-content {
+      transition: none;
     }
   }
 {% endstylesheet %}
@@ -182,149 +1025,178 @@
     "groups": ["header", "footer"]
   },
   "settings": [
+    { "type": "header", "content": "t:akn_policy_page.groups.introduction" },
+    { "type": "text", "id": "intro_eyebrow", "label": "t:akn_policy_page.labels.intro_eyebrow", "default": "INFORMATIONS CLIENT" },
+    { "type": "textarea", "id": "intro_text", "label": "t:akn_policy_page.labels.intro_text", "default": "Chez Akan Jewelry, chaque commande est préparée avec soin. Vous trouverez ci-dessous les informations relatives à la préparation, à la livraison et au retour de vos bijoux." },
+    { "type": "textarea", "id": "intro_text_mobile", "label": "t:akn_policy_page.labels.intro_text_mobile", "info": "t:akn_policy_page.help.intro_text_mobile", "default": "Nous mettons tout en œuvre pour que vos bijoux vous parviennent en toute sérénité." },
+    { "type": "header", "content": "t:akn_policy_page.groups.intro_media" },
+    { "type": "image_picker", "id": "intro_image", "label": "t:akn_policy_page.labels.intro_image", "info": "t:akn_policy_page.help.intro_image" },
+    { "type": "image_picker", "id": "intro_mobile_image", "label": "t:akn_policy_page.labels.intro_mobile_image", "info": "t:akn_policy_page.help.intro_mobile_image", "visible_if": "{{ section.settings.intro_image != blank }}" },
     {
-      "type": "header",
-      "content": "t:akn_policy_page.groups.layout"
+      "type": "select",
+      "id": "intro_image_position_desktop",
+      "label": "t:akn_policy_page.labels.intro_image_position_desktop",
+      "options": [
+        { "value": "left center", "label": "t:akn_policy_page.options.left" },
+        { "value": "center center", "label": "t:akn_policy_page.options.center" },
+        { "value": "right center", "label": "t:akn_policy_page.options.right" }
+      ],
+      "default": "center center",
+      "visible_if": "{{ section.settings.intro_image != blank }}"
     },
     {
-      "type": "range",
-      "id": "content_width",
-      "label": "t:akn_policy_page.labels.content_width",
-      "min": 640,
-      "max": 1000,
-      "step": 20,
-      "unit": "px",
-      "default": 840
+      "type": "select",
+      "id": "intro_image_position_mobile",
+      "label": "t:akn_policy_page.labels.intro_image_position_mobile",
+      "options": [
+        { "value": "center top", "label": "t:akn_policy_page.options.top" },
+        { "value": "center center", "label": "t:akn_policy_page.options.center" },
+        { "value": "center bottom", "label": "t:akn_policy_page.options.bottom" }
+      ],
+      "default": "center center",
+      "visible_if": "{{ section.settings.intro_image != blank }}"
+    },
+    { "type": "color", "id": "intro_overlay_color", "label": "t:akn_policy_page.labels.intro_overlay_color", "default": "#3B000B", "visible_if": "{{ section.settings.intro_image != blank }}" },
+    { "type": "range", "id": "intro_overlay_opacity", "label": "t:akn_policy_page.labels.intro_overlay_opacity", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 20, "visible_if": "{{ section.settings.intro_image != blank }}" },
+    { "type": "header", "content": "t:akn_policy_page.groups.summary" },
+    { "type": "paragraph", "content": "t:akn_policy_page.help.summary_blocks" },
+    { "type": "header", "content": "t:akn_policy_page.groups.accordions" },
+    { "type": "text", "id": "delivery_group_title", "label": "t:akn_policy_page.labels.delivery_group_title", "default": "Livraison" },
+    { "type": "text", "id": "returns_group_title", "label": "t:akn_policy_page.labels.returns_group_title", "default": "Retours et remboursements" },
+    { "type": "paragraph", "content": "t:akn_policy_page.help.accordion_fallback" },
+    { "type": "header", "content": "t:akn_policy_page.groups.contact" },
+    { "type": "text", "id": "contact_title", "label": "t:akn_policy_page.labels.contact_title", "default": "Une question sur votre commande ?" },
+    { "type": "textarea", "id": "contact_text", "label": "t:akn_policy_page.labels.contact_text", "default": "Notre équipe est à votre écoute pour vous accompagner." },
+    { "type": "text", "id": "contact_button", "label": "t:akn_policy_page.labels.contact_button", "default": "NOUS CONTACTER" },
+    { "type": "url", "id": "contact_link", "label": "t:akn_policy_page.labels.contact_link" },
+    { "type": "header", "content": "t:akn_policy_page.groups.colors" },
+    { "type": "color", "id": "brand_background", "label": "t:akn_policy_page.labels.brand_background", "default": "#690719" },
+    { "type": "color", "id": "brand_text", "label": "t:akn_policy_page.labels.brand_text", "default": "#F7F3EB" },
+    { "type": "color", "id": "intro_accent_color", "label": "t:akn_policy_page.labels.intro_accent_color", "default": "#C9A56A" },
+    { "type": "color", "id": "background_color", "label": "t:akn_policy_page.labels.background_color", "default": "#F7F3EB" },
+    { "type": "color", "id": "text_color", "label": "t:akn_policy_page.labels.text_color", "default": "#302B27" },
+    { "type": "color", "id": "heading_color", "label": "t:akn_policy_page.labels.heading_color", "default": "#690719" },
+    { "type": "color", "id": "accent_color", "label": "t:akn_policy_page.labels.accent_color", "default": "#936222" },
+    { "type": "color", "id": "divider_color", "label": "t:akn_policy_page.labels.divider_color", "default": "#CFC4B4" },
+    { "type": "header", "content": "t:akn_policy_page.groups.desktop_typography" },
+    { "type": "range", "id": "title_size_desktop", "label": "t:akn_policy_page.labels.title_size", "min": 44, "max": 88, "step": 2, "unit": "px", "default": 68 },
+    { "type": "range", "id": "group_size_desktop", "label": "t:akn_policy_page.labels.group_size", "min": 30, "max": 54, "step": 1, "unit": "px", "default": 42 },
+    { "type": "range", "id": "summary_size_desktop", "label": "t:akn_policy_page.labels.summary_size", "min": 15, "max": 26, "step": 1, "unit": "px", "default": 20 },
+    { "type": "range", "id": "body_size_desktop", "label": "t:akn_policy_page.labels.body_size", "min": 14, "max": 20, "step": 1, "unit": "px", "default": 17 },
+    {
+      "type": "select", "id": "group_weight_desktop", "label": "t:akn_policy_page.labels.group_weight",
+      "options": [
+        { "value": "200", "label": "t:akn_policy_page.options.weight_very_light" },
+        { "value": "300", "label": "t:akn_policy_page.options.weight_light" },
+        { "value": "400", "label": "t:akn_policy_page.options.weight_regular" },
+        { "value": "500", "label": "t:akn_policy_page.options.weight_emphasis" }
+      ], "default": "200"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "t:akn_policy_page.labels.background_color",
-      "default": "#F7F3EB"
+      "type": "select", "id": "emphasis_weight_desktop", "label": "t:akn_policy_page.labels.emphasis_weight",
+      "options": [
+        { "value": "300", "label": "t:akn_policy_page.options.weight_light" },
+        { "value": "400", "label": "t:akn_policy_page.options.weight_regular" },
+        { "value": "500", "label": "t:akn_policy_page.options.weight_emphasis" }
+      ], "default": "400"
     },
     {
-      "type": "color",
-      "id": "text_color",
-      "label": "t:akn_policy_page.labels.text_color",
-      "default": "#171611"
+      "type": "select", "id": "body_weight_desktop", "label": "t:akn_policy_page.labels.body_weight",
+      "options": [
+        { "value": "300", "label": "t:akn_policy_page.options.weight_light" },
+        { "value": "400", "label": "t:akn_policy_page.options.weight_regular" },
+        { "value": "500", "label": "t:akn_policy_page.options.weight_emphasis" }
+      ], "default": "300"
+    },
+    { "type": "header", "content": "t:akn_policy_page.groups.mobile_typography" },
+    { "type": "range", "id": "title_size_mobile", "label": "t:akn_policy_page.labels.title_size", "min": 34, "max": 56, "step": 1, "unit": "px", "default": 46 },
+    { "type": "range", "id": "group_size_mobile", "label": "t:akn_policy_page.labels.group_size", "min": 28, "max": 44, "step": 1, "unit": "px", "default": 36 },
+    { "type": "range", "id": "summary_size_mobile", "label": "t:akn_policy_page.labels.summary_size", "min": 12, "max": 20, "step": 1, "unit": "px", "default": 16 },
+    { "type": "range", "id": "body_size_mobile", "label": "t:akn_policy_page.labels.body_size", "min": 14, "max": 19, "step": 1, "unit": "px", "default": 16 },
+    {
+      "type": "select", "id": "group_weight_mobile", "label": "t:akn_policy_page.labels.group_weight",
+      "options": [
+        { "value": "200", "label": "t:akn_policy_page.options.weight_very_light" },
+        { "value": "300", "label": "t:akn_policy_page.options.weight_light" },
+        { "value": "400", "label": "t:akn_policy_page.options.weight_regular" },
+        { "value": "500", "label": "t:akn_policy_page.options.weight_emphasis" }
+      ], "default": "300"
     },
     {
-      "type": "header",
-      "content": "t:akn_policy_page.groups.desktop_typography"
+      "type": "select", "id": "emphasis_weight_mobile", "label": "t:akn_policy_page.labels.emphasis_weight",
+      "options": [
+        { "value": "300", "label": "t:akn_policy_page.options.weight_light" },
+        { "value": "400", "label": "t:akn_policy_page.options.weight_regular" },
+        { "value": "500", "label": "t:akn_policy_page.options.weight_emphasis" }
+      ], "default": "400"
     },
     {
-      "type": "range",
-      "id": "title_size_desktop",
-      "label": "t:akn_policy_page.labels.title_size",
-      "min": 44,
-      "max": 88,
-      "step": 2,
-      "unit": "px",
-      "default": 68
+      "type": "select", "id": "body_weight_mobile", "label": "t:akn_policy_page.labels.body_weight",
+      "options": [
+        { "value": "300", "label": "t:akn_policy_page.options.weight_light" },
+        { "value": "400", "label": "t:akn_policy_page.options.weight_regular" },
+        { "value": "500", "label": "t:akn_policy_page.options.weight_emphasis" }
+      ], "default": "400"
+    },
+    { "type": "header", "content": "t:akn_policy_page.groups.spacing" },
+    { "type": "range", "id": "content_width", "label": "t:akn_policy_page.labels.content_width", "min": 1000, "max": 1680, "step": 20, "unit": "px", "default": 1600 },
+    { "type": "range", "id": "intro_pad_desktop", "label": "t:akn_policy_page.labels.intro_pad_desktop", "min": 40, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "intro_pad_mobile", "label": "t:akn_policy_page.labels.intro_pad_mobile", "min": 32, "max": 96, "step": 4, "unit": "px", "default": 44 },
+    { "type": "range", "id": "content_pad_desktop", "label": "t:akn_policy_page.labels.content_pad_desktop", "min": 40, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "content_pad_mobile", "label": "t:akn_policy_page.labels.content_pad_mobile", "min": 32, "max": 96, "step": 4, "unit": "px", "default": 36 },
+    { "type": "range", "id": "contact_pad_desktop", "label": "t:akn_policy_page.labels.contact_pad_desktop", "min": 28, "max": 88, "step": 4, "unit": "px", "default": 36 },
+    { "type": "range", "id": "contact_pad_mobile", "label": "t:akn_policy_page.labels.contact_pad_mobile", "min": 32, "max": 96, "step": 4, "unit": "px", "default": 44 }
+  ],
+  "blocks": [
+    {
+      "type": "essential_info",
+      "name": "t:akn_policy_page.blocks.essential_info",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:akn_policy_page.labels.icon",
+          "options": [
+            { "value": "box", "label": "t:akn_policy_page.options.box" },
+            { "value": "truck", "label": "t:akn_policy_page.options.truck" },
+            { "value": "return", "label": "t:akn_policy_page.options.return" },
+            { "value": "none", "label": "t:akn_policy_page.options.none" }
+          ],
+          "default": "box"
+        },
+        { "type": "text", "id": "title", "label": "t:akn_policy_page.labels.info_title", "default": "PRÉPARATION" },
+        { "type": "text", "id": "text", "label": "t:akn_policy_page.labels.info_text", "default": "1 à 3 jours ouvrés" }
+      ]
     },
     {
-      "type": "range",
-      "id": "heading_size_desktop",
-      "label": "t:akn_policy_page.labels.heading_size",
-      "min": 26,
-      "max": 52,
-      "step": 1,
-      "unit": "px",
-      "default": 38
-    },
-    {
-      "type": "range",
-      "id": "body_size_desktop",
-      "label": "t:akn_policy_page.labels.body_size",
-      "min": 14,
-      "max": 20,
-      "step": 1,
-      "unit": "px",
-      "default": 16
-    },
-    {
-      "type": "header",
-      "content": "t:akn_policy_page.groups.mobile_typography"
-    },
-    {
-      "type": "range",
-      "id": "title_size_mobile",
-      "label": "t:akn_policy_page.labels.title_size",
-      "min": 34,
-      "max": 56,
-      "step": 1,
-      "unit": "px",
-      "default": 44
-    },
-    {
-      "type": "range",
-      "id": "heading_size_mobile",
-      "label": "t:akn_policy_page.labels.heading_size",
-      "min": 24,
-      "max": 38,
-      "step": 1,
-      "unit": "px",
-      "default": 29
-    },
-    {
-      "type": "range",
-      "id": "body_size_mobile",
-      "label": "t:akn_policy_page.labels.body_size",
-      "min": 14,
-      "max": 19,
-      "step": 1,
-      "unit": "px",
-      "default": 16
-    },
-    {
-      "type": "header",
-      "content": "t:akn_policy_page.groups.spacing"
-    },
-    {
-      "type": "range",
-      "id": "padding_top_desktop",
-      "label": "t:akn_policy_page.labels.padding_top_desktop",
-      "min": 32,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 72
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom_desktop",
-      "label": "t:akn_policy_page.labels.padding_bottom_desktop",
-      "min": 40,
-      "max": 160,
-      "step": 4,
-      "unit": "px",
-      "default": 104
-    },
-    {
-      "type": "range",
-      "id": "padding_top_mobile",
-      "label": "t:akn_policy_page.labels.padding_top_mobile",
-      "min": 24,
-      "max": 80,
-      "step": 4,
-      "unit": "px",
-      "default": 44
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom_mobile",
-      "label": "t:akn_policy_page.labels.padding_bottom_mobile",
-      "min": 32,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 72
+      "type": "accordion",
+      "name": "t:akn_policy_page.blocks.accordion",
+      "settings": [
+        {
+          "type": "select",
+          "id": "group",
+          "label": "t:akn_policy_page.labels.accordion_group",
+          "options": [
+            { "value": "delivery", "label": "t:akn_policy_page.options.delivery_group" },
+            { "value": "returns", "label": "t:akn_policy_page.options.returns_group" }
+          ],
+          "default": "delivery"
+        },
+        { "type": "text", "id": "title", "label": "t:akn_policy_page.labels.accordion_title", "default": "Titre de l’accordéon" },
+        { "type": "richtext", "id": "content", "label": "t:akn_policy_page.labels.accordion_content", "default": "<p>Ajoutez le contenu de cette rubrique.</p>" },
+        { "type": "checkbox", "id": "open_by_default", "label": "t:akn_policy_page.labels.open_by_default", "default": false }
+      ]
     }
   ],
   "presets": [
     {
       "name": "t:akn_policy_page.name",
-      "category": "t:categories.text"
+      "category": "t:categories.text",
+      "blocks": [
+        { "type": "essential_info" },
+        { "type": "accordion" }
+      ]
     }
   ]
 }
