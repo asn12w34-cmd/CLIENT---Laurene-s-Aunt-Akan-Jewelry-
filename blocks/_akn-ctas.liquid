@@ -2,6 +2,8 @@
 CUSTOM FILE [AJ-003] — Hero-specific responsive primary and secondary CTA group | See CUSTOM_CHANGES.md — AJ-003
 {% endcomment %}
 
+{% comment %}CUSTOM UPDATE [AJ-032] — Per-device editorial primary CTA framing, tracking and optional arrow. {% endcomment %}
+
 {% doc %}
   Renders independent desktop and mobile CTA groups. A CTA is omitted unless its
   device visibility, label, and destination are all valid.
@@ -44,12 +46,12 @@ CUSTOM FILE [AJ-003] — Hero-specific responsive primary and secondary CTA grou
       >
         {% if show_primary_desktop %}
           <a
-            class="button akn-ctas__button akn-ctas__button--primary{% if block.settings.pd_custom_interaction %} akn-ctas__button--custom-interaction akn-ctas__button--animation-{{ block.settings.pd_animation }}{% endif %}"
+            class="button akn-ctas__button akn-ctas__button--primary{% if block.settings.desktop_primary_custom_style %} akn-ctas__button--styled{% endif %}{% if block.settings.desktop_primary_show_arrow %} akn-ctas__button--with-arrow{% endif %}{% if block.settings.pd_custom_interaction %} akn-ctas__button--custom-interaction akn-ctas__button--animation-{{ block.settings.pd_animation }}{% endif %}"
             href="{{ block.settings.primary_desktop_link | escape }}"
-            style="--akn-cta-initial-background: rgba({{ block.settings.primary_initial_bg.rgba }}); --akn-cta-initial-text: rgba({{ block.settings.primary_initial_text.rgba }}); --akn-cta-initial-border: rgba({{ block.settings.primary_initial_border.rgba }}); --akn-cta-interaction-background: rgba({{ block.settings.pd_interaction_bg.rgba }}); --akn-cta-interaction-text: rgba({{ block.settings.pd_interaction_text.rgba }}); --akn-cta-interaction-border: rgba({{ block.settings.pd_interaction_border.rgba }});"
+            style="--akn-cta-initial-background: rgba({{ block.settings.primary_initial_bg.rgba }}); --akn-cta-initial-text: rgba({{ block.settings.primary_initial_text.rgba }}); --akn-cta-initial-border: rgba({{ block.settings.primary_initial_border.rgba }}); --akn-cta-interaction-background: rgba({{ block.settings.pd_interaction_bg.rgba }}); --akn-cta-interaction-text: rgba({{ block.settings.pd_interaction_text.rgba }}); --akn-cta-interaction-border: rgba({{ block.settings.pd_interaction_border.rgba }});{% if block.settings.desktop_primary_custom_style %} --button-border-width: {{ block.settings.desktop_primary_border_width }}px; --button-padding-inline: {{ block.settings.desktop_primary_padding_inline }}px; --button-padding-block: {{ block.settings.desktop_primary_padding_block }}px; --akn-cta-letter-spacing: {{ block.settings.desktop_primary_letter_spacing }}px; --akn-cta-min-width: {{ block.settings.desktop_primary_min_width }}px;{% endif %}"
           >
-            <span class="akn-ctas__label akn-ctas__label--sizer" aria-hidden="true">{{ block.settings.primary_desktop_label | escape | newline_to_br }}</span>
-            <span class="akn-ctas__label akn-ctas__label--visual">{{ block.settings.primary_desktop_label | escape | newline_to_br }}</span>
+            <span class="akn-ctas__label akn-ctas__label--sizer" aria-hidden="true"><span>{{ block.settings.primary_desktop_label | escape | newline_to_br }}</span>{% if block.settings.desktop_primary_show_arrow %}<span class="akn-ctas__arrow" aria-hidden="true">→</span>{% endif %}</span>
+            <span class="akn-ctas__label akn-ctas__label--visual"><span>{{ block.settings.primary_desktop_label | escape | newline_to_br }}</span>{% if block.settings.desktop_primary_show_arrow %}<span class="akn-ctas__arrow" aria-hidden="true">→</span>{% endif %}</span>
           </a>
         {% endif %}
         {% if show_secondary_desktop %}
@@ -72,12 +74,12 @@ CUSTOM FILE [AJ-003] — Hero-specific responsive primary and secondary CTA grou
       >
         {% if show_primary_mobile %}
           <a
-            class="button akn-ctas__button akn-ctas__button--primary{% if block.settings.pm_custom_interaction %} akn-ctas__button--custom-interaction akn-ctas__button--animation-{{ block.settings.pm_animation }}{% endif %}"
+            class="button akn-ctas__button akn-ctas__button--primary{% if block.settings.mobile_primary_custom_style %} akn-ctas__button--styled{% endif %}{% if block.settings.mobile_primary_show_arrow %} akn-ctas__button--with-arrow{% endif %}{% if block.settings.pm_custom_interaction %} akn-ctas__button--custom-interaction akn-ctas__button--animation-{{ block.settings.pm_animation }}{% endif %}"
             href="{{ block.settings.primary_mobile_link | escape }}"
-            style="--akn-cta-initial-background: rgba({{ block.settings.primary_mobile_initial_bg.rgba }}); --akn-cta-initial-text: rgba({{ block.settings.primary_mobile_initial_text.rgba }}); --akn-cta-initial-border: rgba({{ block.settings.primary_mobile_initial_border.rgba }}); --akn-cta-interaction-background: rgba({{ block.settings.pm_interaction_bg.rgba }}); --akn-cta-interaction-text: rgba({{ block.settings.pm_interaction_text.rgba }}); --akn-cta-interaction-border: rgba({{ block.settings.pm_interaction_border.rgba }});"
+            style="--akn-cta-initial-background: rgba({{ block.settings.primary_mobile_initial_bg.rgba }}); --akn-cta-initial-text: rgba({{ block.settings.primary_mobile_initial_text.rgba }}); --akn-cta-initial-border: rgba({{ block.settings.primary_mobile_initial_border.rgba }}); --akn-cta-interaction-background: rgba({{ block.settings.pm_interaction_bg.rgba }}); --akn-cta-interaction-text: rgba({{ block.settings.pm_interaction_text.rgba }}); --akn-cta-interaction-border: rgba({{ block.settings.pm_interaction_border.rgba }});{% if block.settings.mobile_primary_custom_style %} --button-border-width: {{ block.settings.mobile_primary_border_width }}px; --button-padding-inline: {{ block.settings.mobile_primary_padding_inline }}px; --button-padding-block: {{ block.settings.mobile_primary_padding_block }}px; --akn-cta-letter-spacing: {{ block.settings.mobile_primary_letter_spacing }}px; --akn-cta-min-width: {{ block.settings.mobile_primary_min_width }}px;{% endif %}"
           >
-            <span class="akn-ctas__label akn-ctas__label--sizer" aria-hidden="true">{{ block.settings.primary_mobile_label | escape | newline_to_br }}</span>
-            <span class="akn-ctas__label akn-ctas__label--visual">{{ block.settings.primary_mobile_label | escape | newline_to_br }}</span>
+            <span class="akn-ctas__label akn-ctas__label--sizer" aria-hidden="true"><span>{{ block.settings.primary_mobile_label | escape | newline_to_br }}</span>{% if block.settings.mobile_primary_show_arrow %}<span class="akn-ctas__arrow" aria-hidden="true">→</span>{% endif %}</span>
+            <span class="akn-ctas__label akn-ctas__label--visual"><span>{{ block.settings.primary_mobile_label | escape | newline_to_br }}</span>{% if block.settings.mobile_primary_show_arrow %}<span class="akn-ctas__arrow" aria-hidden="true">→</span>{% endif %}</span>
           </a>
         {% endif %}
         {% if show_secondary_mobile %}
@@ -172,6 +174,29 @@ CUSTOM FILE [AJ-003] — Hero-specific responsive primary and secondary CTA grou
     overflow: hidden;
     white-space: normal;
     overflow-wrap: anywhere;
+  }
+
+  /* CUSTOM [AJ-032] — Isolated per-device primary CTA sizing and accent border. */
+  .hero__content-wrapper .akn-ctas__button--styled {
+    min-inline-size: max(var(--minimum-touch-target, 44px), min(100%, var(--akn-cta-min-width)));
+    letter-spacing: var(--akn-cta-letter-spacing);
+  }
+
+  .hero__content-wrapper .akn-ctas__button--with-arrow .akn-ctas__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .hero__content-wrapper .akn-ctas__button--with-arrow .akn-ctas__label--visual {
+    justify-content: space-between;
+  }
+
+  .hero__content-wrapper .akn-ctas__arrow {
+    flex: none;
+    font-size: 1.25em;
+    line-height: 1;
+    white-space: nowrap;
   }
 
   .hero__content-wrapper .akn-ctas__label {
@@ -428,6 +453,55 @@ CUSTOM FILE [AJ-003] — Hero-specific responsive primary and secondary CTA grou
     },
     {
       "type": "checkbox",
+      "id": "desktop_primary_custom_style",
+      "label": "t:settings.akn_editorial_update.custom_button",
+      "default": false,
+      "visible_if": "{{ block.settings.primary_desktop_visible }}"
+    },
+    {
+      "type": "range",
+      "id": "desktop_primary_border_width",
+      "label": "t:settings.akn_editorial_update.border_width",
+      "min": 0, "max": 4, "step": 1, "unit": "px", "default": 1,
+      "visible_if": "{{ block.settings.primary_desktop_visible and block.settings.desktop_primary_custom_style }}"
+    },
+    {
+      "type": "range",
+      "id": "desktop_primary_letter_spacing",
+      "label": "t:settings.akn_editorial_update.button_tracking",
+      "min": 0, "max": 4, "step": 0.2, "unit": "px", "default": 2,
+      "visible_if": "{{ block.settings.primary_desktop_visible and block.settings.desktop_primary_custom_style }}"
+    },
+    {
+      "type": "range",
+      "id": "desktop_primary_padding_inline",
+      "label": "t:settings.akn_editorial_update.padding_inline",
+      "min": 12, "max": 60, "step": 2, "unit": "px", "default": 28,
+      "visible_if": "{{ block.settings.primary_desktop_visible and block.settings.desktop_primary_custom_style }}"
+    },
+    {
+      "type": "range",
+      "id": "desktop_primary_padding_block",
+      "label": "t:settings.akn_editorial_update.padding_block",
+      "min": 8, "max": 28, "step": 1, "unit": "px", "default": 14,
+      "visible_if": "{{ block.settings.primary_desktop_visible and block.settings.desktop_primary_custom_style }}"
+    },
+    {
+      "type": "range",
+      "id": "desktop_primary_min_width",
+      "label": "t:settings.akn_editorial_update.button_min_width",
+      "min": 0, "max": 400, "step": 10, "unit": "px", "default": 280,
+      "visible_if": "{{ block.settings.primary_desktop_visible and block.settings.desktop_primary_custom_style }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_primary_show_arrow",
+      "label": "t:settings.akn_editorial_update.show_arrow",
+      "default": false,
+      "visible_if": "{{ block.settings.primary_desktop_visible }}"
+    },
+    {
+      "type": "checkbox",
       "id": "primary_desktop_visible",
       "label": "t:settings.akn_ctas.desktop_primary_show",
       "info": "t:info.akn_ctas.button_requirements",
@@ -662,6 +736,55 @@ CUSTOM FILE [AJ-003] — Hero-specific responsive primary and secondary CTA grou
     {
       "type": "header",
       "content": "t:settings.akn_ctas.mobile_primary_header"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_primary_custom_style",
+      "label": "t:settings.akn_editorial_update.custom_button",
+      "default": false,
+      "visible_if": "{{ block.settings.primary_mobile_visible }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_primary_border_width",
+      "label": "t:settings.akn_editorial_update.border_width",
+      "min": 0, "max": 4, "step": 1, "unit": "px", "default": 1,
+      "visible_if": "{{ block.settings.primary_mobile_visible and block.settings.mobile_primary_custom_style }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_primary_letter_spacing",
+      "label": "t:settings.akn_editorial_update.button_tracking",
+      "min": 0, "max": 4, "step": 0.2, "unit": "px", "default": 2,
+      "visible_if": "{{ block.settings.primary_mobile_visible and block.settings.mobile_primary_custom_style }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_primary_padding_inline",
+      "label": "t:settings.akn_editorial_update.padding_inline",
+      "min": 12, "max": 60, "step": 2, "unit": "px", "default": 28,
+      "visible_if": "{{ block.settings.primary_mobile_visible and block.settings.mobile_primary_custom_style }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_primary_padding_block",
+      "label": "t:settings.akn_editorial_update.padding_block",
+      "min": 8, "max": 28, "step": 1, "unit": "px", "default": 14,
+      "visible_if": "{{ block.settings.primary_mobile_visible and block.settings.mobile_primary_custom_style }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_primary_min_width",
+      "label": "t:settings.akn_editorial_update.button_min_width",
+      "min": 0, "max": 400, "step": 10, "unit": "px", "default": 0,
+      "visible_if": "{{ block.settings.primary_mobile_visible and block.settings.mobile_primary_custom_style }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_primary_show_arrow",
+      "label": "t:settings.akn_editorial_update.show_arrow",
+      "default": false,
+      "visible_if": "{{ block.settings.primary_mobile_visible }}"
     },
     {
       "type": "checkbox",

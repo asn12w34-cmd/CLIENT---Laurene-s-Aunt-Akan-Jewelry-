@@ -1,5 +1,6 @@
 {% comment %}
 CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mobile styling | See CUSTOM_CHANGES.md — AJ-003
+CUSTOM UPDATE [AJ-032] — Correct letter spacing cascade and add per-device paragraph typography.
 {% endcomment %}
 
 {% doc %}
@@ -32,9 +33,13 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
 
 {% if should_render %}
   <div
-    class="akn-text{% if use_mobile_text %} akn-text--separate-mobile{% endif %}{% if desktop_visible == blank %} akn-text--desktop-empty{% endif %}{% if use_mobile_text and mobile_visible == blank %} akn-text--mobile-empty{% endif %}"
+    class="akn-text{% if use_mobile_text %} akn-text--separate-mobile{% endif %}{% if desktop_visible == blank %} akn-text--desktop-empty{% endif %}{% if use_mobile_text and mobile_visible == blank %} akn-text--mobile-empty{% endif %}{% if block.settings.desktop_custom_spacing %} akn-text--desktop-custom-spacing{% endif %}{% if block.settings.mobile_custom_spacing %} akn-text--mobile-custom-spacing{% endif %}{% if block.settings.show_divider %} akn-text--divider{% endif %}"
     data-desktop-font="{{ block.settings.desktop_font_role }}"
     data-mobile-font="{{ block.settings.mobile_font_role }}"
+    data-desktop-body-font="{{ block.settings.desktop_body_font_role | default: 'native' }}"
+    data-mobile-body-font="{{ block.settings.mobile_body_font_role | default: 'native' }}"
+    data-desktop-custom-body-size="{{ block.settings.desktop_custom_body_size }}"
+    data-mobile-custom-body-size="{{ block.settings.mobile_custom_body_size }}"
     data-desktop-letter-spacing="{{ block.settings.desktop_letter_spacing }}"
     data-mobile-letter-spacing="{{ block.settings.mobile_letter_spacing }}"
     data-desktop-case="{{ block.settings.desktop_case }}"
@@ -54,6 +59,14 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       --akn-text-mobile-font-family: var(--font-{{ block.settings.mobile_font_role }}--family);
       --akn-text-mobile-font-style: var(--font-{{ block.settings.mobile_font_role }}--style);
       --akn-text-mobile-font-weight: var(--font-{{ block.settings.mobile_font_role }}--weight);
+      --akn-text-desktop-body-font-family: var(--font-{{ block.settings.desktop_body_font_role | default: 'body' }}--family);
+      --akn-text-desktop-body-font-style: var(--font-{{ block.settings.desktop_body_font_role | default: 'body' }}--style);
+      --akn-text-desktop-body-font-weight: var(--font-{{ block.settings.desktop_body_font_role | default: 'body' }}--weight);
+      --akn-text-mobile-body-font-family: var(--font-{{ block.settings.mobile_body_font_role | default: 'body' }}--family);
+      --akn-text-mobile-body-font-style: var(--font-{{ block.settings.mobile_body_font_role | default: 'body' }}--style);
+      --akn-text-mobile-body-font-weight: var(--font-{{ block.settings.mobile_body_font_role | default: 'body' }}--weight);
+      --akn-text-desktop-body-size: {{ block.settings.desktop_body_size_px | default: 18 }}px;
+      --akn-text-mobile-body-size: {{ block.settings.mobile_body_size_px | default: 16 }}px;
       --akn-text-desktop-heading-line-height: {{ desktop_heading_line_height }};
       --akn-text-desktop-body-line-height: {{ desktop_body_line_height }};
       --akn-text-mobile-heading-line-height: {{ mobile_heading_line_height }};
@@ -64,6 +77,10 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       --akn-text-desktop-body-letter-spacing: var(--letter-spacing--body-{{ block.settings.desktop_letter_spacing }});
       --akn-text-mobile-heading-letter-spacing: var(--letter-spacing--heading-{{ block.settings.mobile_letter_spacing }});
       --akn-text-mobile-body-letter-spacing: var(--letter-spacing--body-{{ block.settings.mobile_letter_spacing }});
+      --akn-text-desktop-custom-letter-spacing: {{ block.settings.desktop_letter_spacing_custom }}px;
+      --akn-text-desktop-custom-word-spacing: {{ block.settings.desktop_word_spacing_custom }}px;
+      --akn-text-mobile-custom-letter-spacing: {{ block.settings.mobile_letter_spacing_custom }}px;
+      --akn-text-mobile-custom-word-spacing: {{ block.settings.mobile_word_spacing_custom }}px;
       --akn-text-desktop-padding-block: {{ block.settings.desktop_padding_vertical }}px;
       --akn-text-desktop-padding-inline: {{ block.settings.desktop_padding_horizontal }}px;
       --akn-text-mobile-padding-block: {{ block.settings.mobile_padding_vertical }}px;
@@ -72,6 +89,10 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       --akn-text-border-color: {{ block.settings.border_color }};
       --akn-text-border-width: {{ block.settings.border_width }}px;
       --akn-text-radius: {{ block.settings.corner_radius }}px;
+      --akn-text-divider-color: {{ block.settings.divider_color }};
+      --akn-text-divider-width: {{ block.settings.divider_width }}px;
+      --akn-text-divider-thickness: {{ block.settings.divider_thickness }}px;
+      --akn-text-divider-gap: {{ block.settings.divider_gap }}px;
     "
     {{ block.shopify_attributes }}
   >
@@ -174,12 +195,37 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     font-weight: var(--akn-text-desktop-font-weight);
   }
 
-  .akn-text:not([data-desktop-letter-spacing='native']) .akn-text__content--desktop :where(h1, h2, h3, h4, h5, h6) {
+  /* CUSTOM [AJ-032] — Opt-in paragraph styling does not affect headings or other blocks. */
+  .akn-text:not([data-desktop-body-font='native']) .akn-text__content--desktop :where(p, ul, ol, blockquote) {
+    font-family: var(--akn-text-desktop-body-font-family);
+    font-style: var(--akn-text-desktop-body-font-style);
+    font-weight: var(--akn-text-desktop-body-font-weight);
+  }
+
+  .akn-text[data-desktop-custom-body-size='true'] .akn-text__content--desktop :where(p, ul, ol, blockquote) {
+    font-size: var(--akn-text-desktop-body-size);
+  }
+
+  /* CUSTOM [AJ-032] — Preset tracking yields to precise letter/word spacing. */
+  .akn-text:not(.akn-text--desktop-custom-spacing):not([data-desktop-letter-spacing='native']) .akn-text__content--desktop :where(h1, h2, h3, h4, h5, h6) {
     letter-spacing: var(--akn-text-desktop-heading-letter-spacing);
   }
 
-  .akn-text:not([data-desktop-letter-spacing='native']) .akn-text__content--desktop :where(p, ul, ol, blockquote) {
+  .akn-text:not(.akn-text--desktop-custom-spacing):not([data-desktop-letter-spacing='native']) .akn-text__content--desktop :where(p, ul, ol, blockquote) {
     letter-spacing: var(--akn-text-desktop-body-letter-spacing);
+  }
+
+  .akn-text--desktop-custom-spacing .akn-text__content--desktop :where(h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote) {
+    letter-spacing: var(--akn-text-desktop-custom-letter-spacing);
+    word-spacing: var(--akn-text-desktop-custom-word-spacing);
+  }
+
+  .akn-text--divider .akn-text__content > :where(*) + :where(*)::before {
+    content: '';
+    display: block;
+    inline-size: min(100%, var(--akn-text-divider-width));
+    margin-block-end: var(--akn-text-divider-gap);
+    border-block-start: var(--akn-text-divider-thickness) solid var(--akn-text-divider-color);
   }
 
   .akn-text:not([data-desktop-case='native']) .akn-text__content--desktop,
@@ -273,12 +319,29 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       font-weight: var(--akn-text-mobile-font-weight);
     }
 
-    .akn-text:not([data-mobile-letter-spacing='native']) .akn-text__content :where(h1, h2, h3, h4, h5, h6) {
+    /* CUSTOM [AJ-032] — Phone-only paragraph overrides, independent of desktop. */
+    .akn-text:not([data-mobile-body-font='native']) .akn-text__content--mobile :where(p, ul, ol, blockquote),
+    .akn-text:not([data-mobile-body-font='native']) .akn-text__content--desktop :where(p, ul, ol, blockquote) {
+      font-family: var(--akn-text-mobile-body-font-family);
+      font-style: var(--akn-text-mobile-body-font-style);
+      font-weight: var(--akn-text-mobile-body-font-weight);
+    }
+
+    .akn-text[data-mobile-custom-body-size='true'] .akn-text__content :where(p, ul, ol, blockquote) {
+      font-size: var(--akn-text-mobile-body-size);
+    }
+
+    .akn-text:not(.akn-text--mobile-custom-spacing):not([data-mobile-letter-spacing='native']) .akn-text__content :where(h1, h2, h3, h4, h5, h6) {
       letter-spacing: var(--akn-text-mobile-heading-letter-spacing);
     }
 
-    .akn-text:not([data-mobile-letter-spacing='native']) .akn-text__content :where(p, ul, ol, blockquote) {
+    .akn-text:not(.akn-text--mobile-custom-spacing):not([data-mobile-letter-spacing='native']) .akn-text__content :where(p, ul, ol, blockquote) {
       letter-spacing: var(--akn-text-mobile-body-letter-spacing);
+    }
+
+    .akn-text--mobile-custom-spacing .akn-text__content :where(h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote) {
+      letter-spacing: var(--akn-text-mobile-custom-letter-spacing);
+      word-spacing: var(--akn-text-mobile-custom-word-spacing);
     }
 
     .akn-text:not([data-mobile-case='native']) .akn-text__content,
@@ -338,10 +401,10 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       "label": "Style de police",
       "options": [
         { "value": "native", "label": "Conserver les styles du contenu" },
-        { "value": "body", "label": "Texte courant" },
-        { "value": "subheading", "label": "Sous-titre" },
-        { "value": "heading", "label": "Titre" },
-        { "value": "accent", "label": "Accent" }
+        { "value": "body", "label": "t:settings.akn_editorial_update.body" },
+        { "value": "subheading", "label": "t:settings.akn_editorial_update.subheading" },
+        { "value": "heading", "label": "t:settings.akn_editorial_update.heading" },
+        { "value": "accent", "label": "t:settings.akn_editorial_update.accent" }
       ],
       "default": "native"
     },
@@ -378,6 +441,37 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       "default": 140
     },
     {
+      "type": "select",
+      "id": "desktop_body_font_role",
+      "label": "t:settings.akn_editorial_update.body_font",
+      "info": "t:settings.akn_editorial_update.body_font_info",
+      "options": [
+        { "value": "native", "label": "t:settings.akn_editorial_update.theme_default" },
+        { "value": "body", "label": "t:settings.akn_editorial_update.body" },
+        { "value": "subheading", "label": "t:settings.akn_editorial_update.subheading" },
+        { "value": "heading", "label": "t:settings.akn_editorial_update.heading" },
+        { "value": "accent", "label": "t:settings.akn_editorial_update.accent" }
+      ],
+      "default": "native"
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_custom_body_size",
+      "label": "t:settings.akn_editorial_update.custom_body_size",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size_px",
+      "label": "t:settings.akn_editorial_update.body_size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 18,
+      "visible_if": "{{ block.settings.desktop_custom_body_size }}"
+    },
+    {
       "type": "range",
       "id": "desktop_element_gap",
       "label": "Espacement entre les éléments",
@@ -398,7 +492,36 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
         { "value": "normal", "label": "Normal" },
         { "value": "loose", "label": "Espacé" }
       ],
-      "default": "native"
+      "default": "native",
+      "visible_if": "{{ block.settings.desktop_custom_spacing == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_custom_spacing",
+      "label": "t:settings.custom_typographic_spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "desktop_letter_spacing_custom",
+      "label": "t:settings.letter_spacing",
+      "min": -1,
+      "max": 8,
+      "step": 0.1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.desktop_custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "desktop_word_spacing_custom",
+      "label": "t:settings.word_spacing",
+      "min": -2,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.desktop_custom_spacing }}"
     },
     {
       "type": "text_alignment",
@@ -438,7 +561,7 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     {
       "type": "range",
       "id": "desktop_padding_vertical",
-      "label": "Marge intérieure verticale",
+      "label": "t:settings.akn_editorial_update.padding_block",
       "min": 0,
       "max": 60,
       "step": 2,
@@ -448,7 +571,7 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     {
       "type": "range",
       "id": "desktop_padding_horizontal",
-      "label": "Marge intérieure horizontale",
+      "label": "t:settings.akn_editorial_update.padding_inline",
       "min": 0,
       "max": 60,
       "step": 2,
@@ -465,10 +588,10 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       "label": "Style de police",
       "options": [
         { "value": "native", "label": "Conserver les styles du contenu" },
-        { "value": "body", "label": "Texte courant" },
-        { "value": "subheading", "label": "Sous-titre" },
-        { "value": "heading", "label": "Titre" },
-        { "value": "accent", "label": "Accent" }
+        { "value": "body", "label": "t:settings.akn_editorial_update.body" },
+        { "value": "subheading", "label": "t:settings.akn_editorial_update.subheading" },
+        { "value": "heading", "label": "t:settings.akn_editorial_update.heading" },
+        { "value": "accent", "label": "t:settings.akn_editorial_update.accent" }
       ],
       "default": "native"
     },
@@ -505,6 +628,37 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       "default": 140
     },
     {
+      "type": "select",
+      "id": "mobile_body_font_role",
+      "label": "t:settings.akn_editorial_update.body_font",
+      "info": "t:settings.akn_editorial_update.body_font_info",
+      "options": [
+        { "value": "native", "label": "t:settings.akn_editorial_update.theme_default" },
+        { "value": "body", "label": "t:settings.akn_editorial_update.body" },
+        { "value": "subheading", "label": "t:settings.akn_editorial_update.subheading" },
+        { "value": "heading", "label": "t:settings.akn_editorial_update.heading" },
+        { "value": "accent", "label": "t:settings.akn_editorial_update.accent" }
+      ],
+      "default": "native"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_custom_body_size",
+      "label": "t:settings.akn_editorial_update.custom_body_size",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size_px",
+      "label": "t:settings.akn_editorial_update.body_size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ block.settings.mobile_custom_body_size }}"
+    },
+    {
       "type": "range",
       "id": "mobile_element_gap",
       "label": "Espacement entre les éléments",
@@ -525,7 +679,36 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
         { "value": "normal", "label": "Normal" },
         { "value": "loose", "label": "Espacé" }
       ],
-      "default": "native"
+      "default": "native",
+      "visible_if": "{{ block.settings.mobile_custom_spacing == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_custom_spacing",
+      "label": "t:settings.custom_typographic_spacing",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "mobile_letter_spacing_custom",
+      "label": "t:settings.letter_spacing",
+      "min": -1,
+      "max": 8,
+      "step": 0.1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.mobile_custom_spacing }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_word_spacing_custom",
+      "label": "t:settings.word_spacing",
+      "min": -2,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.mobile_custom_spacing }}"
     },
     {
       "type": "text_alignment",
@@ -565,7 +748,7 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     {
       "type": "range",
       "id": "mobile_padding_vertical",
-      "label": "Marge intérieure verticale",
+      "label": "t:settings.akn_editorial_update.padding_block",
       "min": 0,
       "max": 40,
       "step": 2,
@@ -575,7 +758,7 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     {
       "type": "range",
       "id": "mobile_padding_horizontal",
-      "label": "Marge intérieure horizontale",
+      "label": "t:settings.akn_editorial_update.padding_inline",
       "min": 0,
       "max": 40,
       "step": 2,
@@ -603,7 +786,7 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
     {
       "type": "range",
       "id": "border_width",
-      "label": "Épaisseur de la bordure",
+      "label": "t:settings.akn_editorial_update.border_width",
       "min": 0,
       "max": 3,
       "step": 1,
@@ -619,6 +802,56 @@ CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mo
       "step": 2,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:content.divider"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "t:settings.show_divider",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "t:settings.divider_color",
+      "default": "#936222",
+      "visible_if": "{{ block.settings.show_divider }}"
+    },
+    {
+      "type": "range",
+      "id": "divider_width",
+      "label": "t:settings.divider_width",
+      "min": 20,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64,
+      "visible_if": "{{ block.settings.show_divider }}"
+    },
+    {
+      "type": "range",
+      "id": "divider_thickness",
+      "label": "t:settings.divider_thickness",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1,
+      "visible_if": "{{ block.settings.show_divider }}"
+    },
+    {
+      "type": "range",
+      "id": "divider_gap",
+      "label": "t:settings.gap",
+      "min": 4,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ block.settings.show_divider }}"
     }
   ],
   "presets": [

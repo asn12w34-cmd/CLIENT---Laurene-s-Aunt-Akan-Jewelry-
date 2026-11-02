@@ -33,6 +33,7 @@
     "text": "Text"
   },
   "content": {
+    "divider": "Divider",
     "visible_if_collection_has_more_products": "Visible if collection has more products than shown",
     "advanced": "Advanced",
     "appearance": "Appearance",
@@ -226,6 +227,9 @@
     "work_quickly_to_ship": "<p>We will work quickly to ship your order as soon as possible. Once your order has shipped, you will receive an email with further information. Delivery times vary depending on your location.</p>"
   },
   "info": {
+    "akn_link": {
+      "link_requirements": "The link appears only when both the text and a destination are provided."
+    },
     "akn_product_category_override": "Leave blank to use the product type from the product admin automatically. Text entered here applies to every product using this template.",
     "actions_display_style": "Icons are always used on mobile",
     "applies_on_image_only": "Applies to images only",
@@ -261,6 +265,7 @@
     }
   },
   "names": {
+    "akn_editorial_link": "AKAN — Editorial link",
     "akn_finish_picker": "AKAN finish selector",
     "akn_product_category": "Product category",
     "akn_product_reassurance": "AKAN product reassurance",
@@ -771,6 +776,49 @@
     }
   },
   "settings": {
+    "instagram": "Instagram URL",
+    "heading_size": "Menu heading font size",
+    "menu_links_size": "Menu link font size",
+    "akn_link": {
+      "content_header": "Link content",
+      "link_text": "Link text",
+      "link_url": "Link destination",
+      "desktop_header": "Desktop display",
+      "show_desktop": "Show on desktop",
+      "alignment": "Alignment",
+      "color": "Text and underline colour",
+      "font_size": "Text size",
+      "mobile_header": "Mobile display",
+      "show_mobile": "Show on mobile"
+    },
+    "akn_editorial_update": {
+      "body_font": "Paragraph font",
+      "body_font_info": "Changes paragraph typography without changing headings.",
+      "theme_default": "Theme default",
+      "body": "Body",
+      "subheading": "Subheading",
+      "heading": "Heading",
+      "accent": "Accent",
+      "custom_body_size": "Set a custom paragraph size",
+      "body_size": "Paragraph size",
+      "custom_button": "Customize primary button styling",
+      "border_width": "Border width",
+      "button_tracking": "Button letter spacing",
+      "padding_inline": "Horizontal padding",
+      "padding_block": "Vertical padding",
+      "button_min_width": "Minimum button width",
+      "show_arrow": "Show arrow on the right",
+      "mobile_height_toggle": "Use a different height on mobile",
+      "mobile_height": "Mobile height",
+      "mobile_height_info": "Percentage of the small viewport height (svh).",
+      "focal_header": "Image focal point",
+      "focal_toggle": "Customize image focal point",
+      "focal_info": "Moves the focal point within the cropped image; it cannot move the subject inside the source photograph.",
+      "desktop_x": "Desktop — horizontal position",
+      "desktop_y": "Desktop — vertical position",
+      "mobile_x": "Mobile — horizontal position",
+      "mobile_y": "Mobile — vertical position"
+  },
     "accordion": "Accordion",
     "account": "Account",
     "actions_display_style": "Menu style",
@@ -1005,6 +1053,8 @@
     "mobile_logo_image": "Mobile logo",
     "mobile_size": "Mobile size",
     "word_spacing": "Word spacing",
+    "custom_typographic_spacing": "Use precise spacing controls",
+    "show_divider": "Show divider between text elements",
     "akn_currency_code_after_amount": "Show currency code after amount",
     "mobile_pagination": "Mobile pagination",
     "mobile_quick_add": "Mobile quick add",

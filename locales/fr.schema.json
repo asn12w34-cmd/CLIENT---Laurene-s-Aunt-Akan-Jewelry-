@@ -9,6 +9,7 @@
  */
 {
   "names": {
+    "akn_editorial_link": "AKAN — Lien éditorial",
     "akn_finish_picker": "Sélecteur de finition AKAN",
     "akn_product_category": "Catégorie du produit",
     "akn_product_reassurance": "Réassurance produit AKAN",
@@ -175,6 +176,49 @@
     "akn_hero_buttons": "AKAN — Boutons du Hero"
   },
   "settings": {
+    "instagram": "URL Instagram",
+    "heading_size": "Taille des titres du menu",
+    "menu_links_size": "Taille des liens du menu",
+    "akn_link": {
+      "content_header": "Contenu du lien",
+      "link_text": "Texte du lien",
+      "link_url": "Destination du lien",
+      "desktop_header": "Affichage sur ordinateur",
+      "show_desktop": "Afficher sur ordinateur",
+      "alignment": "Alignement",
+      "color": "Couleur du texte et du soulignement",
+      "font_size": "Taille du texte",
+      "mobile_header": "Affichage sur mobile",
+      "show_mobile": "Afficher sur mobile"
+    },
+    "akn_editorial_update": {
+      "body_font": "Police des paragraphes",
+      "body_font_info": "Laisse les titres inchangés. Utile pour un paragraphe éditorial sous un titre.",
+      "theme_default": "Selon le thème",
+      "body": "Texte courant",
+      "subheading": "Sous-titre",
+      "heading": "Titre",
+      "accent": "Accent",
+      "custom_body_size": "Personnaliser la taille des paragraphes",
+      "body_size": "Taille des paragraphes",
+      "custom_button": "Personnaliser la présentation du bouton principal",
+      "border_width": "Épaisseur de la bordure",
+      "button_tracking": "Espacement des lettres du bouton",
+      "padding_inline": "Marge intérieure horizontale",
+      "padding_block": "Marge intérieure verticale",
+      "button_min_width": "Largeur minimale du bouton",
+      "show_arrow": "Afficher une flèche à droite",
+      "mobile_height_toggle": "Hauteur différente sur mobile",
+      "mobile_height": "Hauteur mobile",
+      "mobile_height_info": "Pourcentage de la hauteur de la fenêtre (svh).",
+      "focal_header": "Cadrage des images",
+      "focal_toggle": "Personnaliser le cadrage des images",
+      "focal_info": "Déplace le point focal des images dans le recadrage. Ne déplace pas les éléments de la photo d’origine.",
+      "desktop_x": "Ordinateur — position horizontale",
+      "desktop_y": "Ordinateur — position verticale",
+      "mobile_x": "Mobile — position horizontale",
+      "mobile_y": "Mobile — position verticale"
+  },
     "autoplay": "Lecture automatique",
     "background": "Arrière-plan",
     "border_radius": "Rayon de la bordure",
@@ -375,6 +419,8 @@
     "mobile_logo_image": "Logo sur mobile",
     "mobile_size": "Taille sur mobile",
     "word_spacing": "Espacement entre les mots",
+    "custom_typographic_spacing": "Utiliser les réglages d’espacement précis",
+    "show_divider": "Afficher un séparateur entre les éléments de texte",
     "akn_currency_code_after_amount": "Afficher le code de devise après le montant",
     "mobile_quick_add": "Ajout rapide sur mobile",
     "motion_direction": "Direction du mouvement",
@@ -943,6 +989,7 @@
     }
   },
   "content": {
+    "divider": "Séparateur",
     "background_video": "Vidéo de fond",
     "describe_the_video_for": "Décrivez la vidéo pour les clients utilisant des lecteurs d’écran. [En savoir plus](https://help.shopify.com/manual/online-store/themes/theme-structure/theme-features#video-block)",
     "width_is_automatically_optimized": "La largeur est automatiquement optimisée pour les appareils mobiles.",
@@ -1169,6 +1216,9 @@
     "disclosures": "Divulgations"
   },
   "info": {
+    "akn_link": {
+      "link_requirements": "Le lien s’affiche uniquement lorsque le texte et une destination sont renseignés."
+    },
     "akn_product_category_override": "Laissez vide pour utiliser automatiquement le type défini dans l’administration du produit. Un texte saisi ici s’applique à tous les produits utilisant ce modèle.",
     "carousel_layout_on_mobile": "Le carrousel est toujours utilisé sur mobile",
     "video_alt_text": "Décrivez la vidéo pour les utilisateurs de technologies d’assistance",
