@@ -6,136 +6,62 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
-    "main": {
-      "type": "main-page",
-      "blocks": {
-        "title": {
-          "type": "text",
-          "name": "t:names.title",
-          "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
-            "width": "100%",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "background": false,
-            "background_color": "#00000026",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "content": {
-          "type": "text",
-          "name": "t:names.content",
-          "settings": {
-            "text": "{{ closest.page.content }}",
-            "width": "100%",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "background": false,
-            "background_color": "#00000026",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "title",
-        "content"
-      ],
+    "akn_contact": {
+      "type": "akn-contact",
       "settings": {
-        "content_direction": "column",
-        "gap": 32,
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 40,
-        "padding-block-end": 0
-      }
-    },
-    "form": {
-      "type": "section",
-      "blocks": {
-        "contact_form_UwiCkQ": {
-          "type": "contact-form",
-          "settings": {
-            "width": "custom",
-            "custom_width": 50,
-            "width_mobile": "custom",
-            "custom_width_mobile": 100,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "submit-button": {
-              "type": "contact-form-submit-button",
-              "static": true,
-              "settings": {
-                "label": "Submit",
-                "style_class": "button",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": []
-        }
-      },
-      "block_order": [
-        "contact_form_UwiCkQ"
-      ],
-      "name": "t:names.contact_form",
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 32,
-        "section_width": "page-width",
-        "section_height_custom": 50,
-        "background_color": "{{ settings.color_palette.background }}",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 32,
-        "padding-block-end": 32
+        "eyebrow": "CONTACT",
+        "title": "Nous sommes à votre écoute.",
+        "description": "Une question sur un bijou, une commande ou une livraison ? Notre équipe est à votre disposition pour vous accompagner.",
+        "contact_heading": "Comment nous joindre ?",
+        "contact_intro": "Choisissez le moyen de contact qui vous convient.",
+        "whatsapp_url": "https://wa.me/33754481555?text=Bonjour%2C%20je%20vous%20contacte%20depuis%20le%20site%20AKAN%20Jewelry.",
+        "whatsapp_heading": "WhatsApp",
+        "whatsapp_description": "Échangez directement avec notre équipe.",
+        "whatsapp_cta": "Nous ecrire",
+        "whatsapp_cta_mobile": "Nous écrire",
+        "email_address": "",
+        "email_heading": "Par e-mail",
+        "email_description": "Pour vos questions et vos demandes détaillées, veuiller remplir le formulaire ci -contre.",
+        "email_cta": "Nous envoyer un e-mail",
+        "order_heading": "Concernant une commande ?",
+        "order_description": "Mentionner le numéro de votre/vos commande(s) pour faciliter son/leur identification.",
+        "form_heading": "Envoyez-nous un message",
+        "form_description": "Complétez le formulaire ci-dessous pour nous faire part de votre demande.",
+        "label_name": "Nom",
+        "placeholder_name": "Votre nom",
+        "label_email": "Adresse e-mail",
+        "placeholder_email": "votre@email.com",
+        "label_topic": "Sujet",
+        "placeholder_topic": "Choisir un sujet",
+        "topics": "Question sur un bijou\nCommande en cours\nLivraison et retours\nAutre demande",
+        "label_order": "Numéro de commande(s) (facultatif)",
+        "placeholder_order": "Si votre demande concerne une commande",
+        "label_message": "Votre message",
+        "placeholder_message": "Comment pouvons-nous vous aider ?",
+        "submit_label": "Envoyer le message",
+        "success_message": "Merci, votre message a bien été envoyé. Nous vous répondrons dès que possible.",
+        "error_email": "L’adresse e-mail indiquée est invalide. Veuillez la vérifier et réessayer.",
+        "error_generic": "L’envoi a échoué. Vérifiez vos informations et réessayez.",
+        "delivery_heading": "Besoin d'informations sur la livraison ou les retours ?",
+        "delivery_description": "Notre équipe est à votre écoute pour vous accompagner.",
+        "delivery_page": "livraison-et-retour",
+        "delivery_url": "",
+        "delivery_cta": "Livraisons & retours",
+        "delivery_cta_mobile": "Consulter les informations",
+        "background_color": "#f7f3eb",
+        "heading_color": "#690719",
+        "text_color": "#302b27",
+        "accent_color": "#936222",
+        "divider_color": "#cfc4b4",
+        "banner_color": "#690719",
+        "banner_text_color": "#f7f3eb"
       }
     }
   },
   "order": [
-    "main",
-    "form"
+    "akn_contact"
   ]
 }

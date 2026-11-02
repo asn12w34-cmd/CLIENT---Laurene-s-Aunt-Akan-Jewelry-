@@ -1802,5 +1802,69 @@
     "help": {
       "image": "Use a clean image without embedded text. The image is cropped to a consistent landscape ratio."
     }
+  },
+  "akn_contact": {
+    "name": "AKAN — Contact",
+    "groups": {
+      "intro": "Introduction",
+      "channels": "Contact methods",
+      "form": "Contact form",
+      "delivery": "Delivery and returns",
+      "appearance": "Appearance"
+    },
+    "labels": {
+      "eyebrow": "Eyebrow",
+      "title": "Main heading",
+      "description": "Description",
+      "contact_heading": "Column heading",
+      "contact_intro": "Introduction text",
+      "whatsapp_url": "WhatsApp link",
+      "whatsapp_heading": "WhatsApp heading",
+      "whatsapp_description": "WhatsApp description",
+      "whatsapp_cta": "WhatsApp link — desktop",
+      "whatsapp_cta_mobile": "WhatsApp link — mobile",
+      "email_address": "Email address",
+      "email_heading": "Email heading",
+      "email_description": "Email description",
+      "email_cta": "Email link text",
+      "order_heading": "Order help heading",
+      "order_description": "Order help text",
+      "form_heading": "Form heading",
+      "form_description": "Introduction text",
+      "label_name": "Label — name",
+      "placeholder_name": "Placeholder — name",
+      "label_email": "Label — email",
+      "placeholder_email": "Placeholder — email",
+      "label_topic": "Label — subject",
+      "placeholder_topic": "Select prompt",
+      "topics": "Subject options",
+      "label_order": "Label — order number",
+      "placeholder_order": "Placeholder — order",
+      "label_message": "Label — message",
+      "placeholder_message": "Placeholder — message",
+      "submit_label": "Submit button text",
+      "success_message": "Success message",
+      "error_email": "Email error message",
+      "error_generic": "General error message",
+      "delivery_heading": "Heading",
+      "delivery_description": "Description (desktop)",
+      "delivery_page": "Destination page",
+      "delivery_url": "Alternative URL",
+      "delivery_cta": "Button — desktop",
+      "delivery_cta_mobile": "Link — mobile",
+      "background_color": "Light background",
+      "heading_color": "Headings",
+      "text_color": "Body text",
+      "accent_color": "Gold accents",
+      "divider_color": "Dividers and borders",
+      "banner_color": "Banner background",
+      "banner_text_color": "Banner text"
+    },
+    "info": {
+      "whatsapp": "Paste a https://wa.me/ URL with the actual number including country code (no + or spaces).",
+      "email": "Used for the desktop email link.",
+      "topics": "One subject per line. The initial empty prompt is configured separately.",
+      "delivery": "Used only when no page is selected above."
+    }
   }
 }

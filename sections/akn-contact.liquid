@@ -1,0 +1,659 @@
+{% comment %}
+  CUSTOM FILE [AJ-033] — Page Contact Akan (responsive) | See CUSTOM_CHANGES.md — AJ-033
+
+  Section contract.
+  Unique formulaire Shopify contact et présentation adaptative, sans second backend.
+  Les coordonnées et la page de livraison sont gérées dans l'éditeur.
+  @example
+  Associer templates/page.contact.json à la page Contact.
+{% endcomment %}
+
+{% liquid
+  assign form_id = 'AknContactForm-' | append: section.id
+  assign err_id = 'AknContactError-' | append: section.id
+  assign name_id = 'AknContactName-' | append: section.id
+  assign email_id = 'AknContactEmail-' | append: section.id
+  assign subject_id = 'AknContactSubject-' | append: section.id
+  assign order_id = 'AknContactOrder-' | append: section.id
+  assign body_id = 'AknContactBody-' | append: section.id
+  assign whatsapp_url = section.settings.whatsapp_url
+  assign email_address = section.settings.email_address | strip
+  assign delivery_url = section.settings.delivery_url
+  if section.settings.delivery_page != blank
+    assign delivery_url = section.settings.delivery_page.url
+  endif
+%}
+
+<div class="akn-contact" style="
+  --akc-bg: {{ section.settings.background_color }};
+  --akc-heading: {{ section.settings.heading_color }};
+  --akc-text: {{ section.settings.text_color }};
+  --akc-accent: {{ section.settings.accent_color }};
+  --akc-line: {{ section.settings.divider_color }};
+  --akc-brand: {{ section.settings.banner_color }};
+  --akc-on-brand: {{ section.settings.banner_text_color }};
+">
+  <div class="akn-contact__inner">
+    <header class="akn-contact__intro">
+      {% if section.settings.eyebrow != blank %}<p class="akn-contact__eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+      {% if section.settings.title != blank %}<h1 class="akn-contact__title">{{ section.settings.title | escape }}</h1>{% endif %}
+      {% if section.settings.description != blank %}<p class="akn-contact__lead">{{ section.settings.description | escape }}</p>{% endif %}
+    </header>
+
+    <div class="akn-contact__columns">
+      <aside class="akn-contact__ways" aria-label="{{ section.settings.contact_heading | escape }}">
+        <div class="akn-contact__ways-heading">
+          {% if section.settings.contact_heading != blank %}<h2 class="akn-contact__heading">{{ section.settings.contact_heading | escape }}</h2>{% endif %}
+          {% if section.settings.contact_intro != blank %}<p class="akn-contact__editorial">{{ section.settings.contact_intro | escape }}</p>{% endif %}
+        </div>
+        <div class="akn-contact__method akn-contact__method--whatsapp">
+          <span class="akn-contact__method-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor" focusable="false">{% render 'icon', icon: 'whatsapp' %}</svg>
+          </span>
+          <div class="akn-contact__method-copy">
+            <h3>{{ section.settings.whatsapp_heading | escape }}</h3>
+            {% if section.settings.whatsapp_description != blank %}<p class="akn-contact__editorial">{{ section.settings.whatsapp_description | escape }}</p>{% endif %}
+            {% if whatsapp_url != blank %}
+              <a class="akn-contact__text-link" href="{{ whatsapp_url }}" target="_blank" rel="noopener noreferrer">
+                <span class="akn-contact__desktop-only">{{ section.settings.whatsapp_cta | escape }}</span>
+                <span class="akn-contact__mobile-only">{{ section.settings.whatsapp_cta_mobile | escape }}</span>
+                <span aria-hidden="true">↗</span><span class="visually-hidden">(nouvel onglet)</span>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="akn-contact__method akn-contact__method--email">
+          <span class="akn-contact__method-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+              <rect x="2" y="5" width="20" height="14"></rect><path d="m2 6 10 8 10-8"></path>
+            </svg>
+          </span>
+          <div class="akn-contact__method-copy">
+            <h3>{{ section.settings.email_heading | escape }}</h3>
+            {% if section.settings.email_description != blank %}<p class="akn-contact__editorial">{{ section.settings.email_description | escape }}</p>{% endif %}
+            {% if email_address != blank and email_address contains '@' %}
+              <a class="akn-contact__text-link" href="mailto:{{ email_address | escape }}">{{ section.settings.email_cta | escape }} <span aria-hidden="true">↗</span></a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="akn-contact__method akn-contact__method--order">
+          <span class="akn-contact__method-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 2 10 10-10 10L2 12Z"></path></svg>
+          </span>
+          <div class="akn-contact__method-copy">
+            <h3>{{ section.settings.order_heading | escape }}</h3>
+            {% if section.settings.order_description != blank %}<p class="akn-contact__editorial">{{ section.settings.order_description | escape }}</p>{% endif %}
+          </div>
+        </div>
+      </aside>
+
+      <section class="akn-contact__form-panel" aria-label="{{ section.settings.form_heading | escape }}">
+        {% if section.settings.form_heading != blank %}<h2 class="akn-contact__heading">{{ section.settings.form_heading | escape }}</h2>{% endif %}
+        {% if section.settings.form_description != blank %}<p class="akn-contact__editorial akn-contact__form-lead">{{ section.settings.form_description | escape }}</p>{% endif %}
+        {% form 'contact', id: form_id, class: 'akn-contact__form' %}
+          <input type="hidden" name="contact[id]" value="{{ form_id }}">
+          {% liquid
+            assign form_matches = false
+            if form.id == form_id or form.id == blank
+              assign form_matches = true
+            endif
+            assign email_error = false
+            if form.errors contains 'email' and form_matches
+              assign email_error = true
+            endif
+          %}
+          {% if form.errors and form_matches %}
+            <div class="akn-contact__notice akn-contact__notice--error" id="{{ err_id }}" role="alert" tabindex="-1" autofocus>
+              {% if email_error %}{{ section.settings.error_email | escape }}{% else %}{{ section.settings.error_generic | escape }}{% endif %}
+            </div>
+          {% endif %}
+          {% if form.posted_successfully? and form_matches %}
+            <div class="akn-contact__notice akn-contact__notice--success" role="status" tabindex="-1" autofocus>{{ section.settings.success_message | escape }}</div>
+          {% endif %}
+
+          <div class="akn-contact__row">
+            <div class="akn-contact__field">
+              <label for="{{ name_id }}">{{ section.settings.label_name | escape }} <span aria-hidden="true">*</span></label>
+              <input id="{{ name_id }}" name="contact[name]" type="text" autocomplete="name" required
+                placeholder="{{ section.settings.placeholder_name | escape }}"
+                value="{% if form.name %}{{ form.name | escape }}{% elsif customer %}{{ customer.name | escape }}{% endif %}">
+            </div>
+            <div class="akn-contact__field">
+              <label for="{{ email_id }}">{{ section.settings.label_email | escape }} <span aria-hidden="true">*</span></label>
+              <input id="{{ email_id }}" name="contact[email]" type="email" autocomplete="email" inputmode="email"
+                spellcheck="false" autocapitalize="off" required
+                placeholder="{{ section.settings.placeholder_email | escape }}"
+                value="{% if form.email %}{{ form.email | escape }}{% elsif customer %}{{ customer.email | escape }}{% endif %}"
+                {% if email_error %}aria-invalid="true" aria-describedby="{{ err_id }}"{% endif %}>
+            </div>
+          </div>
+          <div class="akn-contact__field">
+            <label for="{{ subject_id }}">{{ section.settings.label_topic | escape }}</label>
+            <span class="akn-contact__select">
+              <select id="{{ subject_id }}" name="contact[Sujet]">
+                <option value="">{{ section.settings.placeholder_topic | escape }}</option>
+                {% assign saved_subject = form['Sujet'] %}
+                {% assign subjects = section.settings.topics | newline_to_br | split: '<br />' %}
+                {% for subject in subjects %}
+                  {% assign clean_subject = subject | strip_html | strip %}
+                  {% if clean_subject != blank %}
+                    <option value="{{ clean_subject | escape }}" {% if saved_subject == clean_subject %}selected{% endif %}>{{ clean_subject | escape }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select><span class="akn-contact__select-caret" aria-hidden="true"></span>
+            </span>
+          </div>
+          <div class="akn-contact__field">
+            <label for="{{ order_id }}">{{ section.settings.label_order | escape }}</label>
+            <input id="{{ order_id }}" name="contact[Numéro de commande]" type="text" autocomplete="off"
+              placeholder="{{ section.settings.placeholder_order | escape }}" value="{{ form['Numéro de commande'] | escape }}">
+          </div>
+          <div class="akn-contact__field">
+            <label for="{{ body_id }}">{{ section.settings.label_message | escape }} <span aria-hidden="true">*</span></label>
+            <textarea id="{{ body_id }}" name="contact[body]" rows="5" required placeholder="{{ section.settings.placeholder_message | escape }}">{{ form.body | escape }}</textarea>
+          </div>
+          <button class="akn-contact__submit" type="submit"><span>{{ section.settings.submit_label | escape }}</span><span aria-hidden="true">→</span></button>
+        {% endform %}
+      </section>
+    </div>
+  </div>
+
+  {% if section.settings.delivery_heading != blank %}
+    <section class="akn-contact__delivery" aria-label="{{ section.settings.delivery_heading | escape }}">
+      <div class="akn-contact__delivery-inner">
+        <div class="akn-contact__delivery-copy">
+          <h2>{{ section.settings.delivery_heading | escape }}</h2>
+          {% if section.settings.delivery_description != blank %}<p>{{ section.settings.delivery_description | escape }}</p>{% endif %}
+        </div>
+        {% if delivery_url != blank %}
+          <a class="akn-contact__delivery-link" href="{{ delivery_url }}">
+            <span class="akn-contact__desktop-only">{{ section.settings.delivery_cta | escape }}</span>
+            <span class="akn-contact__mobile-only">{{ section.settings.delivery_cta_mobile | escape }}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        {% endif %}
+      </div>
+    </section>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  /* CUSTOM [AJ-033] — CSS isolé de la page Contact. | See CUSTOM_CHANGES.md — AJ-033 */
+  .akn-contact { background: var(--akc-bg); color: var(--akc-text); min-inline-size: 0; }
+  .akn-contact__inner, .akn-contact__delivery-inner { width: min(calc(100% - 96px), 1120px); margin-inline: auto; }
+  .akn-contact__intro { padding-block: 33px 30px; border-block-end: 1px solid var(--akc-line); }
+  .akn-contact__eyebrow {
+    display: flex; align-items: center; gap: 19px; margin: 0 0 12px;
+    color: var(--akc-accent); font: 700 .84rem/1.4 var(--font-body--family);
+    letter-spacing: .23em; text-transform: uppercase;
+  }
+  .akn-contact__eyebrow::after { content: ''; inline-size: 44px; block-size: 1px; background: currentColor; }
+  .akn-contact :is(.akn-contact__title, .akn-contact__heading, .akn-contact__delivery h2) {
+    color: var(--akc-heading); font-family: var(--font-heading--family);
+    font-style: var(--font-heading--style); font-weight: 400; letter-spacing: -.025em; text-wrap: pretty;
+  }
+  .akn-contact__title { font-size: clamp(2.65rem, 4.5vw, 4.05rem); line-height: 1.08; margin: 0 0 12px; }
+  .akn-contact :is(.akn-contact__lead, .akn-contact__editorial) {
+    font-family: var(--font-subheading--family); font-style: var(--font-subheading--style);
+    font-weight: 400; line-height: 1.42;
+  }
+  .akn-contact__lead { max-inline-size: 720px; font-size: clamp(1.1rem, 1.8vw, 1.4rem); margin: 0; }
+  .akn-contact__columns {
+    display: grid; grid-template-columns: minmax(0, .79fr) minmax(0, 1.21fr);
+    gap: clamp(34px, 5.1vw, 64px); padding-block: 34px 38px;
+  }
+  .akn-contact__ways { min-inline-size: 0; padding-inline-end: clamp(28px, 4.4vw, 55px); border-inline-end: 1px solid var(--akc-line); }
+  .akn-contact__form-panel { min-inline-size: 0; }
+  .akn-contact__heading { font-size: clamp(2.1rem, 3.5vw, 3rem); line-height: 1.1; margin: 0 0 15px; }
+  .akn-contact__editorial { font-size: clamp(1.03rem, 1.5vw, 1.22rem); margin: 0; }
+  .akn-contact__ways-heading { padding-block-end: 24px; }
+  .akn-contact__method {
+    display: grid; grid-template-columns: 47px minmax(0, 1fr); gap: 16px;
+    padding-block: 20px 19px; border-block-start: 1px solid var(--akc-line);
+  }
+  .akn-contact__method-icon { color: var(--akc-accent); display: inline-flex; width: 39px; height: 39px; }
+  .akn-contact__method-icon svg { display: block; width: 100%; height: auto; }
+  .akn-contact__method-copy { min-inline-size: 0; }
+  .akn-contact__method-copy h3 {
+    margin: 0 0 4px; color: var(--akc-heading); font-family: var(--font-heading--family);
+    font-size: clamp(1.28rem, 1.85vw, 1.55rem); line-height: 1.15; font-weight: 600;
+  }
+  .akn-contact__method-copy .akn-contact__editorial { line-height: 1.35; }
+  .akn-contact__text-link {
+    display: inline-flex; align-items: center; flex-wrap: wrap; gap: 7px;
+    width: fit-content; margin-block-start: 13px; padding-block-end: 6px;
+    border-block-end: 2px solid var(--akc-accent); text-decoration: none;
+    font: 700 .8rem/1.4 var(--font-body--family); letter-spacing: .12em;
+    text-transform: uppercase; color: var(--akc-text); overflow-wrap: anywhere;
+  }
+  .akn-contact__mobile-only { display: none; }
+  .akn-contact__form-lead { margin-block-end: 22px; }
+  .akn-contact__form { display: grid; gap: 15px; }
+  .akn-contact__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 21px; }
+  .akn-contact__field { min-inline-size: 0; }
+  .akn-contact__field label {
+    display: block; margin-block-end: 6px;
+    font: 600 .88rem/1.45 var(--font-body--family);
+  }
+  .akn-contact__field :is(input, select, textarea) {
+    display: block; width: 100%; min-inline-size: 0; min-height: 45px;
+    padding: 10px 15px; border: 1px solid var(--akc-line); border-radius: 0;
+    background: rgb(255 255 255 / 42%); color: var(--akc-text); box-shadow: none;
+    font: 400 .9rem/1.45 var(--font-body--family);
+    -webkit-appearance: none; appearance: none;
+  }
+  .akn-contact__field :is(input, textarea)::placeholder { color: #716c66; opacity: 1; }
+  .akn-contact__field textarea { min-height: 98px; resize: vertical; }
+  .akn-contact__select { display: block; position: relative; }
+  .akn-contact__select select { padding-inline-end: 38px; cursor: pointer; }
+  .akn-contact__select-caret {
+    position: absolute; inset-inline-end: 16px; inset-block-start: calc(50% - 4px);
+    width: 8px; height: 8px; border-inline-end: 1.5px solid currentColor;
+    border-block-end: 1.5px solid currentColor; transform: rotate(45deg); pointer-events: none;
+  }
+  .akn-contact :is(input, select, textarea, button, a):focus-visible {
+    outline: 2px solid var(--akc-accent); outline-offset: 3px;
+  }
+  .akn-contact__field [aria-invalid='true'] { border-color: #ae283d; border-width: 2px; }
+  .akn-contact__notice { padding: 12px 14px; border: 1px solid; font: 400 .95rem/1.5 var(--font-body--family); }
+  .akn-contact__notice--error { color: #820e26; border-color: #b84a5b; }
+  .akn-contact__notice--success { color: #275534; border-color: #659272; }
+  .akn-contact__submit {
+    display: inline-flex; align-items: center; justify-content: center; gap: 18px;
+    min-height: 51px; width: fit-content; max-width: 100%; margin-block-start: 7px;
+    padding: 12px 38px; border: 1px solid var(--akc-brand); border-radius: 0;
+    background: var(--akc-brand); color: var(--akc-on-brand); cursor: pointer;
+    font: 700 .87rem/1.5 var(--font-body--family); letter-spacing: .2em;
+    text-align: center; text-transform: uppercase;
+  }
+  .akn-contact__submit:hover { filter: brightness(1.12); }
+  .akn-contact__submit span:last-child { font-size: 1.4rem; font-weight: 400; line-height: 1; }
+  .akn-contact__delivery { background: var(--akc-brand); color: var(--akc-on-brand); }
+  .akn-contact__delivery-inner {
+    display: flex; align-items: center; justify-content: space-between; gap: 30px;
+    min-height: 124px; padding-block: 24px;
+  }
+  .akn-contact__delivery-copy { min-inline-size: 0; }
+  .akn-contact .akn-contact__delivery h2 {
+    color: var(--akc-on-brand); font-size: clamp(1.7rem, 3vw, 2.45rem);
+    line-height: 1.2; margin: 0 0 9px;
+  }
+  .akn-contact__delivery p { margin: 0; font: 400 1.12rem/1.45 var(--font-subheading--family); }
+  .akn-contact__delivery-link {
+    display: inline-flex; align-items: center; justify-content: center; gap: 17px;
+    min-height: 49px; padding: 12px 28px; border: 1px solid var(--akc-on-brand);
+    color: var(--akc-on-brand); font: 600 .82rem/1.3 var(--font-body--family);
+    letter-spacing: .14em; text-align: center; text-decoration: none;
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .akn-contact__delivery-link:hover { background: rgb(255 255 255 / 10%); }
+  .akn-contact__delivery-link span:last-child { font-size: 1.5rem; line-height: .8; }
+
+  @media (max-width: 950px) and (min-width: 750px) {
+    .akn-contact__inner, .akn-contact__delivery-inner { width: min(calc(100% - 64px), 1120px); }
+    .akn-contact__columns { gap: 30px; grid-template-columns: minmax(0, .76fr) minmax(0, 1.24fr); }
+    .akn-contact__ways { padding-inline-end: 25px; }
+    .akn-contact__row { gap: 12px; }
+    .akn-contact__delivery-link { white-space: normal; }
+  }
+  @media (max-width: 749px) {
+    .akn-contact__inner, .akn-contact__delivery-inner { width: calc(100% - 36px); }
+    .akn-contact__intro { padding-block: 25px 20px; }
+    .akn-contact__eyebrow { font-size: .75rem; margin-block-end: 10px; gap: 14px; }
+    .akn-contact__eyebrow::after { width: 30px; }
+    .akn-contact__title { font-size: clamp(1.5rem, 6.25vw, 2.15rem); line-height: 1.12; margin-block-end: 11px; }
+    .akn-contact__lead { font-size: clamp(1rem, 3.9vw, 1.19rem); line-height: 1.42; }
+    .akn-contact__columns { display: flex; flex-direction: column; gap: 27px; padding-block: 0 24px; }
+    .akn-contact__ways { padding: 0; border: 0; }
+    .akn-contact__ways-heading, .akn-contact__method--email, .akn-contact__method--order { display: none; }
+    .akn-contact__method--whatsapp {
+      grid-template-columns: 42px minmax(0, 1fr); gap: 12px;
+      border-block-start: 0; border-block-end: 1px solid var(--akc-line); padding-block: 19px;
+    }
+    .akn-contact__method-icon { width: 37px; height: 37px; }
+    .akn-contact__method-copy h3 { font-size: 1.37rem; }
+    .akn-contact__method-copy .akn-contact__editorial { font-size: 1.03rem; }
+    .akn-contact__text-link { font-size: .79rem; margin-block-start: 12px; }
+    .akn-contact__desktop-only { display: none; }
+    .akn-contact__mobile-only { display: inline; }
+    .akn-contact__heading { font-size: clamp(1.63rem, 6.75vw, 2.25rem); line-height: 1.16; margin-block-end: 10px; }
+    .akn-contact__form-lead { font-size: 1.05rem; line-height: 1.4; margin-block-end: 16px; }
+    .akn-contact__form { gap: 13px; }
+    .akn-contact__row { grid-template-columns: minmax(0, 1fr); gap: 13px; }
+    .akn-contact__field label { font-size: .87rem; margin-block-end: 5px; }
+    .akn-contact__field :is(input, select, textarea) { min-height: 45px; font-size: .89rem; }
+    .akn-contact__field textarea { min-height: 106px; }
+    .akn-contact__submit { width: 100%; margin-block-start: 6px; padding-inline: 12px; font-size: .81rem; letter-spacing: .15em; }
+    .akn-contact__delivery { background: var(--akc-bg); color: var(--akc-text); }
+    .akn-contact__delivery-inner { display: block; min-height: 0; padding-block: 19px 27px; border-block-start: 1px solid var(--akc-line); }
+    .akn-contact .akn-contact__delivery h2 {
+      color: var(--akc-heading); font-size: clamp(1.42rem, 5.4vw, 2rem);
+      line-height: 1.26; margin: 0 0 14px;
+    }
+    .akn-contact__delivery p { display: none; }
+    .akn-contact__delivery-link {
+      min-height: 0; width: fit-content; justify-content: flex-start;
+      padding: 0 0 6px; border: 0; border-block-end: 2px solid var(--akc-accent);
+      color: var(--akc-text); font-size: .79rem; font-weight: 700; line-height: 1.45;
+      letter-spacing: .13em; text-align: start; white-space: normal;
+    }
+    .akn-contact__delivery-link:hover { background: transparent; }
+  }
+  @media (max-width: 359px) {
+    .akn-contact__inner, .akn-contact__delivery-inner { width: calc(100% - 28px); }
+    .akn-contact__title { font-size: 1.45rem; }
+    .akn-contact__heading { font-size: 1.55rem; }
+    .akn-contact__submit { gap: 8px; font-size: .72rem; letter-spacing: .11em; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:akn_contact.name",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:akn_contact.groups.intro"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:akn_contact.labels.eyebrow",
+      "default": "CONTACT"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:akn_contact.labels.title",
+      "default": "Nous sommes à votre écoute."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "t:akn_contact.labels.description",
+      "default": "Une question sur un bijou, une commande ou une livraison ? Notre équipe est à votre disposition pour vous accompagner."
+    },
+    {
+      "type": "header",
+      "content": "t:akn_contact.groups.channels"
+    },
+    {
+      "type": "text",
+      "id": "contact_heading",
+      "label": "t:akn_contact.labels.contact_heading",
+      "default": "Comment nous joindre ?"
+    },
+    {
+      "type": "textarea",
+      "id": "contact_intro",
+      "label": "t:akn_contact.labels.contact_intro",
+      "default": "Choisissez le moyen de contact qui vous convient."
+    },
+    {
+      "type": "url",
+      "id": "whatsapp_url",
+      "label": "t:akn_contact.labels.whatsapp_url",
+      "info": "t:akn_contact.info.whatsapp"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_heading",
+      "label": "t:akn_contact.labels.whatsapp_heading",
+      "default": "WhatsApp"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_description",
+      "label": "t:akn_contact.labels.whatsapp_description",
+      "default": "Échangez directement avec notre équipe."
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_cta",
+      "label": "t:akn_contact.labels.whatsapp_cta",
+      "default": "Nous écrire sur WhatsApp"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_cta_mobile",
+      "label": "t:akn_contact.labels.whatsapp_cta_mobile",
+      "default": "Nous écrire"
+    },
+    {
+      "type": "text",
+      "id": "email_address",
+      "label": "t:akn_contact.labels.email_address",
+      "info": "t:akn_contact.info.email"
+    },
+    {
+      "type": "text",
+      "id": "email_heading",
+      "label": "t:akn_contact.labels.email_heading",
+      "default": "Par e-mail"
+    },
+    {
+      "type": "text",
+      "id": "email_description",
+      "label": "t:akn_contact.labels.email_description",
+      "default": "Pour vos questions et demandes détaillées."
+    },
+    {
+      "type": "text",
+      "id": "email_cta",
+      "label": "t:akn_contact.labels.email_cta",
+      "default": "Nous envoyer un e-mail"
+    },
+    {
+      "type": "text",
+      "id": "order_heading",
+      "label": "t:akn_contact.labels.order_heading",
+      "default": "Concernant une commande ?"
+    },
+    {
+      "type": "textarea",
+      "id": "order_description",
+      "label": "t:akn_contact.labels.order_description",
+      "default": "Munissez-vous de votre numéro de commande pour faciliter son identification."
+    },
+    {
+      "type": "header",
+      "content": "t:akn_contact.groups.form"
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "t:akn_contact.labels.form_heading",
+      "default": "Envoyez-nous un message"
+    },
+    {
+      "type": "textarea",
+      "id": "form_description",
+      "label": "t:akn_contact.labels.form_description",
+      "default": "Complétez le formulaire ci-dessous pour nous faire part de votre demande."
+    },
+    {
+      "type": "text",
+      "id": "label_name",
+      "label": "t:akn_contact.labels.label_name",
+      "default": "Nom"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_name",
+      "label": "t:akn_contact.labels.placeholder_name",
+      "default": "Votre nom"
+    },
+    {
+      "type": "text",
+      "id": "label_email",
+      "label": "t:akn_contact.labels.label_email",
+      "default": "Adresse e-mail"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_email",
+      "label": "t:akn_contact.labels.placeholder_email",
+      "default": "votre@email.com"
+    },
+    {
+      "type": "text",
+      "id": "label_topic",
+      "label": "t:akn_contact.labels.label_topic",
+      "default": "Sujet"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_topic",
+      "label": "t:akn_contact.labels.placeholder_topic",
+      "default": "Choisir un sujet"
+    },
+    {
+      "type": "textarea",
+      "id": "topics",
+      "label": "t:akn_contact.labels.topics",
+      "default": "Question sur un bijou\nCommande en cours\nLivraison et retours\nAutre demande",
+      "info": "t:akn_contact.info.topics"
+    },
+    {
+      "type": "text",
+      "id": "label_order",
+      "label": "t:akn_contact.labels.label_order",
+      "default": "Numéro de commande (facultatif)"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_order",
+      "label": "t:akn_contact.labels.placeholder_order",
+      "default": "Si votre demande concerne une commande"
+    },
+    {
+      "type": "text",
+      "id": "label_message",
+      "label": "t:akn_contact.labels.label_message",
+      "default": "Votre message"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_message",
+      "label": "t:akn_contact.labels.placeholder_message",
+      "default": "Comment pouvons-nous vous aider ?"
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "t:akn_contact.labels.submit_label",
+      "default": "Envoyer le message"
+    },
+    {
+      "type": "textarea",
+      "id": "success_message",
+      "label": "t:akn_contact.labels.success_message",
+      "default": "Merci, votre message a bien été envoyé. Nous vous répondrons dès que possible."
+    },
+    {
+      "type": "text",
+      "id": "error_email",
+      "label": "t:akn_contact.labels.error_email",
+      "default": "L’adresse e-mail indiquée est invalide. Veuillez la vérifier et réessayer."
+    },
+    {
+      "type": "text",
+      "id": "error_generic",
+      "label": "t:akn_contact.labels.error_generic",
+      "default": "L’envoi a échoué. Vérifiez vos informations et réessayez."
+    },
+    {
+      "type": "header",
+      "content": "t:akn_contact.groups.delivery"
+    },
+    {
+      "type": "text",
+      "id": "delivery_heading",
+      "label": "t:akn_contact.labels.delivery_heading",
+      "default": "Besoin d'informations sur la livraison ou les retours ?"
+    },
+    {
+      "type": "textarea",
+      "id": "delivery_description",
+      "label": "t:akn_contact.labels.delivery_description",
+      "default": "Notre équipe est à votre écoute pour vous accompagner."
+    },
+    {
+      "type": "page",
+      "id": "delivery_page",
+      "label": "t:akn_contact.labels.delivery_page"
+    },
+    {
+      "type": "url",
+      "id": "delivery_url",
+      "label": "t:akn_contact.labels.delivery_url",
+      "info": "t:akn_contact.info.delivery"
+    },
+    {
+      "type": "text",
+      "id": "delivery_cta",
+      "label": "t:akn_contact.labels.delivery_cta",
+      "default": "Livraisons & retours"
+    },
+    {
+      "type": "text",
+      "id": "delivery_cta_mobile",
+      "label": "t:akn_contact.labels.delivery_cta_mobile",
+      "default": "Consulter les informations"
+    },
+    {
+      "type": "header",
+      "content": "t:akn_contact.groups.appearance"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:akn_contact.labels.background_color",
+      "default": "#F7F3EB"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:akn_contact.labels.heading_color",
+      "default": "#690719"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:akn_contact.labels.text_color",
+      "default": "#302B27"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "t:akn_contact.labels.accent_color",
+      "default": "#936222"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "t:akn_contact.labels.divider_color",
+      "default": "#CFC4B4"
+    },
+    {
+      "type": "color",
+      "id": "banner_color",
+      "label": "t:akn_contact.labels.banner_color",
+      "default": "#690719"
+    },
+    {
+      "type": "color",
+      "id": "banner_text_color",
+      "label": "t:akn_contact.labels.banner_text_color",
+      "default": "#F7F3EB"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:akn_contact.name"
+    }
+  ]
+}
+{% endschema %}

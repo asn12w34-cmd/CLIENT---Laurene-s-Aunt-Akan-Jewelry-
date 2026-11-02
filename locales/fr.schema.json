@@ -1705,5 +1705,69 @@
     "help": {
       "image": "Utilisez une image propre, sans texte intégré. Elle est recadrée dans un ratio horizontal cohérent."
     }
+  },
+  "akn_contact": {
+    "name": "AKAN — Contact",
+    "groups": {
+      "intro": "Introduction",
+      "channels": "Moyens de contact",
+      "form": "Formulaire",
+      "delivery": "Livraison et retours",
+      "appearance": "Apparence"
+    },
+    "labels": {
+      "eyebrow": "Surtitre",
+      "title": "Titre principal",
+      "description": "Description",
+      "contact_heading": "Titre de la colonne",
+      "contact_intro": "Texte d’introduction",
+      "whatsapp_url": "Lien WhatsApp",
+      "whatsapp_heading": "Titre WhatsApp",
+      "whatsapp_description": "Description WhatsApp",
+      "whatsapp_cta": "Lien WhatsApp — ordinateur",
+      "whatsapp_cta_mobile": "Lien WhatsApp — mobile",
+      "email_address": "Adresse e-mail",
+      "email_heading": "Titre e-mail",
+      "email_description": "Description e-mail",
+      "email_cta": "Texte du lien e-mail",
+      "order_heading": "Titre aide commande",
+      "order_description": "Texte aide commande",
+      "form_heading": "Titre du formulaire",
+      "form_description": "Texte d’introduction",
+      "label_name": "Libellé — nom",
+      "placeholder_name": "Exemple — nom",
+      "label_email": "Libellé — e-mail",
+      "placeholder_email": "Exemple — e-mail",
+      "label_topic": "Libellé — sujet",
+      "placeholder_topic": "Invitation à choisir",
+      "topics": "Choix de sujets",
+      "label_order": "Libellé — numéro de commande",
+      "placeholder_order": "Exemple — commande",
+      "label_message": "Libellé — message",
+      "placeholder_message": "Exemple — message",
+      "submit_label": "Texte du bouton",
+      "success_message": "Message après envoi",
+      "error_email": "Erreur — adresse e-mail",
+      "error_generic": "Erreur — autre problème",
+      "delivery_heading": "Titre",
+      "delivery_description": "Description (ordinateur)",
+      "delivery_page": "Page à ouvrir",
+      "delivery_url": "Lien alternatif",
+      "delivery_cta": "Bouton — ordinateur",
+      "delivery_cta_mobile": "Lien — mobile",
+      "background_color": "Fond clair",
+      "heading_color": "Titres",
+      "text_color": "Texte principal",
+      "accent_color": "Doré des liens et icônes",
+      "divider_color": "Séparateurs et bordures",
+      "banner_color": "Fond du bandeau",
+      "banner_text_color": "Texte du bandeau"
+    },
+    "info": {
+      "whatsapp": "Collez un lien https://wa.me/ avec le vrai numéro (indicatif compris, sans + ni espaces).",
+      "email": "Cette adresse sera utilisée pour le lien e-mail sur ordinateur.",
+      "topics": "Un sujet par ligne. La première option vide est définie séparément.",
+      "delivery": "Utilisé uniquement si aucune page n’est sélectionnée au-dessus."
+    }
   }
 }

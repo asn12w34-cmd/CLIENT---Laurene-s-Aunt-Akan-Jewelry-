@@ -121,10 +121,15 @@
       data-testid="hero-picture-1"
       class="hero__media"
     >
+      {%- comment -%}
+        CUSTOM FIX [AJ-033] — Le média mobile provient exclusivement du sélecteur
+        Shopify image_1_mobile, jamais d'un nom de fichier d'asset imposé.
+        L'image desktop (img) reste inchangée et sert de repli.
+      {%- endcomment -%}
       <source
         media="(max-width: 749px)"
         srcset="
-          {%-  for mobile_width in mobile_widths_array -%}
+          {%- for mobile_width in mobile_widths_array -%}
             {{ section.settings.image_1_mobile | image_url: width: mobile_width }} {{ mobile_width }}w{% unless forloop.last %},{% endunless %}
           {%- endfor -%}
         "
@@ -456,7 +461,12 @@
   endif
 -%}
 
-{% comment %}CUSTOM UPDATE [AJ-032] — Opt-in responsive hero height and image focal point. {% endcomment %}
+{% comment %}
+  CUSTOM UPDATE [AJ-032] — Opt-in responsive hero height and image focal point.
+  CUSTOM [AJ-033] — Compositions éditoriales mobiles activables (texte/image ou image/texte).
+  CUSTOM [AJ-034] — Fusion mobile image/texte et cadrage à ratio naturel, activés par section.
+  Le mode standard et toute la présentation >= 750px demeurent inchangés.
+{% endcomment %}
 {% # A first-section hero consumes `--header-group-height` at first paint (`.hero-wrapper:first-child` rule below) %}
 {% render 'measure-header-heights', only_when_first_section: true %}
 
@@ -464,12 +474,28 @@
   id="Hero-{{ section.id }}"
   data-mobile-custom-height="{{ section.settings.mobile_custom_height_enabled }}"
   data-custom-media-position="{{ section.settings.custom_media_focal_point }}"
+  data-mobile-editorial-layout="{{ section.settings.mobile_editorial_layout | default: 'standard' }}"
+  data-mobile-editorial-blend="{{ section.settings.mobile_editorial_blend | default: false }}"
   class="hero{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}{% if section.blocks.size == 0 and section.settings.section_height == 'auto' %} hero--no-blocks-auto-height{% endif %}{% if section.settings.stack_media_on_mobile %} hero--stack-mobile{% endif %}"
   style="
     --hero-border-style: {{ section.settings.border }};
     --hero-border-width: {{ section.settings.border_width }}px;
     --hero-border-opacity: {{ section.settings.border_opacity }}%;
     --blur-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
+    --hero-mobile-editorial-bg: {{ section.settings.mobile_editorial_background | default: '#3a120d' }};
+    {% case section.settings.mobile_editorial_image_ratio %}
+      {% when 'square' %}--hero-mobile-editorial-ratio: 1;
+      {% when 'portrait' %}--hero-mobile-editorial-ratio: 4 / 5;
+      {% when 'natural' %}
+        {% if section.settings.custom_mobile_media and media_1_mobile == 'image' %}
+          --hero-mobile-editorial-ratio: {{ section.settings.image_1_mobile.aspect_ratio }};
+        {% elsif media_1 == 'image' %}
+          --hero-mobile-editorial-ratio: {{ section.settings.image_1.aspect_ratio }};
+        {% else %}
+          --hero-mobile-editorial-ratio: 4 / 5;
+        {% endif %}
+      {% else %}--hero-mobile-editorial-ratio: 5 / 4;
+    {% endcase %}
     {% if section.settings.mobile_custom_height_enabled %}
       --hero-mobile-min-height: {{ section.settings.mobile_custom_height }}svh;
     {% endif %}
@@ -791,6 +817,139 @@
       }
     }
   }
+  /* CUSTOM [AJ-033] — Montage mobile isolé : conserver entièrement la composition desktop.
+     Pas de duplicata des textes/CTA et aucune hauteur fixe susceptible de couper les contenus. */
+  @media screen and (max-width: 749px) {
+    .hero:is([data-mobile-editorial-layout='text-first'], [data-mobile-editorial-layout='media-first'])[data-mobile-custom-height] {
+      min-height: 0;
+      --section-min-height: 0px;
+    }
+
+    .hero:is([data-mobile-editorial-layout='text-first'], [data-mobile-editorial-layout='media-first']) .hero__container {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .hero:is([data-mobile-editorial-layout='text-first'], [data-mobile-editorial-layout='media-first']) .hero__media-grid {
+      position: relative;
+      inset: auto;
+      display: grid;
+      flex: none;
+      align-self: stretch;
+      inline-size: 100%;
+      block-size: auto;
+      aspect-ratio: var(--hero-mobile-editorial-ratio, 5 / 4);
+      min-block-size: 0;
+      isolation: isolate;
+    }
+
+    .hero:is([data-mobile-editorial-layout='text-first'], [data-mobile-editorial-layout='media-first']) .hero__media-grid > .overlay {
+      display: none;
+    }
+
+    .hero:is([data-mobile-editorial-layout='text-first'], [data-mobile-editorial-layout='media-first']) .hero__media {
+      display: block;
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+    }
+
+    .hero:is([data-mobile-editorial-layout='text-first'], [data-mobile-editorial-layout='media-first']) .hero__content-wrapper {
+      position: relative;
+      inset: auto;
+      display: block;
+      flex: none;
+      inline-size: 100%;
+      block-size: auto;
+      min-block-size: 0;
+      padding-block: clamp(34px, 9vw, 48px);
+      padding-inline: clamp(22px, 7vw, 38px);
+      box-sizing: border-box;
+      background: var(--hero-mobile-editorial-bg, #3a120d);
+    }
+
+    .hero:is([data-mobile-editorial-layout='text-first'], [data-mobile-editorial-layout='media-first']) .hero__content-wrapper .akn-panel {
+      position: static;
+      inset: auto;
+      transform: none;
+      inline-size: 100%;
+      max-inline-size: none;
+      max-block-size: none;
+      overflow: visible;
+    }
+
+    .hero:is([data-mobile-editorial-layout='text-first'], [data-mobile-editorial-layout='media-first']) .akn-text__content {
+      text-align: start;
+    }
+
+    .hero[data-mobile-editorial-layout='text-first'] .hero__content-wrapper { order: 1; }
+    .hero[data-mobile-editorial-layout='text-first'] .hero__media-grid { order: 2; }
+    .hero[data-mobile-editorial-layout='media-first'] .hero__media-grid { order: 1; }
+    .hero[data-mobile-editorial-layout='media-first'] .hero__content-wrapper { order: 2; }
+
+    /* Séparation dorée après le titre, sans modifier les blocs éditoriaux existants. */
+    .hero:is([data-mobile-editorial-layout='text-first'], [data-mobile-editorial-layout='media-first']) .akn-panel > .akn-text:has(.akn-text__content h2)::after {
+      content: '';
+      display: block;
+      inline-size: 56px;
+      block-size: 2px;
+      margin-block-start: 20px;
+      background: #c99a42;
+    }
+
+    .hero[data-mobile-editorial-layout='media-first'] .hero__content-wrapper {
+      background: linear-gradient(165deg, #61301b -45%, var(--hero-mobile-editorial-bg, #34130e) 42%);
+      border-block-end: 2px solid #96734b;
+    }
+
+    .hero[data-mobile-editorial-layout='media-first'] .akn-ctas__group--mobile > .akn-ctas__button {
+      flex: 1 1 100%;
+    }
+
+    /* CUSTOM START [AJ-034] — Une seule composition visuelle mobile, sans changer
+       le hero standard, les autres sections ni la mise en page desktop. */
+    .hero[data-mobile-editorial-blend='true']:is([data-mobile-editorial-layout='text-first'], [data-mobile-editorial-layout='media-first']) .hero__container {
+      background: var(--hero-mobile-editorial-bg, #3a120d);
+    }
+
+    .hero[data-mobile-editorial-blend='true']:is([data-mobile-editorial-layout='text-first'], [data-mobile-editorial-layout='media-first']) .hero__media-grid::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Intro : le fond du texte se fond dans le ciel bordeaux du portrait. */
+    .hero[data-mobile-editorial-blend='true'][data-mobile-editorial-layout='text-first'] .hero__content-wrapper {
+      background: var(--hero-mobile-editorial-bg, #3a120d);
+      padding-block-end: clamp(28px, 7vw, 40px);
+    }
+
+    .hero[data-mobile-editorial-blend='true'][data-mobile-editorial-layout='text-first'] .hero__media-grid::after {
+      inset-block-start: 0;
+      block-size: clamp(60px, 18vw, 105px);
+      background: linear-gradient(to bottom, var(--hero-mobile-editorial-bg, #3a120d), transparent);
+    }
+
+    /* Conclusion : le bas de la photographie devient le fond du texte, sans
+       panneau brun indépendant ni filtre global sur le bijou. */
+    .hero[data-mobile-editorial-blend='true'][data-mobile-editorial-layout='media-first'] .hero__media-grid::after {
+      inset-block-end: 0;
+      block-size: clamp(105px, 32vw, 185px);
+      background: linear-gradient(to bottom, transparent, var(--hero-mobile-editorial-bg, #3a120d));
+    }
+
+    .hero[data-mobile-editorial-blend='true'][data-mobile-editorial-layout='media-first'] .hero__content-wrapper {
+      background: var(--hero-mobile-editorial-bg, #3a120d);
+      padding-block-start: clamp(22px, 6vw, 35px);
+    }
+    /* CUSTOM END [AJ-034] */
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -920,6 +1079,50 @@
     },
     {
       "type": "header",
+      "content": "AKAN — Présentation éditoriale mobile"
+    },
+    {
+      "type": "select",
+      "id": "mobile_editorial_layout",
+      "label": "Composition sur mobile",
+      "info": "Le mode standard conserve le hero superposé. Les autres modes séparent l’image du texte sur mobile uniquement.",
+      "options": [
+        { "value": "standard", "label": "Standard (superposé)" },
+        { "value": "text-first", "label": "Texte puis image" },
+        { "value": "media-first", "label": "Image puis texte" }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "select",
+      "id": "mobile_editorial_image_ratio",
+      "label": "Format de l’image mobile",
+      "options": [
+        { "value": "wide", "label": "Paysage 5:4" },
+        { "value": "square", "label": "Carré 1:1" },
+        { "value": "portrait", "label": "Portrait 4:5" },
+        { "value": "natural", "label": "Proportions d’origine (aucun recadrage)" }
+      ],
+      "default": "wide",
+      "visible_if": "{{ section.settings.mobile_editorial_layout != 'standard' }}"
+    },
+    {
+      "type": "color",
+      "id": "mobile_editorial_background",
+      "label": "Fond du panneau de texte mobile",
+      "default": "#3a120d",
+      "visible_if": "{{ section.settings.mobile_editorial_layout != 'standard' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_editorial_blend",
+      "label": "Fusionner l’image et le texte",
+      "info": "Crée un fondu discret entre la photo et le texte sur mobile. Désactivé : conserve la séparation actuelle.",
+      "default": false,
+      "visible_if": "{{ section.settings.mobile_editorial_layout != 'standard' }}"
+    },
+    {
+      "type": "header",
       "content": "t:content.mobile_media_1",
       "visible_if": "{{ section.settings.custom_mobile_media }}"
     },
@@ -943,7 +1146,8 @@
     {
       "type": "image_picker",
       "id": "image_1_mobile",
-      "label": "t:settings.image",
+      "label": "Image mobile (support 1)",
+      "info": "Sélectionnez une image dans la bibliothèque Shopify. Pour les compositions éditoriales mobiles, cette image remplace la photo desktop sur téléphone. Aucun fichier n'est requis dans assets.",
       "visible_if": "{{ section.settings.custom_mobile_media and section.settings.media_type_1_mobile == 'image' }}"
     },
     {
