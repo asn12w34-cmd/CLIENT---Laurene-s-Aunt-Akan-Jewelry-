@@ -6,6 +6,17 @@
   endif
 %}
 
+{% comment %}
+  CUSTOM START [AJ-040] — Paint the configured footer background on its Shopify
+  section wrapper as well. This avoids a light flash at the boundary with the
+  separately painted AKAN reassurance strip during desktop scrolling. | See CUSTOM_CHANGES.md — AJ-040 {% endcomment %}
+{% style %}
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.background_color | default: 'var(--color-background)' }};
+  }
+{% endstyle %}
+{% comment %} CUSTOM END [AJ-040] {% endcomment %}
+
 <div
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
@@ -101,6 +112,16 @@
       grid-column: 1 / -1;
     }
   }
+
+  /* CUSTOM START [AJ-040] — Avoid a deferred/isolated paint layer for the
+     short AKAN footer on desktop, where .page-wrapper is the scroll container. | See CUSTOM_CHANGES.md — AJ-040 */
+  @media screen and (min-width: 990px) {
+    .footer-content--akan {
+      contain: none;
+      content-visibility: visible;
+    }
+  }
+  /* CUSTOM END [AJ-040] */
 
   /* CUSTOM START [AJ-009] — AKAN four-zone footer presentation and lightweight mobile reordering. | See CUSTOM_CHANGES.md — AJ-009 */
   .footer-content--akan > *,

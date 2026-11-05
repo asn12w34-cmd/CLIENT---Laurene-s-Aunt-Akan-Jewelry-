@@ -3,6 +3,7 @@
 
   @param {string} [accelerated_checkout_buttons_layout] - { 'vertical' } Forced layout of the additional checkout buttons, instead of relying on platform's layout.
   @param {string} [section_id] - The section ID for cart discount component.
+  @param {string} [context] - Use 'drawer' for the Akan drawer labels and secondary actions.
 {%- enddoc -%}
 
 {% render 'text-component-shimmer-styles' %}
@@ -227,7 +228,19 @@
       class="cart-totals__item cart-totals__total"
       role="status"
     >
-      <span class="cart-totals__total-label cart-primary-typography">{{ 'content.cart_estimated_total' | t }}</span>
+      <span class="cart-totals__total-label cart-primary-typography">{% comment %}CUSTOM START [AJ-035] — Drawer total label with native fallback | See CUSTOM_CHANGES.md — AJ-035{% endcomment %}
+
+        {% if context == 'drawer' %}
+          {% if cart.cart_level_discount_applications.size > 0 %}
+            {{ 'akn_cart.discounted_total' | t }}
+          {% else %}
+            {{ 'akn_cart.subtotal_count' | t: count: cart.item_count }}
+          {% endif %}
+        {% else %}
+          {{ 'content.cart_estimated_total' | t }}
+        {% endif %}
+{% comment %}CUSTOM END [AJ-035]{% endcomment %}
+      </span>
       <text-component
         ref="cartTotal"
         value="{{ total_price | strip_html }}"
@@ -263,10 +276,28 @@
     {% endif %}
     form="cart-form"
   >
-    <span class="button-text">
-      {{ 'content.checkout' | t }}
+    <span class="button-text">{% comment %}CUSTOM START [AJ-035] — Drawer checkout label with native fallback | See CUSTOM_CHANGES.md — AJ-035{% endcomment %}
+
+      {% if context == 'drawer' %}
+        {{ 'akn_cart.checkout' | t }}
+      {% else %}
+        {{ 'content.checkout' | t }}
+      {% endif %}
+{% comment %}CUSTOM END [AJ-035]{% endcomment %}
     </span>
   </button>
+{% comment %}CUSTOM START [AJ-035] — Drawer secondary navigation | See CUSTOM_CHANGES.md — AJ-035{% endcomment %}
+
+  {% if context == 'drawer' %}
+    {% comment %} CUSTOM [AJ-035] — Secondary navigation; no checkout functionality is changed. | See CUSTOM_CHANGES.md — AJ-035 {% endcomment %}
+    <a class="akn-cart-summary__cart-link" href="{{ routes.cart_url }}">
+      {{ 'akn_cart.view_full_cart' | t }}
+    </a>
+    <button type="button" class="akn-cart-summary__continue" on:click="#cart-drawer/close">
+      {{ 'akn_cart.continue_shopping' | t }}
+    </button>
+  {% endif %}
+{% comment %}CUSTOM END [AJ-035]{% endcomment %}
 
   {% if additional_checkout_buttons and settings.show_accelerated_checkout_buttons %}
     <div
@@ -279,6 +310,19 @@
     </div>
   {% endif %}
 </div>
+
+{% comment %}CUSTOM START [AJ-035] — Optional tracked-delivery reassurance | See CUSTOM_CHANGES.md — AJ-035{% endcomment %}
+{% if context == 'drawer' and settings.akn_cart_show_delivery_assurance %}
+  <p class="akn-cart-summary__assurance">
+    <span aria-hidden="true" class="akn-cart-summary__assurance-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 5h12v11H2zM14 9h4l4 4v3h-8z"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>
+      </svg>
+    </span>
+    {{ 'akn_cart.tracked_shipping' | t }}
+  </p>
+{% endif %}
+{% comment %}CUSTOM END [AJ-035]{% endcomment %}
 
 {% stylesheet %}
   .cart-actions {

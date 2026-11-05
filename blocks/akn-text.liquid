@@ -1,6 +1,6 @@
 {% comment %}
 CUSTOM FILE [AJ-003] — Reusable responsive rich-text block with independent mobile styling | See CUSTOM_CHANGES.md — AJ-003
-CUSTOM UPDATE [AJ-032] — Correct letter spacing cascade and add per-device paragraph typography.
+CUSTOM [AJ-032] — Correct letter spacing cascade and add per-device paragraph typography.
 {% endcomment %}
 
 {% doc %}
@@ -195,7 +195,7 @@ CUSTOM UPDATE [AJ-032] — Correct letter spacing cascade and add per-device par
     font-weight: var(--akn-text-desktop-font-weight);
   }
 
-  /* CUSTOM [AJ-032] — Opt-in paragraph styling does not affect headings or other blocks. */
+  /* CUSTOM [AJ-032] — Opt-in paragraph styling does not affect headings or other blocks. | See CUSTOM_CHANGES.md — AJ-032 */
   .akn-text:not([data-desktop-body-font='native']) .akn-text__content--desktop :where(p, ul, ol, blockquote) {
     font-family: var(--akn-text-desktop-body-font-family);
     font-style: var(--akn-text-desktop-body-font-style);
@@ -206,7 +206,7 @@ CUSTOM UPDATE [AJ-032] — Correct letter spacing cascade and add per-device par
     font-size: var(--akn-text-desktop-body-size);
   }
 
-  /* CUSTOM [AJ-032] — Preset tracking yields to precise letter/word spacing. */
+  /* CUSTOM [AJ-032] — Preset tracking yields to precise letter/word spacing. | See CUSTOM_CHANGES.md — AJ-032 */
   .akn-text:not(.akn-text--desktop-custom-spacing):not([data-desktop-letter-spacing='native']) .akn-text__content--desktop :where(h1, h2, h3, h4, h5, h6) {
     letter-spacing: var(--akn-text-desktop-heading-letter-spacing);
   }
@@ -319,7 +319,7 @@ CUSTOM UPDATE [AJ-032] — Correct letter spacing cascade and add per-device par
       font-weight: var(--akn-text-mobile-font-weight);
     }
 
-    /* CUSTOM [AJ-032] — Phone-only paragraph overrides, independent of desktop. */
+    /* CUSTOM [AJ-032] — Phone-only paragraph overrides, independent of desktop. | See CUSTOM_CHANGES.md — AJ-032 */
     .akn-text:not([data-mobile-body-font='native']) .akn-text__content--mobile :where(p, ul, ol, blockquote),
     .akn-text:not([data-mobile-body-font='native']) .akn-text__content--desktop :where(p, ul, ol, blockquote) {
       font-family: var(--akn-text-mobile-body-font-family);

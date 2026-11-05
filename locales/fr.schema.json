@@ -1769,5 +1769,20 @@
       "topics": "Un sujet par ligne. La première option vide est définie séparément.",
       "delivery": "Utilisé uniquement si aucune page n’est sélectionnée au-dessus."
     }
+  },
+  "akn_cart": {
+    "editor": {
+      "empty_header": "Tiroir panier — panier vide",
+      "image_desktop": "Image du panier vide — ordinateur",
+      "image_mobile": "Image du panier vide — mobile",
+      "intro": "Texte d’introduction",
+      "intro_info": "Laisser vide pour afficher le texte traduit automatiquement.",
+      "drawer_background": "Arrière-plan du tiroir panier",
+      "drawer_background_info": "S’applique uniquement au tiroir panier Akan, vide ou rempli.",
+      "account_link": "Afficher le lien de connexion au compte",
+      "filled_header": "Tiroir panier — panier rempli",
+      "tracked_shipping": "Afficher « Livraison suivie »",
+      "shipping_info": "Activer uniquement si la livraison suivie est réellement proposée."
+    }
   }
 }

@@ -22,39 +22,36 @@
     fetchpriority="low"
   ></script>
 
+  {% comment %}
+    CUSTOM START [AJ-035] — Header remains present in both cart states, including after the
+    last item is removed. The empty template contains only cart-items content. | See CUSTOM_CHANGES.md — AJ-035 {% endcomment %}
   {% capture empty_cart_drawer_content %}
-    <div
-      class="cart-drawer__content"
-      aria-label="{{ 'accessibility.cart' | t }}"
-    >
-      <h2
-        class="theme-drawer__title h4"
-        id="cart-drawer-heading"
-      >
-        {{ 'content.your_cart_is_empty' | t }}
-      </h2>
-
+    <div class="cart-drawer__content" aria-label="{{ 'accessibility.cart' | t }}">
       <div class="cart-drawer__items">
         {% render 'cart-products', force_empty: true, context: 'drawer' %}
       </div>
     </div>
   {% endcapture %}
 
-  <theme-drawer
-    id="cart-drawer"
-    data-skip-node-update
-  >
+  {% render 'akn-cart-drawer-styles' %}
+  {% comment %}CUSTOM END [AJ-035]{% endcomment %}
+
+  <theme-drawer id="cart-drawer" data-skip-node-update>
+{% comment %}CUSTOM START [AJ-035] — Drawer visual hooks and merchant background | See CUSTOM_CHANGES.md — AJ-035{% endcomment %}
     <dialog
       ref="panel"
-      class="theme-drawer__dialog color-custom-drawer"
+      class="theme-drawer__dialog color-custom-drawer akn-cart-drawer"
+      style="--akn-cart-cream: {{ settings.akn_cart_drawer_background | default: '#fdf3e8' }};"
       aria-labelledby="cart-drawer-heading"
       cart-summary-sticky="true"
     >
+{% comment %}CUSTOM END [AJ-035]{% endcomment %}
       <cart-drawer-component
         {% if settings.auto_open_cart_drawer and template.name != 'cart' %}
           auto-open
         {% endif %}
       >
+{% comment %}CUSTOM START [AJ-035] — Persistent drawer heading, badge and context-aware empty/full content integration | See CUSTOM_CHANGES.md — AJ-035{% endcomment %}
         <template id="empty-cart-template">
           {{ empty_cart_drawer_content }}
         </template>
@@ -63,44 +60,23 @@
           class="cart-drawer__inner{% if cart.empty? %} cart-drawer--empty{% endif %}"
           data-hydration-key="cart-drawer-inner"
         >
-          {%- if cart.empty? -%}
-            <div class="theme-drawer__header">
-              <button
-                on:click="#cart-drawer/close"
-                class="theme-drawer__close-button cart-drawer__close-button--empty"
-                type="button"
-                aria-label="{{ 'actions.close' | t }}"
-              >
-                <span class="svg-wrapper">
-                  {{- 'icon-close.svg' | inline_asset_content -}}
-                </span>
-              </button>
-            </div>
-          {%- else -%}
-            {% capture cart_badge_html %}
-              <span
-                class="theme-drawer__badge{% if cart.item_count == 0 %} visually-hidden{% endif %}"
-                aria-hidden="true"
-                {% if cart.item_count <= 99 %}
-                  data-maintain-ratio
-                {% endif %}
-              >
-                {{- cart.item_count -}}
-              </span>
-              {% if cart.item_count > 0 %}
-                <span class="visually-hidden">
-                  {{ 'accessibility.cart_count' | t }}: {{ cart.item_count }}
-                </span>
-              {% endif %}
-            {% endcapture %}
-            {% assign cart_drawer_title = 'content.cart_title' | t %}
-            {% render 'theme-drawer-header',
-              title: cart_drawer_title,
-              drawer_id: 'cart-drawer',
-              heading_id: 'cart-drawer-heading',
-              title_append: cart_badge_html
-            %}
-          {%- endif -%}
+          {% capture cart_badge_html %}
+            <span
+              class="theme-drawer__badge"
+              aria-hidden="true"
+              {% if cart.item_count <= 99 %}data-maintain-ratio{% endif %}
+            >{{- cart.item_count -}}</span>
+            <span class="visually-hidden">
+              {{ 'accessibility.cart_count' | t }}: {{ cart.item_count }}
+            </span>
+          {% endcapture %}
+          {% assign cart_drawer_title = 'content.cart_title' | t %}
+          {% render 'theme-drawer-header',
+            title: cart_drawer_title,
+            drawer_id: 'cart-drawer',
+            heading_id: 'cart-drawer-heading',
+            title_append: cart_badge_html
+          %}
 
           {% capture cart_items_children %}
             {%- if cart.empty? -%}
@@ -115,7 +91,7 @@
                 </scroll-hint>
 
                 <div class="cart-drawer__summary">
-                  {% render 'cart-summary', section_id: 'cart-drawer-section' %}
+                  {% render 'cart-summary', section_id: 'cart-drawer-section', context: 'drawer' %}
                 </div>
               </scroll-hint>
             {%- endif -%}
@@ -125,6 +101,7 @@
             is_drawer: true,
             section_id: 'cart-drawer-section'
           %}
+{% comment %}CUSTOM END [AJ-035]{% endcomment %}
         </div>
       </cart-drawer-component>
     </dialog>
@@ -149,11 +126,13 @@
     overflow: hidden;
   }
 
+/* CUSTOM START [AJ-035] — Allow cart items to fill the drawer below its persistent heading | See CUSTOM_CHANGES.md — AJ-035 */
   .cart-drawer__inner > .cart-items-component {
     flex: 1;
     min-height: 0;
     height: auto;
   }
+/* CUSTOM END [AJ-035] */
 
   .cart-drawer__content {
     display: flex;
@@ -251,6 +230,7 @@
     padding-inline: 0;
   }
 
+/* CUSTOM START [AJ-035] — Empty state layout after section updates | See CUSTOM_CHANGES.md — AJ-035 */
   cart-drawer-component:not(:has(.cart-form)) .cart-drawer__content {
     text-align: center;
     align-items: center;
@@ -260,6 +240,7 @@
   cart-drawer-component:not(:has(.cart-form)) .cart-drawer__items {
     padding-inline: 0;
   }
+/* CUSTOM END [AJ-035] */
 
   @media screen and (prefers-reduced-motion: no-preference) {
     html:active-view-transition-type(empty-cart-drawer) {

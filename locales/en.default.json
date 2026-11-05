@@ -373,5 +373,20 @@
       "default_title": "Default Title",
       "sticky_add_to_cart": "Quick add to cart bar"
     }
+  },
+  "akn_cart": {
+    "empty_title": "Your cart is empty",
+    "empty_intro": "Discover jewelry inspired by Akan heritage.",
+    "discover_jewelry": "Explore the jewelry",
+    "sign_in": "Sign in to my account",
+    "subtotal_count": {
+      "one": "Subtotal ({{ count }} item)",
+      "other": "Subtotal ({{ count }} items)"
+    },
+    "discounted_total": "Total after discounts",
+    "checkout": "Proceed to checkout",
+    "view_full_cart": "View full cart",
+    "continue_shopping": "Continue shopping",
+    "tracked_shipping": "Tracked delivery"
   }
 }

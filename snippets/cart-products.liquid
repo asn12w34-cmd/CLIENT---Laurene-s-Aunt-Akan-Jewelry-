@@ -48,30 +48,71 @@
 
 <div
   {{ block.shopify_attributes }}
+{% comment %}CUSTOM START [AJ-035] — Drawer-only empty-state hooks | See CUSTOM_CHANGES.md — AJ-035{% endcomment %}
   class="cart-items__wrapper{% if context == 'drawer' and cart.empty? or force_empty %} cart-items__wrapper--drawer-empty{% endif %}"
   {% if context == 'drawer' and cart.empty? or force_empty %}
     data-cart-drawer-empty
   {% endif %}
+{% comment %}CUSTOM END [AJ-035]{% endcomment %}
   style="
     {%- if settings.product_title_case == 'uppercase' -%}--product-title-case: uppercase;{%- endif -%}
     {{- custom_style -}}
   "
 >
   {% if cart.empty? or force_empty %}
-    {%- if shop.customer_accounts_enabled and customer == null -%}
-      <p>
-        {{ 'actions.log_in_html' | t: link: routes.account_login_url }}
-      </p>
-    {%- endif -%}
-
-    <a
-      class="button cart-items__empty-button"
-      href="{{ settings.empty_cart_button_link | default: routes.all_products_collection_url }}"
-    >
-      <span class="button-text">
-        {{ 'actions.continue_shopping' | t }}
-      </span>
-    </a>
+    {% comment %}CUSTOM START [AJ-035] — Drawer-specific empty view with native cart-page fallback | See CUSTOM_CHANGES.md — AJ-035{% endcomment %}
+    {% if context == 'drawer' %}
+      {% comment %} CUSTOM [AJ-035] — Merchant images, optional on each breakpoint, never rendered as broken placeholders. | See CUSTOM_CHANGES.md — AJ-035 {% endcomment %}
+      {% liquid
+        assign akn_empty_desktop = settings.akn_cart_empty_image_desktop | default: settings.akn_cart_empty_image_mobile
+        assign akn_empty_mobile = settings.akn_cart_empty_image_mobile | default: settings.akn_cart_empty_image_desktop
+      %}
+      <div class="akn-cart-empty">
+        {% comment %}
+          CUSTOM START [AJ-037] — Grande composition éditoriale responsive du panier vide.
+          L'image reste décorative ; picture conserve les deux sélecteurs et leurs replis.
+          See CUSTOM_CHANGES.md — AJ-037
+        {% endcomment %}
+        {% if akn_empty_desktop != blank %}
+          <picture class="akn-cart-empty__picture">
+            {% if settings.akn_cart_empty_image_mobile != blank %}
+              <source
+                media="(max-width: 749px)"
+                srcset="{{ akn_empty_mobile | image_url: width: 360 }} 360w, {{ akn_empty_mobile | image_url: width: 540 }} 540w, {{ akn_empty_mobile | image_url: width: 750 }} 750w, {{ akn_empty_mobile | image_url: width: 1000 }} 1000w, {{ akn_empty_mobile | image_url: width: 1200 }} 1200w"
+                sizes="100vw"
+              >
+            {% endif %}
+            {{ akn_empty_desktop | image_url: width: 1400 | image_tag: class: 'akn-cart-empty__image', widths: '360, 540, 720, 960, 1200, 1400', sizes: '(max-width: 749px) 100vw, 560px', loading: 'lazy', alt: '' }}
+          </picture>
+        {% endif %}
+        {% comment %} CUSTOM END [AJ-037] {% endcomment %}
+        <h3 class="akn-cart-empty__heading">{{ 'akn_cart.empty_title' | t }}</h3>
+        <p class="akn-cart-empty__intro">
+          {% if settings.akn_cart_empty_intro != blank %}
+            {{ settings.akn_cart_empty_intro | escape }}
+          {% else %}
+            {{ 'akn_cart.empty_intro' | t }}
+          {% endif %}
+        </p>
+        <a class="akn-cart-empty__cta" href="{{ settings.empty_cart_button_link | default: routes.all_products_collection_url }}">
+          {{ 'akn_cart.discover_jewelry' | t }}
+        </a>
+        {% if settings.akn_cart_show_account_link and shop.customer_accounts_enabled and customer == null %}
+          <a class="akn-cart-empty__account" href="{{ routes.account_login_url }}">
+            <span class="akn-cart-empty__account-icon" aria-hidden="true">{{ 'icon-account.svg' | inline_asset_content }}</span>
+            <span>{{ 'akn_cart.sign_in' | t }}</span>
+          </a>
+        {% endif %}
+      </div>
+    {% else %}
+      {%- if shop.customer_accounts_enabled and customer == null -%}
+        <p>{{ 'actions.log_in_html' | t: link: routes.account_login_url }}</p>
+      {%- endif -%}
+      <a class="button cart-items__empty-button" href="{{ settings.empty_cart_button_link | default: routes.all_products_collection_url }}">
+        <span class="button-text">{{ 'actions.continue_shopping' | t }}</span>
+      </a>
+    {% endif %}
+    {% comment %}CUSTOM END [AJ-035]{% endcomment %}
   {%- else -%}
     <span
       class="visually-hidden"

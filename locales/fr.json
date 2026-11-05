@@ -361,5 +361,20 @@
       "success_moderated": "Commentaire publié, en attente de modération",
       "success": "Commentaire publié"
     }
+  },
+  "akn_cart": {
+    "empty_title": "Votre panier est vide",
+    "empty_intro": "Découvrez nos bijoux inspirés de l’héritage akan.",
+    "discover_jewelry": "Découvrir les bijoux",
+    "sign_in": "Se connecter à mon compte",
+    "subtotal_count": {
+      "one": "Sous-total ({{ count }} article)",
+      "other": "Sous-total ({{ count }} articles)"
+    },
+    "discounted_total": "Total après réductions",
+    "checkout": "Passer commande",
+    "view_full_cart": "Voir le panier complet",
+    "continue_shopping": "Continuer vos achats",
+    "tracked_shipping": "Livraison suivie"
   }
 }

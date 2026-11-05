@@ -122,10 +122,9 @@
       class="hero__media"
     >
       {%- comment -%}
-        CUSTOM FIX [AJ-033] — Le média mobile provient exclusivement du sélecteur
+        CUSTOM START [AJ-033] — Le média mobile provient exclusivement du sélecteur
         Shopify image_1_mobile, jamais d'un nom de fichier d'asset imposé.
-        L'image desktop (img) reste inchangée et sert de repli.
-      {%- endcomment -%}
+        L'image desktop (img) reste inchangée et sert de repli. | See CUSTOM_CHANGES.md — AJ-033 {%- endcomment -%}
       <source
         media="(max-width: 749px)"
         srcset="
@@ -137,6 +136,7 @@
         width="{{ section.settings.image_1_mobile.width }}"
         height="{{ section.settings.image_1_mobile.height }}"
       >
+      {% comment %}CUSTOM END [AJ-033]{% endcomment %}
       {{
         section.settings.image_1
         | image_url: width: 3840
@@ -462,26 +462,28 @@
 -%}
 
 {% comment %}
-  CUSTOM UPDATE [AJ-032] — Opt-in responsive hero height and image focal point.
+  CUSTOM [AJ-032] — Opt-in responsive hero height and image focal point.
   CUSTOM [AJ-033] — Compositions éditoriales mobiles activables (texte/image ou image/texte).
   CUSTOM [AJ-034] — Fusion mobile image/texte et cadrage à ratio naturel, activés par section.
-  Le mode standard et toute la présentation >= 750px demeurent inchangés.
-{% endcomment %}
+  Le mode standard et toute la présentation >= 750px demeurent inchangés. | See CUSTOM_CHANGES.md — AJ-032 {% endcomment %}
 {% # A first-section hero consumes `--header-group-height` at first paint (`.hero-wrapper:first-child` rule below) %}
 {% render 'measure-header-heights', only_when_first_section: true %}
 
 <div
   id="Hero-{{ section.id }}"
+{% comment %}CUSTOM START [AJ-032] — Hero responsive integration hooks (AJ-033 and AJ-034 share this region) | See CUSTOM_CHANGES.md — AJ-032{% endcomment %}
   data-mobile-custom-height="{{ section.settings.mobile_custom_height_enabled }}"
   data-custom-media-position="{{ section.settings.custom_media_focal_point }}"
   data-mobile-editorial-layout="{{ section.settings.mobile_editorial_layout | default: 'standard' }}"
   data-mobile-editorial-blend="{{ section.settings.mobile_editorial_blend | default: false }}"
+{% comment %}CUSTOM END [AJ-032]{% endcomment %}
   class="hero{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}{% if section.blocks.size == 0 and section.settings.section_height == 'auto' %} hero--no-blocks-auto-height{% endif %}{% if section.settings.stack_media_on_mobile %} hero--stack-mobile{% endif %}"
   style="
     --hero-border-style: {{ section.settings.border }};
     --hero-border-width: {{ section.settings.border_width }}px;
     --hero-border-opacity: {{ section.settings.border_opacity }}%;
     --blur-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
+{% comment %}CUSTOM START [AJ-033] — Editorial mobile background and image ratio, including AJ-034 natural ratio | See CUSTOM_CHANGES.md — AJ-033{% endcomment %}
     --hero-mobile-editorial-bg: {{ section.settings.mobile_editorial_background | default: '#3a120d' }};
     {% case section.settings.mobile_editorial_image_ratio %}
       {% when 'square' %}--hero-mobile-editorial-ratio: 1;
@@ -496,6 +498,8 @@
         {% endif %}
       {% else %}--hero-mobile-editorial-ratio: 5 / 4;
     {% endcase %}
+{% comment %}CUSTOM END [AJ-033]{% endcomment %}
+{% comment %}CUSTOM START [AJ-032] — Opt-in mobile height and responsive focal point variables | See CUSTOM_CHANGES.md — AJ-032{% endcomment %}
     {% if section.settings.mobile_custom_height_enabled %}
       --hero-mobile-min-height: {{ section.settings.mobile_custom_height }}svh;
     {% endif %}
@@ -505,6 +509,7 @@
       --hero-mobile-image-position-x: {{ section.settings.mobile_image_position_x }}%;
       --hero-mobile-image-position-y: {{ section.settings.mobile_image_position_y }}%;
     {% endif %}
+{% comment %}CUSTOM END [AJ-032]{% endcomment %}
     {% if section.settings.section_height == 'custom' %}
       --hero-min-height: {{ section.settings.section_height_custom }}svh;
     {% elsif section.settings.section_height == "full-screen" %}
@@ -603,7 +608,7 @@
     min-height: calc(var(--hero-min-height) - var(--hero-height-offset));
   }
 
-  /* CUSTOM [AJ-032] — Optional media focal point and mobile height. No change to other heroes. */
+  /* CUSTOM START [AJ-032] — Optional media focal point and mobile height | See CUSTOM_CHANGES.md — AJ-032 */
   .hero[data-custom-media-position='true'] .hero__media {
     object-position: var(--hero-image-position-x, 50%) var(--hero-image-position-y, 50%);
   }
@@ -617,6 +622,8 @@
       object-position: var(--hero-mobile-image-position-x, 50%) var(--hero-mobile-image-position-y, 50%);
     }
   }
+
+  /* CUSTOM END [AJ-032] */
 
   .hero[data-shopify-visual-preview] {
     --hero-min-height: 600px;
@@ -817,8 +824,8 @@
       }
     }
   }
-  /* CUSTOM [AJ-033] — Montage mobile isolé : conserver entièrement la composition desktop.
-     Pas de duplicata des textes/CTA et aucune hauteur fixe susceptible de couper les contenus. */
+  /* CUSTOM START [AJ-033] — Montage mobile isolé : conserver entièrement la composition desktop.
+     Pas de duplicata des textes/CTA et aucune hauteur fixe susceptible de couper les contenus. | See CUSTOM_CHANGES.md — AJ-033 */
   @media screen and (max-width: 749px) {
     .hero:is([data-mobile-editorial-layout='text-first'], [data-mobile-editorial-layout='media-first'])[data-mobile-custom-height] {
       min-height: 0;
@@ -911,7 +918,7 @@
     }
 
     /* CUSTOM START [AJ-034] — Une seule composition visuelle mobile, sans changer
-       le hero standard, les autres sections ni la mise en page desktop. */
+       le hero standard, les autres sections ni la mise en page desktop. | See CUSTOM_CHANGES.md — AJ-034 */
     .hero[data-mobile-editorial-blend='true']:is([data-mobile-editorial-layout='text-first'], [data-mobile-editorial-layout='media-first']) .hero__container {
       background: var(--hero-mobile-editorial-bg, #3a120d);
     }
@@ -950,6 +957,7 @@
     }
     /* CUSTOM END [AJ-034] */
   }
+  /* CUSTOM END [AJ-033] */
 {% endstylesheet %}
 
 {% schema %}
@@ -1081,6 +1089,7 @@
       "type": "header",
       "content": "AKAN — Présentation éditoriale mobile"
     },
+    /* CUSTOM START [AJ-033] — Custom setting: mobile_editorial_layout | See CUSTOM_CHANGES.md — AJ-033 */
     {
       "type": "select",
       "id": "mobile_editorial_layout",
@@ -1092,7 +1101,9 @@
         { "value": "media-first", "label": "Image puis texte" }
       ],
       "default": "standard"
-    },
+    }
+    /* CUSTOM END [AJ-033] */,
+    /* CUSTOM START [AJ-034] — Custom setting: mobile_editorial_image_ratio | See CUSTOM_CHANGES.md — AJ-034 */
     {
       "type": "select",
       "id": "mobile_editorial_image_ratio",
@@ -1105,14 +1116,18 @@
       ],
       "default": "wide",
       "visible_if": "{{ section.settings.mobile_editorial_layout != 'standard' }}"
-    },
+    }
+    /* CUSTOM END [AJ-034] */,
+    /* CUSTOM START [AJ-033] — Custom setting: mobile_editorial_background | See CUSTOM_CHANGES.md — AJ-033 */
     {
       "type": "color",
       "id": "mobile_editorial_background",
       "label": "Fond du panneau de texte mobile",
       "default": "#3a120d",
       "visible_if": "{{ section.settings.mobile_editorial_layout != 'standard' }}"
-    },
+    }
+    /* CUSTOM END [AJ-033] */,
+    /* CUSTOM START [AJ-034] — Custom setting: mobile_editorial_blend | See CUSTOM_CHANGES.md — AJ-034 */
     {
       "type": "checkbox",
       "id": "mobile_editorial_blend",
@@ -1120,7 +1135,8 @@
       "info": "Crée un fondu discret entre la photo et le texte sur mobile. Désactivé : conserve la séparation actuelle.",
       "default": false,
       "visible_if": "{{ section.settings.mobile_editorial_layout != 'standard' }}"
-    },
+    }
+    /* CUSTOM END [AJ-034] */,
     {
       "type": "header",
       "content": "t:content.mobile_media_1",
@@ -1400,12 +1416,15 @@
       "unit": "%",
       "visible_if": "{{ section.settings.section_height == 'custom' }}"
     },
+    /* CUSTOM START [AJ-032] — Custom setting: mobile_custom_height_enabled | See CUSTOM_CHANGES.md — AJ-032 */
     {
       "type": "checkbox",
       "id": "mobile_custom_height_enabled",
       "label": "t:settings.akn_editorial_update.mobile_height_toggle",
       "default": false
-    },
+    }
+    /* CUSTOM END [AJ-032] */,
+    /* CUSTOM START [AJ-032] — Custom setting: mobile_custom_height | See CUSTOM_CHANGES.md — AJ-032 */
     {
       "type": "range",
       "id": "mobile_custom_height",
@@ -1417,46 +1436,57 @@
       "default": 75,
       "info": "t:settings.akn_editorial_update.mobile_height_info",
       "visible_if": "{{ section.settings.mobile_custom_height_enabled }}"
-    },
+    }
+    /* CUSTOM END [AJ-032] */,
     {
       "type": "header",
       "content": "t:settings.akn_editorial_update.focal_header"
     },
+    /* CUSTOM START [AJ-032] — Custom setting: custom_media_focal_point | See CUSTOM_CHANGES.md — AJ-032 */
     {
       "type": "checkbox",
       "id": "custom_media_focal_point",
       "label": "t:settings.akn_editorial_update.focal_toggle",
       "info": "t:settings.akn_editorial_update.focal_info",
       "default": false
-    },
+    }
+    /* CUSTOM END [AJ-032] */,
+    /* CUSTOM START [AJ-032] — Custom setting: desktop_image_position_x | See CUSTOM_CHANGES.md — AJ-032 */
     {
       "type": "range",
       "id": "desktop_image_position_x",
       "label": "t:settings.akn_editorial_update.desktop_x",
       "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50,
       "visible_if": "{{ section.settings.custom_media_focal_point }}"
-    },
+    }
+    /* CUSTOM END [AJ-032] */,
+    /* CUSTOM START [AJ-032] — Custom setting: desktop_image_position_y | See CUSTOM_CHANGES.md — AJ-032 */
     {
       "type": "range",
       "id": "desktop_image_position_y",
       "label": "t:settings.akn_editorial_update.desktop_y",
       "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50,
       "visible_if": "{{ section.settings.custom_media_focal_point }}"
-    },
+    }
+    /* CUSTOM END [AJ-032] */,
+    /* CUSTOM START [AJ-032] — Custom setting: mobile_image_position_x | See CUSTOM_CHANGES.md — AJ-032 */
     {
       "type": "range",
       "id": "mobile_image_position_x",
       "label": "t:settings.akn_editorial_update.mobile_x",
       "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50,
       "visible_if": "{{ section.settings.custom_media_focal_point }}"
-    },
+    }
+    /* CUSTOM END [AJ-032] */,
+    /* CUSTOM START [AJ-032] — Custom setting: mobile_image_position_y | See CUSTOM_CHANGES.md — AJ-032 */
     {
       "type": "range",
       "id": "mobile_image_position_y",
       "label": "t:settings.akn_editorial_update.mobile_y",
       "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50,
       "visible_if": "{{ section.settings.custom_media_focal_point }}"
-    },
+    }
+    /* CUSTOM END [AJ-032] */,
     {
       "type": "header",
       "content": "t:content.appearance"

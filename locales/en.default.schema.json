@@ -1866,5 +1866,20 @@
       "topics": "One subject per line. The initial empty prompt is configured separately.",
       "delivery": "Used only when no page is selected above."
     }
+  },
+  "akn_cart": {
+    "editor": {
+      "empty_header": "Cart drawer — empty cart",
+      "image_desktop": "Empty cart image — desktop",
+      "image_mobile": "Empty cart image — mobile",
+      "intro": "Introductory text",
+      "intro_info": "Leave blank to use the translated default message.",
+      "drawer_background": "Cart drawer background",
+      "drawer_background_info": "Applies only to the Akan cart drawer, in both empty and filled states.",
+      "account_link": "Show account sign-in link",
+      "filled_header": "Cart drawer — filled cart",
+      "tracked_shipping": "Show “Tracked delivery”",
+      "shipping_info": "Enable only when tracked delivery is genuinely offered."
+    }
   }
 }

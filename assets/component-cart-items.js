@@ -266,16 +266,19 @@ export class CartItemsComponent extends createViewEventElement(Component) {
     const isEmptyCart = rowsToRemove.length == this.refs.cartItemRows.length;
 
     const template = document.getElementById('empty-cart-template');
-    if (isEmptyCart && template instanceof HTMLTemplateElement) {
+    // CUSTOM START [AJ-035] — Keep the drawer heading and its count accessible. Only show | See CUSTOM_CHANGES.md — AJ-035
+    // the drawer's empty view after a successful cart/change response and section morph;
+    // optimistic replacement otherwise loses error/focus controls on network failure.
+    if (isEmptyCart && template instanceof HTMLTemplateElement && !this.isDrawer) {
       const clone = document.importNode(template.content, true);
-
       startViewTransition(() => {
         document.getElementById('cart-drawer-heading')?.remove();
         this.replaceChildren(clone);
-      }, [this.isDrawer ? 'empty-cart-drawer' : 'empty-cart-page']);
-
+      }, ['empty-cart-page']);
       return;
     }
+
+    /* CUSTOM END [AJ-035] */
 
     // Add class to the row to trigger the animation
     rowsToRemove.forEach((row) => {

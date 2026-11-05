@@ -190,6 +190,47 @@
     }
   }
 
+  /* CUSTOM START [AJ-036] — Identité visuelle du pop-up de compte Akan Jewelry | See CUSTOM_CHANGES.md — AJ-036 */
+  /*
+    Le contenu et les interactions restent gérés par Shopify.
+    Ces variables publiques s'appliquent au composant natif sur desktop et mobile.
+    Les couleurs de la fenêtre sont indépendantes de l'en-tête noir de la boutique.
+  */
+  .account-button shopify-account {
+    /* Typographies existantes du thème (Newsreader / Red Hat Text). */
+    --shopify-account-font-heading: var(--font-heading--family);
+    --shopify-account-font-heading-weight: var(--font-heading--weight);
+    --shopify-account-font-body: var(--font-body--family);
+    --shopify-account-font-body-weight: var(--font-body--weight);
+    --shopify-account-font-heading-transform: none;
+    --shopify-account-font-body-transform: none;
+
+    /* Fond ivoire, textes foncés et contours chauds des maquettes. */
+    --shopify-account-color-background: #fcf8f2;
+    --shopify-account-color-background-subdued: #f3e9df;
+    --shopify-account-color-card-background: #fcf8f2;
+    --shopify-account-color-card-text: #231815;
+    --shopify-account-color-control-background: #fffaf5;
+    --shopify-account-color-control-text: #231815;
+    --shopify-account-color-text: #231815;
+    --shopify-account-color-text-subdued: #69615d;
+    --shopify-account-color-border: #d7c0ac;
+    --shopify-account-color-shadow: rgb(46 28 16 / 18%);
+
+    /* Accent violet du bouton Shop / des actions natives, si disponibles. */
+    --shopify-account-color-accent: #5024ed;
+    --shopify-account-color-accent-hover: #3e1ccc;
+    --shopify-account-color-accent-text: #ffffff;
+
+    /* Angles adaptés à la fenêtre, aux champs et aux boutons. */
+    --shopify-account-radius-base: 12px;
+    --shopify-account-radius-dialog: 18px;
+    --shopify-account-radius-button: 10px;
+    --shopify-account-radius-button-small: 9px;
+    --shopify-account-radius-input: 11px;
+  }
+  /* CUSTOM END [AJ-036] */
+
   .account-button__fallback {
     width: 28px;
     height: 28px;

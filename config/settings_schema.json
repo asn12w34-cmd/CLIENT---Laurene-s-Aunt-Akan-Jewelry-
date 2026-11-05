@@ -1561,12 +1561,59 @@
         "info": "t:info.checkout_buttons",
         "default": true
       },
-      {
+            {
         "type": "url",
         "id": "empty_cart_button_link",
         "label": "t:settings.empty_cart_button_link",
         "default": "/collections/all"
       },
+      /* CUSTOM START [AJ-035] — AKAN cart drawer appearance, media and reassurance settings | See CUSTOM_CHANGES.md — AJ-035 */
+      {
+        "type": "color",
+        "id": "akn_cart_drawer_background",
+        "label": "t:akn_cart.editor.drawer_background",
+        "info": "t:akn_cart.editor.drawer_background_info",
+        "default": "#fdf3e8",
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },   
+      /* CUSTOM END [AJ-035] */ 
+{
+  "type": "header",
+  "content": "t:akn_cart.editor.empty_header"
+},
+{
+  "type": "image_picker",
+  "id": "akn_cart_empty_image_desktop",
+  "label": "t:akn_cart.editor.image_desktop"
+},
+{
+  "type": "image_picker",
+  "id": "akn_cart_empty_image_mobile",
+  "label": "t:akn_cart.editor.image_mobile"
+},
+{
+  "type": "text",
+  "id": "akn_cart_empty_intro",
+  "label": "t:akn_cart.editor.intro",
+  "info": "t:akn_cart.editor.intro_info"
+},
+{
+  "type": "checkbox",
+  "id": "akn_cart_show_account_link",
+  "label": "t:akn_cart.editor.account_link",
+  "default": true
+},
+{
+  "type": "header",
+  "content": "t:akn_cart.editor.filled_header"
+},
+{
+  "type": "checkbox",
+  "id": "akn_cart_show_delivery_assurance",
+  "label": "t:akn_cart.editor.tracked_shipping",
+  "info": "t:akn_cart.editor.shipping_info",
+  "default": false
+},
       {
         "type": "header",
         "content": "t:content.product_media"
