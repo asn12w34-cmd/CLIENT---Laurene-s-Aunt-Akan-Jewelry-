@@ -1,5 +1,5 @@
 /*
-  CUSTOM FILE [AJ-044] — Persist the FCFA display preference and close language disclosures.
+  CUSTOM FILE [AJ-044] — Persist the FCFA display preference and close language disclosures | See CUSTOM_CHANGES.md — AJ-044
   Estimates remain server-rendered by snippets/akn-fcfa.liquid (not recalculated here).
 */
 (() => {

@@ -1576,11 +1576,11 @@
         "default": "#fdf3e8",
         "visible_if": "{{ settings.cart_type == 'drawer' }}"
       },   
-      /* CUSTOM END [AJ-035] */ 
 {
   "type": "header",
   "content": "t:akn_cart.editor.empty_header"
 },
+/* CUSTOM [AJ-037] — Responsive empty-cart images | See CUSTOM_CHANGES.md — AJ-037 */
 {
   "type": "image_picker",
   "id": "akn_cart_empty_image_desktop",
@@ -1614,6 +1614,7 @@
   "info": "t:akn_cart.editor.shipping_info",
   "default": false
 },
+/* CUSTOM END [AJ-035] */
       {
         "type": "header",
         "content": "t:content.product_media"
@@ -1871,6 +1872,7 @@
         "label": "t:settings.product_pages",
         "default": true
       },
+      /* CUSTOM [AJ-043] — Enable informational FCFA estimates | See CUSTOM_CHANGES.md — AJ-043 */
       {
         "type": "checkbox",
         "id": "akn_fcfa_enabled",

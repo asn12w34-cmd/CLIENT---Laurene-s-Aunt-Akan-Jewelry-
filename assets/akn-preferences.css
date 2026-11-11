@@ -1,5 +1,5 @@
 /*
-  CUSTOM FILE [AJ-044] — AKAN language disclosure and FCFA visitor preference.
+  CUSTOM FILE [AJ-044] — AKAN language disclosure and FCFA visitor preference | See CUSTOM_CHANGES.md — AJ-044
   Styles are global so dynamically refreshed prices inherit their visibility.
 */
 html[data-akn-fcfa-visible='false'] .akn-fcfa-estimate,

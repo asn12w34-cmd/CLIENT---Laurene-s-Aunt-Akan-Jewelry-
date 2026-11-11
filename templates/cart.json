@@ -16,7 +16,7 @@
           "type": "_cart-title",
           "static": true,
           "settings": {
-            "title": "Panier",
+            "title": "Cart",
             "show_count": true,
             "type_preset": "h4",
             "alignment": "left",
@@ -67,7 +67,7 @@
       },
       "settings": {
         "section_width": "page-width",
-        "background_color": "#f2e9dc",
+        "background_color": "#F2E9DC",
         "text_color": "",
         "padding-block-start": 32,
         "padding-block-end": 0
@@ -114,7 +114,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<h3>Articles vous pourriez aimer</h3>",
+                "text": "<h3>You may also like</h3>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -140,7 +140,7 @@
               "type": "_product-list-button",
               "name": "t:names.product_list_button",
               "settings": {
-                "label": "Tout voir",
+                "label": "View all",
                 "open_in_new_tab": false,
                 "style_class": "link",
                 "custom_button_background": "{{ settings.color_palette.foreground }}",
@@ -414,14 +414,30 @@
         "section_width": "page-width",
         "horizontal_alignment": "flex-start",
         "gap": 28,
-        "background_color": "#f2e9dc",
+        "background_color": "#F2E9DC",
         "padding-block-start": 48,
         "padding-block-end": 48
+      }
+    },
+    "divider_aaknnG": {
+      "type": "divider",
+      "name": "t:names.divider_section",
+      "settings": {
+        "background_color": "#F2E9DC",
+        "divider_color": "",
+        "section_width": "page-width",
+        "thickness": 1,
+        "corner_radius": "square",
+        "width_percent": 100,
+        "alignment_horizontal": "center",
+        "padding-block-start": 84,
+        "padding-block-end": 16
       }
     }
   },
   "order": [
     "cart-section",
-    "product_list_MxPXQq"
+    "product_list_MxPXQq",
+    "divider_aaknnG"
   ]
 }
