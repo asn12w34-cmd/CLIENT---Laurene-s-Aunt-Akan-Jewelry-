@@ -8,6 +8,9 @@
 
 {% render 'text-component-shimmer-styles' %}
 {% render 'cart-typography-styles' %}
+{% comment %}CUSTOM START [AJ-043] — Load shared FCFA styles for cart totals. | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'price-styles' %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}
 
 <div class="cart-totals">
   {% # We need to keep this node in place to allow morphing to work properly # %}
@@ -20,6 +23,9 @@
           data-testid="cart-subtotal-value"
         >
           <bdi>{{- cart.items_subtotal_price | money -}}</bdi>
+          {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: cart.items_subtotal_price %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}
         </span>
       </span>
       <ul
@@ -35,6 +41,10 @@
             </span>
             <span class="cart-discounts__value cart-secondary-typography"
               ><bdi>-{{ discount.total_allocated_amount | money }}</bdi>
+              {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% assign akn_fcfa_negative_discount = discount.total_allocated_amount | times: -1 %}
+{% render 'akn-fcfa', amount: akn_fcfa_negative_discount %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}
             </span>
           </li>
         {%- endfor -%}
@@ -250,6 +260,9 @@
         data-cart-subtotal
       >
         <bdi>{{ total_price }}</bdi>
+        {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: cart.total_price %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}
       </text-component>
     </span>
     {% if settings.show_installments %}
@@ -259,6 +272,13 @@
         {% endform %}
       </span>
     {% endif %}
+    {% comment %}CUSTOM START [AJ-043] — Estimate notice appears only in EUR storefronts with FCFA enabled. | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+    {% assign akn_cart_currency = cart.currency.iso_code | default: shop.currency %}
+    {% assign akn_country_currency = localization.country.currency.iso_code | default: shop.currency %}
+    {% if settings.akn_fcfa_enabled and shop.currency == 'EUR' and akn_cart_currency == 'EUR' and akn_country_currency == 'EUR' %}
+      <p class="akn-fcfa-cart-note">{{ 'akn_fcfa.cart_notice' | t }}</p>
+    {% endif %}
+    {% comment %}CUSTOM END [AJ-043]{% endcomment %}
     <div class="cart-totals__item cart-totals__tax-note cart-primary-typography">
       {% render 'tax-info', has_discounts_enabled: settings.show_add_discount_code %}
     </div>

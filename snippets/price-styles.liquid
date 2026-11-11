@@ -60,4 +60,44 @@
   .price-item__group {
     display: inline-block;
   }
+  /* CUSTOM START [AJ-043] — Shared responsive, non-transactional FCFA secondary prices. | See CUSTOM_CHANGES.md — AJ-043 */
+  .akn-fcfa-estimate {
+    display: block;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+    font-family: var(--font-body--family);
+    font-style: normal;
+    font-weight: var(--font-paragraph--weight);
+    font-size: min(0.76em, var(--font-paragraph--size));
+    line-height: 1.35;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    color: rgb(var(--color-rgb, var(--color-foreground-rgb)) / var(--opacity-subdued-text));
+  }
+
+  .akn-fcfa-estimate .visually-hidden {
+    position: absolute;
+  }
+
+  .akn-fcfa-estimate bdi {
+    unicode-bidi: isolate;
+  }
+
+  /* Existing strike-through semantics also cover the comparable XOF estimate. */
+  .compare-at-price .akn-fcfa-estimate {
+    text-decoration-line: line-through;
+    text-decoration-color: rgb(var(--color-rgb, var(--color-foreground-rgb)) / var(--opacity-30));
+    text-decoration-thickness: 1.5px;
+  }
+  .akn-fcfa-cart-note {
+    margin: 0;
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--xs);
+    font-weight: var(--font-paragraph--weight);
+    line-height: 1.45;
+    color: rgb(var(--color-rgb, var(--color-foreground-rgb)) / var(--opacity-subdued-text));
+  }
+  /* CUSTOM END [AJ-043] */
 {% endstylesheet %}

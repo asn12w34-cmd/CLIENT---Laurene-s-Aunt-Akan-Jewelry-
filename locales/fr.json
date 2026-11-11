@@ -376,5 +376,17 @@
     "view_full_cart": "Voir le panier complet",
     "continue_shopping": "Continuer vos achats",
     "tracked_shipping": "Livraison suivie"
+  },
+  "akn_fcfa": {
+    "accessible_single": "Estimation indicative en francs CFA : {{ amount }} FCFA",
+    "accessible_range": "Estimation indicative en francs CFA : de {{ minimum }} à {{ maximum }} FCFA",
+    "accessible_from": "Estimation indicative à partir de {{ amount }} FCFA",
+    "accessible_unit": "Prix unitaire indicatif en francs CFA : {{ amount }} FCFA par {{ unit }}",
+    "cart_notice": "Montants FCFA indicatifs. Paiement en EUR.",
+    "language_current": "Langue actuelle",
+    "toggle_label": "Afficher ou masquer les estimations en francs CFA",
+    "toggle_short": "FCFA",
+    "toggle_on": "Affichée",
+    "toggle_off": "Masquée"
   }
 }

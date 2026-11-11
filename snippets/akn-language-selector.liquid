@@ -1,0 +1,45 @@
+{% comment %}
+CUSTOM FILE [AJ-044] — Sélecteur de langue discret utilisant le formulaire Shopify | See CUSTOM_CHANGES.md — AJ-044
+{% endcomment %}
+{% doc %}
+  Renders a native Shopify localization form with a styled details disclosure.
+  The clicked submit button supplies language_code, leaving Shopify to handle
+  redirects and translated URLs. No custom translation engine is involved.
+  @param {string} placement - Unique location token: header, drawer or footer.
+  @param {string} form_id - The containing section or block ID.
+  @example
+  {% render 'akn-language-selector', placement: 'header', form_id: section.id %}
+{% enddoc %}
+{%- if localization.available_languages.size > 1 -%}
+  {%- assign akn_language_id = 'AknLanguage-' | append: placement | append: '-' | append: form_id -%}
+  {%- assign akn_language_label = 'content.language' | t -%}
+  <details class="akn-language-selector" data-akn-language-selector>
+    <summary class="akn-language-selector__trigger" aria-label="{{ 'content.language' | t | escape }}: {{ localization.language.endonym_name | escape }}">
+      <span aria-hidden="true">{{ localization.language.iso_code | upcase | escape }}</span>
+      <span class="akn-language-selector__chevron" aria-hidden="true">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+    </summary>
+    <div class="akn-language-selector__panel">
+      <p class="akn-language-selector__heading" id="{{ akn_language_id }}-label">{{ 'content.language' | t }}</p>
+      {%- form 'localization', id: akn_language_id, return_to: request.path, aria-label: akn_language_label -%}
+        <div class="akn-language-selector__options" role="group" aria-labelledby="{{ akn_language_id }}-label">
+          {%- for language in localization.available_languages -%}
+            <button
+              type="submit"
+              class="akn-language-selector__option{% if language.iso_code == localization.language.iso_code %} is-current{% endif %}"
+              name="language_code"
+              value="{{ language.iso_code | escape }}"
+              lang="{{ language.iso_code | escape }}"
+              {% if language.iso_code == localization.language.iso_code %}aria-current="true"{% endif %}
+            >
+              <span>{{ language.endonym_name | capitalize | escape }}</span>
+              {% if language.iso_code == localization.language.iso_code %}
+                <span class="akn-language-selector__check" aria-hidden="true">✓</span>
+                <span class="visually-hidden">{{ 'akn_fcfa.language_current' | t }}</span>
+              {% endif %}
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endform -%}
+    </div>
+  </details>
+{%- endif -%}

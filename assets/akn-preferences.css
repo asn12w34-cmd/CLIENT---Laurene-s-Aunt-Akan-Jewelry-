@@ -1,0 +1,153 @@
+/*
+  CUSTOM FILE [AJ-044] — AKAN language disclosure and FCFA visitor preference.
+  Styles are global so dynamically refreshed prices inherit their visibility.
+*/
+html[data-akn-fcfa-visible='false'] .akn-fcfa-estimate,
+html[data-akn-fcfa-visible='false'] .akn-fcfa-cart-note {
+  display: none !important;
+}
+.akn-localization-preferences {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(9px, 1.2vw, 20px);
+  font-family: var(--font-body--family);
+  color: inherit;
+  line-height: 1.3;
+}
+.akn-language-selector { position: relative; flex: 0 0 auto; color: inherit; }
+.akn-language-selector__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 53px;
+  min-height: 44px;
+  padding: 5px 4px;
+  color: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  list-style: none;
+}
+.akn-language-selector__trigger::-webkit-details-marker { display: none; }
+.akn-language-selector__trigger::marker { content: ''; }
+.akn-language-selector__chevron,
+.akn-language-selector__chevron svg { width: 12px; height: 12px; display: block; }
+.akn-language-selector[open] .akn-language-selector__chevron { transform: rotate(180deg); }
+.akn-language-selector__panel {
+  position: absolute;
+  z-index: 120;
+  inset-block-start: calc(100% + 6px);
+  inset-inline-end: 0;
+  min-width: 178px;
+  padding: 9px 0;
+  background: #171311;
+  color: #fbf8f1;
+  border: 1px solid #8d7249;
+  box-shadow: 0 12px 28px rgb(0 0 0 / 20%);
+}
+.akn-language-selector__heading {
+  margin: 0;
+  padding: 8px 17px;
+  font-size: 0.72rem;
+  color: #d8b98c;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.akn-language-selector__options { display: grid; }
+.akn-language-selector__option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 17px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  text-align: start;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.akn-language-selector__option:hover,
+.akn-language-selector__option:focus-visible { background: #382922; }
+.akn-language-selector__option.is-current { color: #ebc38a; }
+.akn-language-selector__check { font-size: 1rem; }
+.akn-fcfa-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 4px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.akn-fcfa-toggle__label { font-weight: 500; letter-spacing: 0.02em; }
+.akn-fcfa-toggle__track {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 31px;
+  width: 31px;
+  height: 18px;
+  padding: 2px;
+  border: 1px solid currentColor;
+  border-radius: 16px;
+  background: #987341;
+  transition: background-color 150ms ease;
+}
+.akn-fcfa-toggle__thumb {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  transform: translateX(12px);
+  transition: transform 150ms ease;
+}
+.akn-fcfa-toggle[aria-pressed='false'] .akn-fcfa-toggle__track { background: transparent; }
+.akn-fcfa-toggle[aria-pressed='false'] .akn-fcfa-toggle__thumb { transform: translateX(0); }
+.akn-fcfa-toggle__status { font-size: 0.73rem; opacity: 0.85; }
+.akn-language-selector__trigger:focus-visible,
+.akn-fcfa-toggle:focus-visible,
+.akn-language-selector__option:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+.akn-language-selector__option:focus-visible { outline-offset: -3px; }
+.akn-fcfa-toggle--drawer .akn-fcfa-toggle__label { font-size: 0.86rem; }
+.akn-drawer__preferences {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  padding-bottom: 10px;
+}
+.akn-drawer__preferences .akn-language-selector__panel {
+  inset-block-start: auto;
+  inset-block-end: calc(100% + 5px);
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+}
+.akn-footer-utilities__localization .akn-language-selector__panel {
+  inset-block-start: auto;
+  inset-block-end: calc(100% + 5px);
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+}
+@media (max-width: 749px) {
+  .akn-drawer__preferences { width: 100%; justify-content: space-between; }
+  .akn-drawer__preferences .akn-fcfa-toggle { margin-inline-end: 0; }
+  .akn-drawer__preferences .akn-fcfa-toggle__label { font-size: 0.86rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .akn-fcfa-toggle__track, .akn-fcfa-toggle__thumb { transition: none; }
+}

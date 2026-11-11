@@ -435,7 +435,7 @@
         "show_copyright": true,
         "copyright_text": "Tous droits réservés",
         "show_language": true,
-        "show_country": true,
+        "show_country": false,
         "show_payment_group": true,
         "payment_heading": "Modes de paiement :",
         "show_dynamic_payment_icons": false,

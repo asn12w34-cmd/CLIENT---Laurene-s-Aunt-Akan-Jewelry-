@@ -1,0 +1,34 @@
+{% comment %}
+CUSTOM FILE [AJ-044] — Préférence visiteur pour l’affichage FCFA | See CUSTOM_CHANGES.md — AJ-044
+{% endcomment %}
+{% doc %}
+  Visitor-only presentation toggle. The merchant global setting still decides
+  whether any estimates or controls can exist; only EUR storefronts are eligible.
+  @param {string} [placement] - Location: header, drawer or footer.
+  @example
+  {% render 'akn-fcfa-toggle', placement: 'header' %}
+{% enddoc %}
+{%- liquid
+  assign akn_toggle_currency = cart.currency.iso_code | default: shop.currency
+  assign akn_toggle_country_currency = localization.country.currency.iso_code | default: shop.currency
+  assign akn_toggle_eligible = false
+  if settings.akn_fcfa_enabled and shop.currency == 'EUR' and akn_toggle_currency == 'EUR' and akn_toggle_country_currency == 'EUR'
+    assign akn_toggle_eligible = true
+  endif
+-%}
+{%- if akn_toggle_eligible -%}
+  <button
+    type="button"
+    class="akn-fcfa-toggle akn-fcfa-toggle--{{ placement | default: 'header' | escape }}"
+    data-akn-fcfa-toggle
+    aria-pressed="true"
+    aria-label="{{ 'akn_fcfa.toggle_label' | t | escape }}"
+    title="{{ 'akn_fcfa.toggle_label' | t | escape }}"
+    data-state-on="{{ 'akn_fcfa.toggle_on' | t | escape }}"
+    data-state-off="{{ 'akn_fcfa.toggle_off' | t | escape }}"
+  >
+    <span class="akn-fcfa-toggle__label">{{ 'akn_fcfa.toggle_short' | t }}</span>
+    <span class="akn-fcfa-toggle__track" aria-hidden="true"><span class="akn-fcfa-toggle__thumb"></span></span>
+    <span class="akn-fcfa-toggle__status" data-akn-fcfa-status>{{ 'akn_fcfa.toggle_on' | t }}</span>
+  </button>
+{%- endif -%}

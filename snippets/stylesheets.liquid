@@ -1,2 +1,6 @@
 {{ 'overflow-list.css' | asset_url | preload_tag: as: 'style' }}
 {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
+
+{% comment %} CUSTOM START [AJ-044] — Load global preference styles before storefront content. | See CUSTOM_CHANGES.md — AJ-044 {% endcomment %}
+{{ 'akn-preferences.css' | asset_url | stylesheet_tag }}
+{% comment %} CUSTOM END [AJ-044] {% endcomment %}

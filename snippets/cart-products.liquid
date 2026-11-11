@@ -346,14 +346,23 @@
                       {% if item.original_price != item.final_price %}
                         <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
                         <span
-                          ><bdi>{{ item.final_price | money }}</bdi></span
+                          ><bdi>{{ item.final_price | money }}</bdi>
+                          {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: item.final_price %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}</span
                         >
                         <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
                         <s class="compare-at-price">
                           {% if item.variant.compare_at_price > item.original_price %}
                             <bdi>{{ item.variant.compare_at_price | money }}</bdi>
+                            {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: item.variant.compare_at_price %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}
                           {% else %}
                             <bdi>{{ item.original_price | money }}</bdi>
+                            {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: item.original_price %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}
                           {% endif %}
                         </s>
                       {% else %}
@@ -364,13 +373,19 @@
                         {% endif %}
 
                         <span
-                          ><bdi>{{ item.original_price | money }}</bdi></span
+                          ><bdi>{{ item.original_price | money }}</bdi>
+                          {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: item.original_price %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}</span
                         >
 
                         {% if item.variant.compare_at_price > item.original_price %}
                           <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
                           <s class="compare-at-price"
-                            ><bdi>{{ item.variant.compare_at_price | money }}</bdi></s
+                            ><bdi>{{ item.variant.compare_at_price | money }}</bdi>
+                            {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: item.variant.compare_at_price %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}</s
                           >
                         {% endif %}
                       {% endif %}
@@ -451,11 +466,14 @@
                   headers="productTotal"
                 >
                   <text-component value="{{ price | strip_html }}"
-                    ><bdi>{{ price }}</bdi></text-component
+                    ><bdi>{{ price }}</bdi>
+                    {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: item.final_line_price %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}</text-component
                   >
                   {%- if item.unit_price_measurement -%}
                     <div class="cart-items__price-unit cart-secondary-typography">
-                      {% render 'unit-price', price: unit_price, measurement: item.unit_price_measurement %}
+                      {% render 'unit-price', price: unit_price, measurement: item.unit_price_measurement, raw_price: item.unit_price %}
                     </div>
                   {%- endif -%}
                 </td>

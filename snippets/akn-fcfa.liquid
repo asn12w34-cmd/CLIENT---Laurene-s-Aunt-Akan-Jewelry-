@@ -1,0 +1,88 @@
+{% comment %}
+CUSTOM FILE [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043
+{% endcomment %}
+{% doc %}
+  Purely informational XOF equivalent of an actual EUR money amount (Shopify minor units).
+  Never use for checkout, metadata, attributes, JSON, price filters or money calculations.
+  @param {number} [amount] - EUR amount in Shopify cents; zero is valid.
+  @param {number} [minimum] - Lower bound (in cents) when mode is range.
+  @param {number} [maximum] - Upper bound (in cents) when mode is range.
+  @param {string} [mode] - 'range' or 'from'; default single amount.
+  @param {boolean} [allow] - False for editor placeholder products.
+  @param {object} [unit_measurement] - Optional real unit-price measurement.
+  @example
+  {% render 'akn-fcfa', amount: product.selected_or_first_available_variant.price %}
+{% enddoc %}
+{%- liquid
+  assign akn_fcfa_eligible = false
+  assign akn_fcfa_cart_currency = cart.currency.iso_code | default: shop.currency
+  assign akn_fcfa_country_currency = localization.country.currency.iso_code | default: shop.currency
+  if settings.akn_fcfa_enabled and shop.currency == 'EUR' and akn_fcfa_cart_currency == 'EUR' and akn_fcfa_country_currency == 'EUR' and allow != false
+    assign akn_fcfa_eligible = true
+  endif
+
+  assign akn_fcfa_range = false
+  if mode == 'range' and minimum != nil and maximum != nil
+    assign akn_fcfa_range = true
+    assign akn_fcfa_input = minimum | append: '|' | append: maximum
+  elsif amount != nil
+    assign akn_fcfa_input = amount | append: ''
+  else
+    assign akn_fcfa_eligible = false
+  endif
+-%}
+{%- if akn_fcfa_eligible -%}
+  {%- liquid
+    assign akn_fcfa_grouping = ','
+    assign akn_fcfa_language = request.locale.iso_code | slice: 0, 2
+    if akn_fcfa_language == 'fr'
+      assign akn_fcfa_grouping = ' '
+    endif
+
+    assign akn_fcfa_values = akn_fcfa_input | split: '|'
+    assign akn_fcfa_display = ''
+    for akn_fcfa_raw in akn_fcfa_values
+      assign akn_fcfa_cents = akn_fcfa_raw | plus: 0
+      assign akn_fcfa_sign = ''
+      if akn_fcfa_cents < 0
+        assign akn_fcfa_sign = '−'
+        assign akn_fcfa_cents = akn_fcfa_cents | abs
+      endif
+      # One and only rate definition: 655.957 XOF / EUR. Shopify EUR prices are cents.
+      # CUSTOM [AJ-044] — Round the informational equivalent to the nearest 100 FCFA, not the EUR price.
+      assign akn_fcfa_integer = akn_fcfa_cents | times: 655957 | divided_by: 10000000.0 | round | times: 100
+      assign akn_fcfa_digits_reversed = akn_fcfa_integer | append: '' | split: '' | reverse
+      assign akn_fcfa_formatted_reversed = ''
+      for akn_fcfa_digit in akn_fcfa_digits_reversed
+        assign akn_fcfa_digit_position = forloop.index0 | modulo: 3
+        if forloop.index0 > 0 and akn_fcfa_digit_position == 0
+          assign akn_fcfa_formatted_reversed = akn_fcfa_formatted_reversed | append: akn_fcfa_grouping
+        endif
+        assign akn_fcfa_formatted_reversed = akn_fcfa_formatted_reversed | append: akn_fcfa_digit
+      endfor
+      assign akn_fcfa_formatted = akn_fcfa_formatted_reversed | split: '' | reverse | join: '' | prepend: akn_fcfa_sign
+      if forloop.first
+        assign akn_fcfa_display = akn_fcfa_formatted
+        assign akn_fcfa_display_first = akn_fcfa_formatted
+      else
+        assign akn_fcfa_display = akn_fcfa_display | append: ' – ' | append: akn_fcfa_formatted
+        assign akn_fcfa_display_last = akn_fcfa_formatted
+      endif
+    endfor
+    assign akn_fcfa_accessible = 'akn_fcfa.accessible_single' | t: amount: akn_fcfa_display
+    if akn_fcfa_range
+      assign akn_fcfa_accessible = 'akn_fcfa.accessible_range' | t: minimum: akn_fcfa_display_first, maximum: akn_fcfa_display_last
+    elsif mode == 'from'
+      assign akn_fcfa_accessible = 'akn_fcfa.accessible_from' | t: amount: akn_fcfa_display
+    endif
+    assign akn_fcfa_measure = ''
+    if unit_measurement != blank
+      assign akn_fcfa_measure = unit_measurement.reference_value | append: unit_measurement.reference_unit
+      assign akn_fcfa_accessible = 'akn_fcfa.accessible_unit' | t: amount: akn_fcfa_display, unit: akn_fcfa_measure
+    endif
+  -%}
+  <span class="akn-fcfa-estimate">
+    <span class="visually-hidden">{{ akn_fcfa_accessible | escape }}</span>
+    <span aria-hidden="true">≈ <bdi>{{ akn_fcfa_display }} FCFA{% if akn_fcfa_measure != blank %} / {{ akn_fcfa_measure | escape }}{% endif %}</bdi></span>
+  </span>
+{%- endif -%}

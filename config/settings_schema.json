@@ -1873,6 +1873,12 @@
       },
       {
         "type": "checkbox",
+        "id": "akn_fcfa_enabled",
+        "label": "t:settings.akn_fcfa_enabled",
+        "default": false
+      },
+      {
+        "type": "checkbox",
         "id": "currency_code_enabled_product_cards",
         "label": "t:settings.product_cards",
         "default": true

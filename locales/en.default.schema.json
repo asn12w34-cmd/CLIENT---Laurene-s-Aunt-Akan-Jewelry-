@@ -776,6 +776,7 @@
     }
   },
   "settings": {
+    "akn_fcfa_enabled": "Show estimated prices in FCFA",
     "instagram": "Instagram URL",
     "heading_size": "Menu heading font size",
     "menu_links_size": "Menu link font size",

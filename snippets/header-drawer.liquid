@@ -683,6 +683,16 @@
         class="menu-drawer__utility-links menu-drawer__animated-element"
         style="--menu-drawer-animation-index: {{ linklist.links.size }};"
       >
+        {% comment %} CUSTOM START [AJ-044] — Language and FCFA preferences in the customized mobile drawer utility area. | See CUSTOM_CHANGES.md — AJ-044 {% endcomment %}
+        {% if is_akn_mobile_drawer %}
+          <div class="akn-drawer__preferences">
+            {% if section.settings.show_language and localization.available_languages.size > 1 %}
+              {% render 'akn-language-selector', placement: 'drawer', form_id: block.id %}
+            {% endif %}
+            {% render 'akn-fcfa-toggle', placement: 'drawer' %}
+          </div>
+        {% endif %}
+        {% comment %} CUSTOM END [AJ-044] {% endcomment %}
         {%- comment -%} CUSTOM START [AJ-001] — Mobile account and configurable WhatsApp utility links. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
         {% if is_akn_mobile_drawer %}
           {%- comment -%} CUSTOM START [AJ-002] — Show the utility area when an Instagram link is configured. | See CUSTOM_CHANGES.md — AJ-002 {%- endcomment -%}

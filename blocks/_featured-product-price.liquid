@@ -40,7 +40,10 @@
 >
   {% if product.price_varies and has_swatches_only == false and price_min != blank %}
     <span class="price"
-      ><bdi>{{ display_price }}</bdi></span
+      ><bdi>{{ display_price }}</bdi>
+      {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: product.price_min, mode: 'from', allow: true %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}</span
     >
   {% else %}
     {% render 'price',

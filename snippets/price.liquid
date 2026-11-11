@@ -61,6 +61,17 @@
     assign use_currency = true
   endif
 
+  # CUSTOM START [AJ-043] — Capture numeric cents before existing price formatting. | See CUSTOM_CHANGES.md — AJ-043
+  assign akn_raw_price = price
+  assign akn_raw_compare = compare_at_price
+  assign akn_raw_min = price_min
+  assign akn_raw_max = price_max
+  assign akn_fcfa_allow = true
+  if product_resource == blank
+    assign akn_fcfa_allow = false
+  endif
+  # CUSTOM END [AJ-043]
+
   # Format all prices
   # CUSTOM START [AJ-018] — Optional AKAN amount-first currency format, scoped by the caller. | See CUSTOM_CHANGES.md — AJ-018
   if currency_code_after_amount
@@ -90,11 +101,17 @@
       <span class="price-item__group compare-at-price">
         <span class="visually-hidden">{{ 'content.price_regular' | t }}&nbsp;</span>
         <bdi>{{- compare_at_price -}}</bdi>
+        {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: akn_raw_compare, allow: akn_fcfa_allow %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}
       </span>
     {% endif %}
     <span class="price-item__group price">
       <span class="visually-hidden">{{ 'content.price_range' | t }}&nbsp;</span>
       <bdi>{{ price_min }} - {{ price_max }}</bdi>
+      {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', minimum: akn_raw_min, maximum: akn_raw_max, mode: 'range', allow: akn_fcfa_allow %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}
     </span>
   {% else %}
     {% comment %} Standard pricing display: render only the active branch (regular or sale) {% endcomment %}
@@ -103,24 +120,39 @@
         <span class="price-item__group price">
           <span class="visually-hidden">{{ 'content.price_sale' | t }}&nbsp;</span>
           <bdi>{{ price | default: '&nbsp;' }}</bdi>
+          {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: akn_raw_price, allow: akn_fcfa_allow %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}
         </span>
         <span class="price-item__group price-item--regular compare-at-price">
           <span class="visually-hidden">{{ 'content.price_regular' | t }}&nbsp;</span>
           <bdi>{{- compare_at_price -}}</bdi>
+        {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: akn_raw_compare, allow: akn_fcfa_allow %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}
         </span>
       {% else %}
         <span class="price-item__group price-item--regular compare-at-price">
           <span class="visually-hidden">{{ 'content.price_regular' | t }}&nbsp;</span>
           <bdi>{{- compare_at_price -}}</bdi>
+        {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: akn_raw_compare, allow: akn_fcfa_allow %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}
         </span>
         <span class="price-item__group price">
           <span class="visually-hidden">{{ 'content.price_sale' | t }}&nbsp;</span>
           <bdi>{{ price | default: '&nbsp;' }}</bdi>
+          {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: akn_raw_price, allow: akn_fcfa_allow %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}
         </span>
       {% endif %}
     {% else %}
       <span class="price"
-        ><bdi>{{ price | default: '&nbsp;' }}</bdi></span
+        ><bdi>{{ price | default: '&nbsp;' }}</bdi>
+          {% comment %}CUSTOM START [AJ-043] — Estimation indicative FCFA | See CUSTOM_CHANGES.md — AJ-043{% endcomment %}
+{% render 'akn-fcfa', amount: akn_raw_price, allow: akn_fcfa_allow %}
+{% comment %}CUSTOM END [AJ-043]{% endcomment %}</span
       >
     {% endif %}
   {% endif %}
@@ -134,7 +166,7 @@
         assign unit_price = selected_variant.unit_price | money
       endif
     -%}
-    {% render 'unit-price', price: unit_price, measurement: selected_variant.unit_price_measurement %}
+    {% render 'unit-price', price: unit_price, measurement: selected_variant.unit_price_measurement, raw_price: selected_variant.unit_price %}
   {%- endif -%}
 </div>
 {%- if has_volume_pricing -%}

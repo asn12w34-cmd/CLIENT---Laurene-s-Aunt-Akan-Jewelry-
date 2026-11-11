@@ -67,18 +67,16 @@
         </p>
       {% endif %}
 
-      {% if show_language or show_country %}
+      {% comment %} CUSTOM START [AJ-044] — Shared language and visitor FCFA preference in footer utilities. | See CUSTOM_CHANGES.md — AJ-044 {% endcomment %}
+      {% if show_language or show_country or settings.akn_fcfa_enabled %}
         <div class="akn-footer-utilities__localization" aria-label="{{ 'content.localization_region_and_language' | t | escape }}">
           {% if show_language %}
             <div class="akn-footer-utilities__language">
-              {% render 'localization-form',
-                show_country: false,
-                show_language: true,
-                localization_style: 'akn-footer-language',
-                form_id: section.id
-              %}
+              {% render 'akn-language-selector', placement: 'footer', form_id: section.id %}
             </div>
           {% endif %}
+          {% render 'akn-fcfa-toggle', placement: 'footer' %}
+      {% comment %} CUSTOM END [AJ-044] {% endcomment %}
 
           {% if show_language and show_country %}
             <span class="akn-footer-utilities__localization-divider" aria-hidden="true"></span>

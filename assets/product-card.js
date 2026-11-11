@@ -308,7 +308,11 @@ export class ProductCard extends ProductCardLink {
    * @param {Document} html - The parsed HTML document with updated variant data.
    */
   updatePrice(html) {
-    const priceContainer = this.querySelectorAll(`product-price [ref='priceContainer']`)[1];
+    /* CUSTOM START [AJ-043] — Preserve the original second-price target on multi-price cards,
+       but update the only available price on single-price cards. | See CUSTOM_CHANGES.md — AJ-043 */
+    const priceContainers = this.querySelectorAll(`product-price [ref='priceContainer']`);
+    const priceContainer = priceContainers[1] ?? priceContainers[0];
+    /* CUSTOM END [AJ-043] */
     const newPriceElement = html.querySelector(`product-price [ref='priceContainer']`);
 
     if (newPriceElement && priceContainer) {

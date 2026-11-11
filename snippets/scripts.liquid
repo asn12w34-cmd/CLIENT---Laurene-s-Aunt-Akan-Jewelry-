@@ -4,6 +4,10 @@
   @param {object} [product] - The product object, available on product pages.
 {% enddoc %}
 
+{% comment %} CUSTOM START [AJ-044] — Initialize locale and FCFA display controls before first paint. | See CUSTOM_CHANGES.md — AJ-044 {% endcomment %}
+<script src="{{ 'akn-preferences.js' | asset_url }}"></script>
+{% comment %} CUSTOM END [AJ-044] {% endcomment %}
+
 <script type="importmap">
   {
     "imports": {

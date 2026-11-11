@@ -176,6 +176,7 @@
     "akn_hero_buttons": "AKAN — Boutons du Hero"
   },
   "settings": {
+    "akn_fcfa_enabled": "Afficher l’estimation en FCFA",
     "instagram": "URL Instagram",
     "heading_size": "Taille des titres du menu",
     "menu_links_size": "Taille des liens du menu",

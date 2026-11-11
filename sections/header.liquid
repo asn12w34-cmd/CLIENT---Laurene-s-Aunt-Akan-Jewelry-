@@ -174,7 +174,8 @@
     endif
   endif
 
-  if section.settings.show_country or section.settings.show_language
+  # CUSTOM [AJ-044] — Reserve the optional localization slot for visitor FCFA preference.
+  if section.settings.show_country or section.settings.show_language or settings.akn_fcfa_enabled
     if section.settings.localization_row == 'bottom'
       assign bottom_row_blocks = bottom_row_blocks | append: 'localization,'
     endif
@@ -237,17 +238,16 @@
     assign color_shadow = '--color-shadow: rgb(var(--color-foreground-rgb) / var(--opacity-10-25));'
     assign form_style = localization_font | append: localization_font_size | append: color_shadow
   %}
-  {% if show_language and show_country == false %}
-    <div class="dropdown-localization mobile:hidden">
-      {% render 'localization-form',
-        show_country: show_country,
-        show_language: show_language,
-        localization_style: 'dropdown',
-        form_style: form_style,
-        form_id: section.id
-      %}
+  {% comment %} CUSTOM START [AJ-044] — AKAN language and FCFA controls when country selection is hidden in the editor. | See CUSTOM_CHANGES.md — AJ-044 {% endcomment %}
+  {% if show_country == false %}
+    <div class="akn-localization-preferences dropdown-localization mobile:hidden" style="{{ localization_font }} {{ localization_font_size }}">
+      {% if show_language %}
+        {% render 'akn-language-selector', placement: 'header', form_id: section.id %}
+      {% endif %}
+      {% render 'akn-fcfa-toggle', placement: 'header' %}
     </div>
   {% elsif show_country %}
+  {% comment %} CUSTOM END [AJ-044] {% endcomment %}
     <dropdown-localization-component
       class="dropdown-localization mobile:hidden"
     >
@@ -322,6 +322,11 @@
         %}
       </div>
     </dropdown-localization-component>
+    {% comment %} CUSTOM START [AJ-044] — Visitor preference also remains accessible until country switch is disabled. | See CUSTOM_CHANGES.md — AJ-044 {% endcomment %}
+    <div class="akn-localization-preferences dropdown-localization mobile:hidden">
+      {% render 'akn-fcfa-toggle', placement: 'header' %}
+    </div>
+    {% comment %} CUSTOM END [AJ-044] {% endcomment %}
   {% endif %}
 {% endcapture %}
 
