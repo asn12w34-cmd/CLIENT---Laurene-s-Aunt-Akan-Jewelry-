@@ -21,6 +21,8 @@ CUSTOM FILE [AJ-044] — Sélecteur de langue discret utilisant le formulaire Sh
     <div class="akn-language-selector__panel">
       <p class="akn-language-selector__heading" id="{{ akn_language_id }}-label">{{ 'content.language' | t }}</p>
       {%- form 'localization', id: akn_language_id, return_to: request.path, aria-label: akn_language_label -%}
+        {% comment %} CUSTOM [AJ-045] — Conserver le pays lors du changement de langue. | See CUSTOM_CHANGES.md — AJ-045 {% endcomment %}
+        <input type="hidden" name="country_code" value="{{ localization.country.iso_code | escape }}">
         <div class="akn-language-selector__options" role="group" aria-labelledby="{{ akn_language_id }}-label">
           {%- for language in localization.available_languages -%}
             <button

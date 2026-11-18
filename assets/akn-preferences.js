@@ -1,24 +1,13 @@
 /*
-  CUSTOM FILE [AJ-044] — Persist the FCFA display preference and close language disclosures | See CUSTOM_CHANGES.md — AJ-044
-  Estimates remain server-rendered by snippets/akn-fcfa.liquid (not recalculated here).
+  CUSTOM FILE [AJ-044] — Shared localization disclosure and visitor-preference behavior | See CUSTOM_CHANGES.md — AJ-044
 */
+/* CUSTOM [AJ-045] — Coordinate independent market/language disclosures; legacy FCFA toggle behavior retired | See CUSTOM_CHANGES.md — AJ-045 */
 (() => {
-  const storageKey = 'akn-fcfa-visible-v1';
-  const root = document.documentElement;
-  let visible = true;
-  try { visible = window.localStorage.getItem(storageKey) !== 'off'; } catch { /* Storage may be unavailable. */ }
-  root.dataset.aknFcfaVisible = String(visible);
+  const selector = 'details[data-akn-localization-selector], details[data-akn-language-selector]';
+  const openSelector = 'details[data-akn-localization-selector][open], details[data-akn-language-selector][open]';
 
-  function syncControls() {
-    document.querySelectorAll('[data-akn-fcfa-toggle]').forEach((button) => {
-      button.setAttribute('aria-pressed', String(visible));
-      const status = button.querySelector('[data-akn-fcfa-status]');
-      if (status) status.textContent = visible ? button.dataset.stateOn : button.dataset.stateOff;
-    });
-  }
-
-  function closeDisclosures(except = null) {
-    document.querySelectorAll('details[data-akn-language-selector][open]').forEach((details) => {
+  function closeOtherDisclosures(except = null) {
+    document.querySelectorAll(openSelector).forEach((details) => {
       if (details !== except) details.open = false;
     });
   }
@@ -26,48 +15,38 @@
   document.addEventListener('click', (event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;
-    const toggle = target.closest('[data-akn-fcfa-toggle]');
-    if (toggle) {
-      visible = !visible;
-      root.dataset.aknFcfaVisible = String(visible);
-      try { window.localStorage.setItem(storageKey, visible ? 'on' : 'off'); } catch { /* Session-only fallback. */ }
-      syncControls();
-    }
-    const disclosure = target.closest('details[data-akn-language-selector]');
-    closeDisclosures(disclosure);
+    const disclosure = target.closest(selector);
+    closeOtherDisclosures(disclosure);
   });
 
-  // 'toggle' does not bubble; use capture to keep simultaneous dropdowns exclusive.
+  // toggle does not bubble; capture it so a market and language menu cannot remain open together.
   document.addEventListener('toggle', (event) => {
     const target = event.target;
-    if (target instanceof HTMLDetailsElement && target.matches('[data-akn-language-selector]') && target.open) {
-      closeDisclosures(target);
+    if (target instanceof HTMLDetailsElement && target.matches(selector) && target.open) {
+      closeOtherDisclosures(target);
     }
   }, true);
 
-  let handledEscape = false;
+  let handledDrawerEscape = false;
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
-    const opened = document.querySelector('details[data-akn-language-selector][open]');
+    const opened = document.querySelector(openSelector);
     if (!(opened instanceof HTMLDetailsElement)) return;
     event.preventDefault();
     event.stopImmediatePropagation();
-    closeDisclosures();
+    closeOtherDisclosures();
     opened.querySelector('summary')?.focus();
-    // Prevent Atelier's drawer Escape keyup handler from closing the whole drawer.
-    handledEscape = true;
+    // Prevent Atelier's keyup listener from closing the entire mobile drawer as well.
+    handledDrawerEscape = true;
   }, true);
   document.addEventListener('keyup', (event) => {
-    if (handledEscape && event.key === 'Escape') {
+    if (handledDrawerEscape && event.key === 'Escape') {
       event.stopImmediatePropagation();
-      handledEscape = false;
+      handledDrawerEscape = false;
     }
   }, true);
   document.addEventListener('focusin', (event) => {
     const target = event.target;
-    if (target instanceof Element) closeDisclosures(target.closest('details[data-akn-language-selector]'));
+    if (target instanceof Element) closeOtherDisclosures(target.closest(selector));
   });
-  document.addEventListener('shopify:section:load', syncControls);
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', syncControls, { once: true });
-  else syncControls();
 })();

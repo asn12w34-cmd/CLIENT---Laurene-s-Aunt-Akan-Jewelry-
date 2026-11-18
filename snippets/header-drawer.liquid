@@ -683,16 +683,30 @@
         class="menu-drawer__utility-links menu-drawer__animated-element"
         style="--menu-drawer-animation-index: {{ linklist.links.size }};"
       >
-        {% comment %} CUSTOM START [AJ-044] — Language and FCFA preferences in the customized mobile drawer utility area. | See CUSTOM_CHANGES.md — AJ-044 {% endcomment %}
+        {% comment %} CUSTOM START [AJ-045] — Marché/devises et langues indépendants dans le tiroir mobile. | See CUSTOM_CHANGES.md — AJ-045 {% endcomment %}
         {% if is_akn_mobile_drawer %}
-          <div class="akn-drawer__preferences">
-            {% if section.settings.show_language and localization.available_languages.size > 1 %}
-              {% render 'akn-language-selector', placement: 'drawer', form_id: block.id %}
-            {% endif %}
-            {% render 'akn-fcfa-toggle', placement: 'drawer' %}
-          </div>
+          {% liquid
+            assign akn_drawer_has_country = false
+            assign akn_drawer_has_language = false
+            if section.settings.show_country and localization.available_countries.size > 1
+              assign akn_drawer_has_country = true
+            endif
+            if section.settings.show_language and localization.available_languages.size > 1
+              assign akn_drawer_has_language = true
+            endif
+          %}
+          {% if akn_drawer_has_country or akn_drawer_has_language %}
+            <div class="akn-drawer__preferences">
+              {% if akn_drawer_has_country %}
+                {% render 'akn-market-selector', placement: 'drawer', form_id: block.id, show_flag: section.settings.country_selector_style %}
+              {% endif %}
+              {% if akn_drawer_has_language %}
+                {% render 'akn-language-selector', placement: 'drawer', form_id: block.id %}
+              {% endif %}
+            </div>
+          {% endif %}
         {% endif %}
-        {% comment %} CUSTOM END [AJ-044] {% endcomment %}
+        {% comment %} CUSTOM END [AJ-045] {% endcomment %}
         {%- comment -%} CUSTOM START [AJ-001] — Mobile account and configurable WhatsApp utility links. | See CUSTOM_CHANGES.md — AJ-001 {%- endcomment -%}
         {% if is_akn_mobile_drawer %}
           {%- comment -%} CUSTOM START [AJ-002] — Show the utility area when an Instagram link is configured. | See CUSTOM_CHANGES.md — AJ-002 {%- endcomment -%}

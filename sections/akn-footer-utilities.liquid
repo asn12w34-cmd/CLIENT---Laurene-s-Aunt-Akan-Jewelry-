@@ -67,53 +67,17 @@
         </p>
       {% endif %}
 
-      {% comment %} CUSTOM START [AJ-044] — Shared language and visitor FCFA preference in footer utilities. | See CUSTOM_CHANGES.md — AJ-044 {% endcomment %}
-      {% if show_language or show_country or settings.akn_fcfa_enabled %}
-        <div class="akn-footer-utilities__localization" aria-label="{{ 'content.localization_region_and_language' | t | escape }}">
-          {% if show_language %}
-            <div class="akn-footer-utilities__language">
-              {% render 'akn-language-selector', placement: 'footer', form_id: section.id %}
-            </div>
+      {% comment %} CUSTOM [AJ-045] — Localisation indépendante marché/devise et langue, sans interrupteur FCFA. | See CUSTOM_CHANGES.md — AJ-045 {% endcomment %}
+      {% if show_country or show_language %}
+        <div class="akn-footer-utilities__localization" role="group" aria-label="{{ 'content.localization_region_and_language' | t | escape }}">
+          {% if show_country %}
+            {% render 'akn-market-selector', placement: 'footer', form_id: section.id %}
           {% endif %}
-          {% render 'akn-fcfa-toggle', placement: 'footer' %}
-      {% comment %} CUSTOM END [AJ-044] {% endcomment %}
-
-          {% if show_language and show_country %}
+          {% if show_country and show_language %}
             <span class="akn-footer-utilities__localization-divider" aria-hidden="true"></span>
           {% endif %}
-
-          {% if show_country %}
-            {% assign country_panel_id = 'AknFooterCountryPanel-' | append: section.id %}
-            <dropdown-localization-component class="akn-footer-utilities__country">
-              <button
-                type="button"
-                class="button button-unstyled akn-footer-utilities__country-button"
-                aria-expanded="false"
-                aria-controls="{{ country_panel_id }}"
-                ref="button"
-                on:click="/toggleSelector"
-              >
-                <span class="visually-hidden">{{ 'accessibility.country_region' | t }}</span>
-                <span aria-hidden="true">{{ localization.country.currency.iso_code }}</span>
-                <span class="svg-wrapper icon-caret" aria-hidden="true">
-                  {{- 'icon-caret.svg' | inline_asset_content -}}
-                </span>
-              </button>
-
-              <div
-                id="{{ country_panel_id }}"
-                class="akn-footer-utilities__country-panel"
-                hidden
-                ref="panel"
-              >
-                {% render 'localization-form',
-                  show_country: true,
-                  show_language: false,
-                  localization_style: 'akn-footer-country',
-                  form_id: section.id
-                %}
-              </div>
-            </dropdown-localization-component>
+          {% if show_language %}
+            {% render 'akn-language-selector', placement: 'footer', form_id: section.id %}
           {% endif %}
         </div>
       {% endif %}

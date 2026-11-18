@@ -1,0 +1,74 @@
+{% comment %}
+  CUSTOM FILE [AJ-045] — Sélecteur indépendant de marché/devise avec formulaire Shopify | See CUSTOM_CHANGES.md — AJ-045
+{% endcomment %}
+{% doc %}
+  Renders a country/currency disclosure. Country changes are submitted through
+  Shopify's localization form; this never calculates or changes product prices.
+
+  @param {string} placement - Unique location: header, drawer, or footer.
+  @param {string} form_id - ID of the containing section or menu block.
+  @param {boolean} [show_flag] - Display country flags (default true).
+
+  @example
+  {% render 'akn-market-selector', placement: 'header', form_id: section.id, show_flag: true %}
+{% enddoc %}
+{%- if localization.available_countries.size > 1 -%}
+  {%- liquid
+    assign akn_market_id = 'AknMarket-' | append: placement | append: '-' | append: form_id
+    assign akn_market_label = 'accessibility.country_region' | t
+    assign akn_show_flag = true
+    if show_flag == false
+      assign akn_show_flag = false
+    endif
+  -%}
+  <details class="akn-market-selector" data-akn-localization-selector>
+    <summary
+      class="akn-market-selector__trigger"
+      aria-label="{{ akn_market_label | escape }}: {{ localization.country.name | escape }}, {{ localization.country.currency.iso_code | escape }}"
+    >
+      {% if akn_show_flag %}
+        <span
+          class="akn-market-selector__flag"
+          aria-hidden="true"
+          style="background-image: url('{{ localization.country | image_url: width: 32 }}');"
+        ></span>
+      {% endif %}
+      <span aria-hidden="true" class="akn-market-selector__short-label">
+        {{- localization.country.iso_code | escape }} · {{ localization.country.currency.iso_code | escape -}}
+      </span>
+      <span class="akn-market-selector__chevron" aria-hidden="true">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </span>
+    </summary>
+    <div class="akn-market-selector__panel">
+      <p class="akn-market-selector__heading" id="{{ akn_market_id }}-label">{{ akn_market_label | escape }}</p>
+      <div class="akn-market-selector__options" role="group" aria-labelledby="{{ akn_market_id }}-label">
+        {%- for country in localization.available_countries -%}
+          {%- assign akn_country_form_id = akn_market_id | append: '-' | append: country.iso_code -%}
+          {%- form 'localization', id: akn_country_form_id, return_to: request.path, aria-label: akn_market_label -%}
+            <input type="hidden" name="country_code" value="{{ country.iso_code | escape }}">
+            <input type="hidden" name="language_code" value="{{ localization.language.iso_code | escape }}">
+            <button
+              type="submit"
+              class="akn-market-selector__option{% if country.iso_code == localization.country.iso_code %} is-current{% endif %}"
+              {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %}
+            >
+              {% if akn_show_flag %}
+                <span
+                  class="akn-market-selector__flag"
+                  aria-hidden="true"
+                  style="background-image: url('{{ country | image_url: width: 32 }}');"
+                ></span>
+              {% endif %}
+              <span class="akn-market-selector__option-name">{{ country.name | escape }}</span>
+              <span class="akn-market-selector__option-code">{{ country.currency.iso_code | escape }}</span>
+              {% if country.iso_code == localization.country.iso_code %}
+                <span class="akn-market-selector__check" aria-hidden="true">✓</span>
+              {% endif %}
+            </button>
+          {%- endform -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </details>
+{%- endif -%}

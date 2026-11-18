@@ -174,12 +174,13 @@
     endif
   endif
 
-  # CUSTOM [AJ-044] — Reserve the optional localization slot for visitor FCFA preference.
-  if section.settings.show_country or section.settings.show_language or settings.akn_fcfa_enabled
+  # CUSTOM START [AJ-045] — Seule la localisation visible détermine la seconde rangée. | See CUSTOM_CHANGES.md — AJ-045
+  if show_country or show_language
     if section.settings.localization_row == 'bottom'
       assign bottom_row_blocks = bottom_row_blocks | append: 'localization,'
     endif
   endif
+  # CUSTOM END [AJ-045]
 
   assign bottom_row_blocks = bottom_row_blocks | split: ',' | compact
 
@@ -235,99 +236,19 @@
   {% liquid
     assign localization_font = '--menu-localization-font: var(--font-[localization_font]--family); ' | replace: '[localization_font]', section.settings.localization_font
     assign localization_font_size = '--menu-localization-font-size: [localization_font_size]; ' | replace: '[localization_font_size]', section.settings.localization_font_size
-    assign color_shadow = '--color-shadow: rgb(var(--color-foreground-rgb) / var(--opacity-10-25));'
-    assign form_style = localization_font | append: localization_font_size | append: color_shadow
   %}
-  {% comment %} CUSTOM START [AJ-044] — AKAN language and FCFA controls when country selection is hidden in the editor. | See CUSTOM_CHANGES.md — AJ-044 {% endcomment %}
-  {% if show_country == false %}
+  {% comment %} CUSTOM START [AJ-045] — Deux menus indépendants : marché/devise puis langue. | See CUSTOM_CHANGES.md — AJ-045 {% endcomment %}
+  {% if show_country or show_language %}
     <div class="akn-localization-preferences dropdown-localization mobile:hidden" style="{{ localization_font }} {{ localization_font_size }}">
+      {% if show_country %}
+        {% render 'akn-market-selector', placement: 'header', form_id: section.id, show_flag: section.settings.country_selector_style %}
+      {% endif %}
       {% if show_language %}
         {% render 'akn-language-selector', placement: 'header', form_id: section.id %}
       {% endif %}
-      {% render 'akn-fcfa-toggle', placement: 'header' %}
     </div>
-  {% elsif show_country %}
-  {% comment %} CUSTOM END [AJ-044] {% endcomment %}
-    <dropdown-localization-component
-      class="dropdown-localization mobile:hidden"
-    >
-      <button
-        type="button"
-        class="button dropdown-localization__button localization-selector header-actions__action"
-        aria-expanded="false"
-        aria-controls="dropdown-localization-results"
-        ref="button"
-        on:click="/toggleSelector"
-        style="{{ localization_font }} {{ localization_font_size }}"
-      >
-        {% if show_country %}
-          {% if section.settings.country_selector_style == true %}
-            {% assign localization_background_color = 'background_color_[row]' | replace: '[row]', section.settings.localization_row %}
-            {% liquid
-              assign background_brightness = section.settings[localization_background_color] | color_brightness
-              if background_brightness < 64
-                assign shadow_size = 4
-              else
-                assign shadow_size = 2
-              endif
-            %}
-            <span
-              class="icon-flag"
-              style="
-                background-image: url({{- localization.country | image_url: width: 32 }});
-                --size-shadow: {{ shadow_size }}px;
-                --color-shadow: rgb(var(--color-foreground-rgb) / var(--opacity-30-60));
-              "
-            ></span>
-          {% endif %}
-          <span
-            class="currency-code"
-            data-testid="localization-currency-code"
-          >
-            {{- localization.country.currency.iso_code -}}
-          </span>
-        {% endif %}
-        <span
-          class="visually-hidden"
-          data-testid="localization-visually-hidden"
-        >
-          {{- 'accessibility.localization_region_and_language' | t -}}
-        </span>
-
-        {%- if show_country and show_language -%}
-          <span>/</span>
-        {%- endif -%}
-
-        {%- if show_language -%}
-          <span>
-            {{ localization.language.iso_code | upcase }}
-          </span>
-        {%- endif -%}
-        <span class="svg-wrapper icon-caret">
-          {{- 'icon-caret.svg' | inline_asset_content -}}
-        </span>
-      </button>
-
-      <div
-        class="localization-wrapper {{ section.settings.localization_position }}-bound color-custom-popover"
-        hidden
-        ref="panel"
-      >
-        {% render 'localization-form',
-          show_country: show_country,
-          show_language: show_language,
-          localization_style: 'dropdown',
-          form_style: form_style,
-          form_id: section.id
-        %}
-      </div>
-    </dropdown-localization-component>
-    {% comment %} CUSTOM START [AJ-044] — Visitor preference also remains accessible until country switch is disabled. | See CUSTOM_CHANGES.md — AJ-044 {% endcomment %}
-    <div class="akn-localization-preferences dropdown-localization mobile:hidden">
-      {% render 'akn-fcfa-toggle', placement: 'header' %}
-    </div>
-    {% comment %} CUSTOM END [AJ-044] {% endcomment %}
   {% endif %}
+  {% comment %} CUSTOM END [AJ-045] {% endcomment %}
 {% endcapture %}
 
 <script type="application/ld+json">
